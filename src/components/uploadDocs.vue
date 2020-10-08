@@ -56,6 +56,8 @@ export default {
           storageRef.snapshot.ref.getDownloadURL().then((url) => {
             this.pdf = url;
           });
+          this.uploadValue = 0;
+          console.log(this.pdf);
         }
       );
     },

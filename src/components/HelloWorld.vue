@@ -6,7 +6,7 @@
         <router-link to="/pendingbooking">Go to Pending Booking</router-link>
       </li>
       <li>
-        <router-link to="/uploadDocs">Go to Upload Documents</router-link>
+        <router-link to="/patientsnotes">Go to Patient Notes</router-link>
       </li>
     </ul>
   </div>
