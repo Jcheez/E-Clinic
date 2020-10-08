@@ -5,7 +5,9 @@
       <li>
         <router-link to="/pendingbooking">Go to Pending Booking</router-link>
       </li>
-      <li><router-link to="/test">Go to Test</router-link></li>
+      <li>
+        <router-link to="/uploadDocs">Go to Upload Documents</router-link>
+      </li>
     </ul>
   </div>
 </template>
