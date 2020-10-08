@@ -2,7 +2,7 @@
   <div>
     <div>
       <p>Upload a pdf to Firebase:</p>
-      <input type="file" @change="previewFile" accept=".pdf" />
+      <input type="file" @change="previewFile" accept="application/pdf" />
     </div>
     <div>
       <p>
@@ -11,13 +11,14 @@
       </p>
     </div>
     <div v-if="fileData != null">
+      <br />
       <button @click="onUpload">Upload</button>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from "../firebase.js";
+import firebase from "firebase";
 
 export default {
   name: "Upload",
