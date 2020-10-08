@@ -8,11 +8,21 @@
           <div id="inner">
             <span>{{ "Patient: " + patient.name }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
-            <span v-elseif="patient.physical"
+            <span v-if="patient.physical"
               >Reason: Physical Examination Required</span
             >
           </div>
-          <button>Make A Booking</button>
+          <button
+            id="outofplace"
+            v-if="patient.physical === true && patient.firstTime === true"
+          >
+            Make A Booking
+          </button>
+          <button
+            v-else-if="patient.physical === true || patient.firstTime === false"
+          >
+            Make A Booking
+          </button>
         </li>
       </template>
     </ul>
@@ -30,7 +40,7 @@ export default {
   },
   components: {},
   methods: {
-    fetchItems: function () {
+    fetchItems: function() {
       database
         .collection("pendingbooking")
         .get()
@@ -107,5 +117,10 @@ button {
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 15px;
+}
+
+button#outofplace {
+  position: relative;
+  bottom: 16px;
 }
 </style>
