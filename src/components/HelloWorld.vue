@@ -8,6 +8,11 @@
       <li>
         <router-link to="/uploadDocs">Go to Upload Documents</router-link>
       </li>
+      <li>
+        <router-link to="/CreateSlot" exact
+          >+ Add Slot (in Appointment Page)</router-link
+        >
+      </li>
     </ul>
   </div>
 </template>
