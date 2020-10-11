@@ -2,30 +2,22 @@
   <div>
     <h1>{{ msg }}</h1>
     <hr />
+    <h2>Patients</h2>
     <ul>
-      <template v-for="patient in itemsList">
-        <li v-bind:key="patient">
-          <div id="inner">
-            <span>{{ "Patient: " + patient.name }}</span>
-            <span v-if="patient.firstTime">Reason: First Time Patient</span>
-            <span v-if="patient.physical"
-              >Reason: Physical Examination Required</span
-            >
-          </div>
-          <button
-            id="outofplace"
-            v-if="patient.physical === true && patient.firstTime === true"
-          >
-            Make A Booking
-          </button>
-          <button
-            v-else-if="patient.physical === true || patient.firstTime === false"
-          >
-            Make A Booking
-          </button>
-        </li>
-      </template>
+      <li v-for="patient in itemsList" :key="patient">
+        <div id="inner">
+          <span>{{ "Patient: " + patient.name }}</span>
+        </div>
+        <button id="view">View</button>
+      </li>
     </ul>
+    <input
+      id="searchbox"
+      type="text"
+      placeholder="Search patient..."
+      name="search"
+    />
+    <button id="searchbutton" type="submit">Search</button>
   </div>
 </template>
 
@@ -35,22 +27,22 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      msg: "Pending Booking",
+      msg: "Patient's Notes ",
       itemsList: [],
     };
   },
-  components: {},
+
   methods: {
     fetchItems: function () {
       database
-        .collection("pendingbooking")
+        .collection("patients")
         .get()
         .then((querySnapShot) => {
           let item = {};
           querySnapShot.forEach((doc) => {
-            console.log(doc.data());
             item = doc.data();
             this.itemsList.push(item);
+            console.log(doc.data());
           });
         });
     },
@@ -83,12 +75,26 @@ hr {
   top: 250px;
   background-color: #1677cf;
 }
+
+h2 {
+  position: absolute;
+  top: 310px;
+  left: 330px;
+  text-decoration: underline;
+  font-size: 30px;
+}
+
+div#inner {
+  width: 70%;
+  display: inline-block;
+}
+
 li {
   position: relative;
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 210px;
+  top: 230px;
   border: 1px solid #000000;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
@@ -96,24 +102,46 @@ li {
   padding-top: 20px;
   display: block;
 }
-div#inner {
-  width: 70%;
-  display: inline-block;
-}
+
 span {
+  position: relative;
+  top: 14px;
   display: block;
   text-align: left;
+  font-size: 20px;
 }
-button {
+
+input#searchbox {
+  position: absolute;
+  top: 400px;
+  left: 1100px;
+  font-size: 30px;
+}
+
+button#view {
+  position: relative;
+  top: 14px;
   width: 125px;
   height: 30px;
-  background: rgba(169, 47, 47, 0.4);
+  background: aqua;
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 15px;
+  font-size: 20px;
 }
-button#outofplace {
-  position: relative;
-  bottom: 16px;
+
+button:hover {
+  cursor: pointer;
+}
+button:focus {
+  outline: none;
+}
+
+button#searchbutton {
+  position: absolute;
+  top: 400px;
+  left: 1473px;
+  font-size: 30px;
+  background-color: aqua;
 }
 </style>
