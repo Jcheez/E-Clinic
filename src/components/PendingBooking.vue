@@ -3,8 +3,8 @@
     <h1>{{ msg }}</h1>
     <hr />
     <ul>
-      <template v-for="patient in itemsList">
-        <li v-bind:key="patient">
+      <template v-for="(patient, x) in itemsList">
+        <li v-bind:key="x">
           <div id="inner">
             <span>{{ "Patient: " + patient.name }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
@@ -12,15 +12,10 @@
               >Reason: Physical Examination Required</span
             >
           </div>
-          <button
-            id="outofplace"
-            v-if="patient.physical === true && patient.firstTime === true"
-          >
+          <button id="outofplace" v-if="patient.physical && patient.firstTime">
             Make A Booking
           </button>
-          <button
-            v-else-if="patient.physical === true || patient.firstTime === false"
-          >
+          <button v-else-if="patient.physical || patient.firstTime">
             Make A Booking
           </button>
         </li>
@@ -40,7 +35,7 @@ export default {
   },
   components: {},
   methods: {
-    fetchItems: function() {
+    fetchItems: function () {
       database
         .collection("pendingbooking")
         .get()
@@ -56,6 +51,21 @@ export default {
   created() {
     this.fetchItems();
   },
+  /*
+  mounted() {
+    database.collection("pendingbooking").onSnapshot((res) => {
+      const changes = res.docChanges();
+
+      changes.forEach((change) => {
+        if (change.type === "added") {
+          this.itemsList = [];
+          this.itemsList.push(change.doc.data());
+        } else if (change.type === "removed") {
+          this.itemsList.filter((item) => item.id !== change.doc.id);
+        }
+      });
+    });
+  },*/
 };
 </script>
 
