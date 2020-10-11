@@ -8,6 +8,9 @@
       <li>
         <router-link to="/patientsnotes">Go to Patient Notes</router-link>
       </li>
+      <li>
+        <router-link to="/appointment">Go to Appointment Page</router-link>
+      </li>
     </ul>
   </div>
 </template>
