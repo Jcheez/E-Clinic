@@ -11,11 +11,6 @@
       <li>
         <router-link to="/appointment">Go to Appointment Page</router-link>
       </li>
-      <li>
-        <router-link to="/CreateSlot" exact
-          >+ Add Slot (in Appointment Page)</router-link
-        >
-      </li>
     </ul>
   </div>
 </template>
