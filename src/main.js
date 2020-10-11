@@ -2,8 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueRouter from "vue-router";
 import Routes from "./routes.js";
+//import VCalendar from 'v-calendar';
 
 Vue.use(VueRouter);
+// Vue.use(VCalendar, {
+//   componentPrefix: 'vc',
+// });
 Vue.config.productionTip = false;
 
 const myRouter = new VueRouter({
