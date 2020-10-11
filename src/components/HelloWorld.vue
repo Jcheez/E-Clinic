@@ -16,6 +16,12 @@
           >+ Add Slot (in Appointment Page)</router-link
         >
       </li>
+      <li>
+        <router-link to="/consultTile">Go to Consultation Slot</router-link>
+      </li>
+            <li>
+        <router-link to="/scheduledAppt">Go to Scheduled Appt</router-link>
+      </li>
     </ul>
   </div>
 </template>
