@@ -1,0 +1,113 @@
+<template>
+  <div>
+    <h3>Add a Consultation Slot</h3>
+
+    <form action=/processAddSlot.js>
+
+        <label>Choose Slot <b>Start Time</b></label>
+        <input type="time" id="startTime" name="consultStart" step="1800" min="08:30" max="18:00" required v-model="slotStartTime">
+
+        <!--label>Choose Slot <b>End Time</b></label-->
+        <!--input type="time" id="endTime" name="consultEnd" step="1800" min=this.slotStartTime max="18:00" required v-model="slotEndTime"-->
+    <!--min and max can be the opening and closing time of the clinic :D -->
+
+
+      <br/>
+      <label for="repeatSlot">How often do you want the selected slots to repeat?</label>
+        <select name="freqOfSlots" id="repeatSlots" v-model="selectedValue">
+            <option>Does Not Repeat</option>
+            <option>Daily</option>
+            <option>Every Monday</option>
+            <option>Every Tuesday</option>
+            <option>Every Wednesday</option>
+            <option>Every Thursday</option>
+            <option>Every Friday</option>
+            <option>Every Saturday</option>
+            <option>Every Sunday</option>            
+            <option>Only on Weekdays</option>
+            <option>Only on Weekends</option>
+        </select>
+        <br/>
+        <label v-if="selectedValue != doesNotRepeat" >Please choose the start and end dates for the slots selected to repeat.</label>
+        <v-date-picker color="blue" mode="range" v-model="range" v-if="selectedValue != doesNotRepeat" />
+        
+        <input
+        id="submitButton"
+        type="submit"
+        value="Submit"
+      />
+    </form>
+  </div>
+</template>
+ 
+<script>
+import VDatePicker from "v-calendar/lib/components/date-picker.umd";
+//import database from "../firebase.js";
+
+export default {
+  components: {
+    VDatePicker,
+  },
+  data() {
+    return {
+      range: {
+        start: new Date(),
+        end: new Date(),
+      },
+      slotStartTime: "08:30",
+      slotEndTime: "09:00",
+      selectedValue: "Does Not Repeat",
+      doesNotRepeat: "Does Not Repeat",
+      methods: {},
+    };
+  },
+};
+</script>
+ 
+<style scoped>
+#defaultSlot {
+  border: 2px lightblue;
+  border-radius: 8px;
+  background-color: white;
+  border: 2px solid lightblue;
+  padding: 10px;
+  width: 150px;
+  margin: 10px;
+  display: block;
+}
+
+#submitButton {
+  background-color: lightblue;
+  border: 2px solid darkslateblue;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+form {
+  align-items: center;
+  display: inline-block;
+  margin: 10px;
+}
+
+#createCustomSlot {
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+}
+label {
+  margin: 20px;
+  display: inline-block;
+}
+
+#startTime,
+#endTime {
+  padding: 10px;
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  display: inline-block;
+  align-items: center;
+}
+</style>
