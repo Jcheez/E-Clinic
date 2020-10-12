@@ -13,6 +13,12 @@ export default {
   components: {
     HelloWorld,
   },
+
+  created() {
+      if (performance.navigation.type == 1 && this.$route.path == '/patientsnotes/appointments') {
+          this.$router.push('/patientsnotes')
+      }
+  }
 };
 </script>
 
