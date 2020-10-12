@@ -1,40 +1,34 @@
 <template>
     <div>
+        <ul style="list-style-type:none">
+        <li v-for="data in consultData" v-bind:key="data.patient">
         <button v-if="hover==false" @mouseover="hover = true">
             <span v-if="consultData.patient" class="freeSlot"></span>
             <span v-if="!consultData.patient" class="bookedSlot"></span>            
-            <span class="time">{{consultData[0].time}}</span>
+            <span class="time">{{data.time}}</span>
         </button>
         <button v-if="hover == true" @mouseleave="hover=false">
             <span class="removeSlot">Remove Slot</span>
         </button>
+        </li>
+        </ul>
     </div>
     
 </template>
 
 <script>
-import database from '../firebase.js'
+//import database from '../firebase.js'
 export default {
     data() {
         return {
-            consultData: [],
             hover: false
         }
     },
-    methods: {
-        fetchItems: function () {
-            database.collection("consultslots").get().then((querySnapShot) => {
-                let item = {};
-                querySnapShot.forEach((doc) => {
-                    item = doc.data();
-                    this.consultData.push(item);
-                });
-            });
-        }
+    props:{
+      consultData:{
+          type:Array
+      }
     },
-    created() {
-        this.fetchItems();
-    }
 }
 </script>
 

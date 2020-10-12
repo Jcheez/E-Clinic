@@ -5,7 +5,7 @@
         </div>
         <div class="data">
             <ul>
-                <li v-for="data in consultData" v-bind:key="data.date">
+                <li v-for="data in consultData" v-bind:key="data.patient">
                     <div class="column">
                         <span>Time:</span><br>
                         <span>Patient:</span>
@@ -21,27 +21,19 @@
 </template>
 
 <script>
-import database from '../firebase.js'
+//import database from '../firebase.js'
 export default {
     data() {
         return {
-            consultData: []
         }
+    },
+    props:{
+      consultData:{
+          type:Array
+      }
     },
     methods: {
-        fetchItems: function () {
-            database.collection("consultslots").get().then((querySnapShot) => {
-                let item = {};
-                querySnapShot.forEach((doc) => {
-                    item = doc.data();
-                    this.consultData.push(item);
-                });
-            });
-        }
     },
-    created() {
-        this.fetchItems();
-    }
 }
 </script>
 
@@ -52,10 +44,9 @@ div .container {
     transition: box-shadow 0.3s;
     transition: 0.3s;
     background-color:rgb(0, 114, 180); 
-    width: 320px;
+    width: 450px;
     height: 200px;
     border-radius: 10px;
-    position: fixed;
 }
 
 div .container:after {
@@ -109,7 +100,7 @@ li {
 div .column {
     float: left;
     width: 30%;
-    padding: 0px 8px 30px 25px;
+    padding: 0px 20px 30px 7px;
     font-family: Roboto;
 }
 
