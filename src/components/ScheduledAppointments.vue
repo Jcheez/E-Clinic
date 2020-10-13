@@ -11,7 +11,7 @@
                         <span>Patient:</span>
                     </div>
                     <div class="column">
-                        <span>{{data.time}}</span><br>
+                        <span>{{data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()}}</span><br>
                         <span>{{data.patient}}</span>
                     </div>
                 </li>

@@ -5,7 +5,7 @@
         <button v-if="hover==false" @mouseover="hover = true">
             <span v-if="consultData.patient" class="freeSlot"></span>
             <span v-if="!consultData.patient" class="bookedSlot"></span>            
-            <span class="time">{{data.time}}</span>
+            <span class="time">{{data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()}}</span>
         </button>
         <button v-if="hover == true" @mouseleave="hover=false">
             <span class="removeSlot">Remove Slot</span>

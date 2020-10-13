@@ -59,6 +59,7 @@
 <script>
 import VDatePicker from "v-calendar/lib/components/date-picker.umd";
 import database from "../firebase.js";
+import firebase from 'firebase/app';
 
 export default {
   components: {
@@ -106,14 +107,16 @@ export default {
       return result;
     },
     createSelectedSlots: function () {
+      let format_date = this.selectedDate.toLocaleDateString().split( '/' ).reverse( ).join( '-' )
+      let datetime = new Date(format_date + "T" + this.slotStartTime + ":00")
+      let timestamp = new firebase.firestore.Timestamp.fromDate(datetime)
       //create new document in the consultSlots collection
       //but also need take into account if this slot is gonna be looped
 
       //if "Does Not Repeat", create slot object
       if (this.selectedValue == this.doesNotRepeat) {
         database.collection("consultslots").add({
-          date: this.selectedDate, //jerlyn's datepick current date -> should be a global variable across the entire AppointmentPage component
-          time: this.slotStartTime,
+          date: timestamp,
           patient: null,
           doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
         });

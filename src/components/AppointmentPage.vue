@@ -35,7 +35,7 @@ export default {
     },
     fetchItems: function () {
       this.slots = [];
-      let date = this.date.toLocaleDateString();
+      let date = this.date.toLocaleDateString().split( '/' ).reverse( ).join( '-' )
       database
         .collection("consultslots")
         .get()
@@ -43,8 +43,9 @@ export default {
           let item = {};
           querySnapShot.forEach((doc) => {
             item = doc.data();
-            if (item.date === date) {
-              this.slots.push(item);
+            let item_date = item.date.toDate().toLocaleDateString().split( '/' ).reverse( ).join( '-' )
+            if (item_date == date) {
+              this.slots.push(item)
             }
           });
         });
