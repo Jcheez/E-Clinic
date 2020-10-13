@@ -42,36 +42,19 @@ export default {
         changes.forEach((change) => {
           if (change.type === "added") {
             this.itemsList.push(change.doc.data());
-          } else if (change.type === "removed") {
-            /*
-            let i = this.itemsList.indexOf(change.doc);
-            console.log(i);
-            this.itemsList
-              .slice(-this.itemsList.length, i)
-              .concat(this.itemsList.slice(i + 1, 0));
-            */
-            console.log(change.doc.data().name);
-            this.itemsList.filter(
+          } else if (change.type === "modified") {
+            this.itemsList = this.itemsList.filter(
               (item) => item.name.localeCompare(change.doc.data().name) !== 0
             );
-            console.log(this.itemsList);
+            this.itemsList.push(change.doc.data());
+          } else if (change.type === "removed") {
+            this.itemsList = this.itemsList.filter(
+              (item) => item.name.localeCompare(change.doc.data().name) !== 0
+            );
           }
         });
       });
     },
-    /*
-    fetchItems: function () {
-      database
-        .collection("pendingbooking")
-        .get()
-        .then((querySnapShot) => {
-          let item = {};
-          querySnapShot.forEach((doc) => {
-            item = doc.data();
-            this.itemsList.push(item);
-          });
-        });
-    },*/
   },
   created() {
     this.fetchItems();
