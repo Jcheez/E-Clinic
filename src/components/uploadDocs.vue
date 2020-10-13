@@ -19,7 +19,6 @@
 
 <script>
 import firebase from "firebase";
-
 export default {
   name: "Upload",
   data() {
@@ -35,7 +34,6 @@ export default {
       this.pdf = null;
       this.fileData = event.target.files[0];
     },
-
     onUpload() {
       this.pdf = null;
       const storageRef = firebase
@@ -56,6 +54,8 @@ export default {
           storageRef.snapshot.ref.getDownloadURL().then((url) => {
             this.pdf = url;
           });
+          this.uploadValue = 0;
+          console.log(this.pdf);
         }
       );
     },

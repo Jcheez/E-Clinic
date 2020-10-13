@@ -1,7 +1,7 @@
 import PendingBooking from "./components/PendingBooking.vue";
-import uploadDocs from "./components/uploadDocs.vue";
+import PatientNotes from "./components/PatientNotes.vue";
 
 export default [
   { path: "/pendingbooking", component: PendingBooking },
-  { path: "/uploadDocs", component: uploadDocs },
+  { path: "/patientsnotes", component: PatientNotes },
 ];
