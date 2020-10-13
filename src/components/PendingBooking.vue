@@ -36,6 +36,31 @@ export default {
   components: {},
   methods: {
     fetchItems: function () {
+      database.collection("pendingbooking").onSnapshot((res) => {
+        const changes = res.docChanges();
+
+        changes.forEach((change) => {
+          if (change.type === "added") {
+            this.itemsList.push(change.doc.data());
+          } else if (change.type === "removed") {
+            /*
+            let i = this.itemsList.indexOf(change.doc);
+            console.log(i);
+            this.itemsList
+              .slice(-this.itemsList.length, i)
+              .concat(this.itemsList.slice(i + 1, 0));
+            */
+            console.log(change.doc.data().name);
+            this.itemsList.filter(
+              (item) => item.name.localeCompare(change.doc.data().name) !== 0
+            );
+            console.log(this.itemsList);
+          }
+        });
+      });
+    },
+    /*
+    fetchItems: function () {
       database
         .collection("pendingbooking")
         .get()
@@ -46,26 +71,11 @@ export default {
             this.itemsList.push(item);
           });
         });
-    },
+    },*/
   },
   created() {
     this.fetchItems();
   },
-  /*
-  mounted() {
-    database.collection("pendingbooking").onSnapshot((res) => {
-      const changes = res.docChanges();
-
-      changes.forEach((change) => {
-        if (change.type === "added") {
-          this.itemsList = [];
-          this.itemsList.push(change.doc.data());
-        } else if (change.type === "removed") {
-          this.itemsList.filter((item) => item.id !== change.doc.id);
-        }
-      });
-    });
-  },*/
 };
 </script>
 
