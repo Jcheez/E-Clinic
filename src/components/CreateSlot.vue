@@ -1,41 +1,57 @@
 <template>
   <div>
-    <h3>Add a Consultation Slot</h3>
+    <h3>
+      Add a Consultation Slot
+      <!--h2>for {{ selectedDate.toDateString() }}</h2-->
+    </h3>
 
     <form v-on:submit.prevent="createSelectedSlots">
+      <label>Choose Slot <b>Start Time</b></label>
+      <input
+        type="time"
+        id="startTime"
+        name="consultStart"
+        step="1800"
+        min="08:30"
+        max="18:00"
+        required
+        v-model="slotStartTime"
+      />
 
-        <label>Choose Slot <b>Start Time</b></label>
-        <input type="time" id="startTime" name="consultStart" step="1800" min="08:30" max="18:00" required v-model="slotStartTime">
+      <!--label>Choose Slot <b>End Time</b></label-->
+      <!--input type="time" id="endTime" name="consultEnd" step="1800" min=this.slotStartTime max="18:00" required v-model="slotEndTime"-->
+      <!--min and max can be the opening and closing time of the clinic :D -->
 
-        <!--label>Choose Slot <b>End Time</b></label-->
-        <!--input type="time" id="endTime" name="consultEnd" step="1800" min=this.slotStartTime max="18:00" required v-model="slotEndTime"-->
-        <!--min and max can be the opening and closing time of the clinic :D -->
+      <br />
+      <label for="repeatSlot"
+        >How often do you want the selected slots to repeat?</label
+      >
+      <select name="freqOfSlots" id="repeatSlots" v-model="selectedValue">
+        <option>Does Not Repeat</option>
+        <option>Daily</option>
+        <option>Every Monday</option>
+        <option>Every Tuesday</option>
+        <option>Every Wednesday</option>
+        <option>Every Thursday</option>
+        <option>Every Friday</option>
+        <option>Every Saturday</option>
+        <option>Every Sunday</option>
+        <option>Only on Weekdays</option>
+        <option>Only on Weekends</option>
+      </select>
+      <br />
+      <label v-if="selectedValue != doesNotRepeat"
+        >Please choose the start and end dates for the slots selected to
+        repeat.</label
+      >
+      <v-date-picker
+        color="blue"
+        mode="range"
+        v-model="range"
+        v-if="selectedValue != doesNotRepeat"
+      />
 
-
-      <br/>
-      <label for="repeatSlot">How often do you want the selected slots to repeat?</label>
-        <select name="freqOfSlots" id="repeatSlots" v-model="selectedValue">
-            <option>Does Not Repeat</option>
-            <option>Daily</option>
-            <option>Every Monday</option>
-            <option>Every Tuesday</option>
-            <option>Every Wednesday</option>
-            <option>Every Thursday</option>
-            <option>Every Friday</option>
-            <option>Every Saturday</option>
-            <option>Every Sunday</option>            
-            <option>Only on Weekdays</option>
-            <option>Only on Weekends</option>
-        </select>
-        <br/>
-        <label v-if="selectedValue != doesNotRepeat" >Please choose the start and end dates for the slots selected to repeat.</label>
-        <v-date-picker color="blue" mode="range" v-model="range" v-if="selectedValue != doesNotRepeat" />
-        
-        <input
-        id="submitButton"
-        type="submit"
-        value="Submit"
-        />
+      <input id="submitButton" type="submit" value="Submit" />
     </form>
   </div>
 </template>
@@ -58,92 +74,135 @@ export default {
       slotEndTime: "09:00",
       selectedValue: "Does Not Repeat",
       doesNotRepeat: "Does Not Repeat",
-    }
-  }, methods: {
+    };
+  },
+  props: {
+    selectedDate: {
+      type: Date,
+    },
+  },
+  methods: {
     /* Given a start date, end date and day name, return
-    ** an array of dates between the two dates for the
-    ** given day inclusive
-    ** @param {Date} start - date to start from
-    ** @param {Date} end - date to end on
-    ** @param {string} dayName - name of day
-    ** @returns {Array} array of Dates
-    */
-    getDaysBetweenDates:function(start, end, dayName) {
+     ** an array of dates between the two dates for the
+     ** given day inclusive
+     ** @param {Date} start - date to start from
+     ** @param {Date} end - date to end on
+     ** @param {string} dayName - name of day
+     ** @returns {Array} array of Dates
+     */
+    getDaysBetweenDates: function (start, end, dayName) {
       var result = [];
-      var days = {sun:0,mon:1,tue:2,wed:3,thu:4,fri:5,sat:6};
+      var days = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
       var day = days[dayName];
       // Copy start date
       var current = new Date(start);
       // Shift to next of required days
-      current.setDate(current.getDate() + (day - current.getDay() + 7) % 7);
+      current.setDate(current.getDate() + ((day - current.getDay() + 7) % 7));
       // While less than end date, add dates to result array
-      while (current < end) {
+      while (current <= end) {
         result.push(new Date(+current));
         current.setDate(current.getDate() + 7);
       }
       return result;
     },
-    createSelectedSlots:function() {
+    createSelectedSlots: function () {
       //create new document in the consultSlots collection
       //but also need take into account if this slot is gonna be looped
 
       //if "Does Not Repeat", create slot object
       if (this.selectedValue == this.doesNotRepeat) {
         database.collection("consultslots").add({
-          date: "" , //jerlyn's datepick current date -> should be a global variable across the entire AppointmentPage component
+          date: this.selectedDate, //jerlyn's datepick current date -> should be a global variable across the entire AppointmentPage component
           time: this.slotStartTime,
           patient: null,
           doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
         });
-      }
-      else {
-        let monArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'mon')
-        let tueArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'tue')
-        let wedArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'wed')
-        let thuArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'thu')
-        let friArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'fri')
-        let satArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'sat')
-        let sunArray = this.getDaysBetweenDates(this.range.start, this.range.end, 'sun')
-        
-        //if (this.selectedValue == "Daily") { 
+      } else {
+        let monArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "mon"
+        );
+        let tueArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "tue"
+        );
+        let wedArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "wed"
+        );
+        let thuArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "thu"
+        );
+        let friArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "fri"
+        );
+        let satArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "sat"
+        );
+        let sunArray = this.getDaysBetweenDates(
+          this.range.start,
+          this.range.end,
+          "sun"
+        );
+
+        //if (this.selectedValue == "Daily") {
         //}
         if (this.selectedValue == "Only on Weekdays") {
-          let weekdayArray = monArray.concat(tueArray, wedArray, thuArray, friArray)
-          for (let d in weekdayArray) {
+          let weekdayArray = monArray.concat(
+            tueArray,
+            wedArray,
+            thuArray,
+            friArray
+          );
+          for (var weekday = 0; weekday < weekdayArray.length; weekday++) {
             database.collection("consultslots").add({
-            date: d , 
-            time: this.slotStartTime,
-            patient: null,
-            doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              date: weekdayArray[weekday].toDateString(), //remove toDateString() when we store date as Date obj
+              time: this.slotStartTime,
+              patient: null,
+              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
           }
         }
         if (this.selectedValue == "Only on Weekends") {
-          let weekendArray = satArray.concat(sunArray)
-          for (let d in weekendArray) {
+          let weekendArray = satArray.concat(sunArray);
+          for (var weekend = 0; weekend < weekendArray.length; weekend++) {
             database.collection("consultslots").add({
-              date: d , 
-              time: this.slotStartTime,
-              patient: null,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-            });
-          }              
-        }
-        //if "Every Monday"/Tuesday/Wed/Thu/Fri/Sat/Sun
-        else {
-          let datesOfDayArray = this.getDaysBetweenDates(this.range.start, this.range.end, this.selectedValue.substr(0,3).toLowerCase())
-          for (let d in datesOfDayArray) {
-            database.collection("consultslots").add({
-              date: d.toString() , 
+              date: weekendArray[weekend].toDateString(), //remove toDateString() when we store date as Date obj
               time: this.slotStartTime,
               patient: null,
               doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
           }
         }
-      }   
-    }
-  }
+        //if "Every Monday"/Tuesday/Wed/Thu/Fri/Sat/Sun
+        else {
+          let datesOfDayArray = this.getDaysBetweenDates(
+            this.range.start,
+            this.range.end,
+            this.selectedValue.substr(6, 3).toLowerCase()
+          );
+          for (var d = 0; d < datesOfDayArray.length; d++) {
+            database.collection("consultslots").add({
+              date: datesOfDayArray[d].toDateString(), //remove toDateString() when we store date as Date obj
+              time: this.slotStartTime,
+              patient: null,
+              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+            });
+          }
+        }
+      }
+      alert("Successfully added slots!");
+    },
+  },
 };
 </script>
  

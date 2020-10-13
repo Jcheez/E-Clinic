@@ -1,21 +1,17 @@
 <template>
-  <div class = "container">
-    <v-date-picker 
-    v-model="date" 
-    is-inline 
-    :min-date='new Date()'
-    />
-    <div v-if = status class = "inner">
-      <addSlot class = "addslot"/>
+  <div class="container">
+    <v-date-picker v-model="date" is-inline :min-date="new Date()" />
+    <div v-if="status" class="inner">
+      <addSlot class="addslot" v-bind:selectedDate="date" />
     </div>
-    <div v-else-if = !status class = "inner">
-      <div class = "placeholder">
+    <div v-else-if="!status" class="inner">
+      <div class="placeholder">
         <!--p>No slots yet! Add slots by clicking on "Add Slots"</p-->
-        <tile v-bind:consultData="slots" class = "tile"/>
-        <schedule v-bind:consultData="slots" class = "schedule"/>
+        <tile v-bind:consultData="slots" class="tile" />
+        <schedule v-bind:consultData="slots" class="schedule" />
       </div>
     </div>
-    <button v-on:click = "addslot" class = "button">Add Slots</button>
+    <button v-on:click="addslot" class="button">Add Slots</button>
   </div>
 </template>
 
@@ -30,16 +26,16 @@ export default {
     return {
       date: new Date(),
       slots: [],
-      status: false
+      status: false,
     };
   },
   methods: {
-    addslot: function() {
-      this.status = !this.status
+    addslot: function () {
+      this.status = !this.status;
     },
-    fetchItems: function() {
-      this.slots = []
-      let date = this.date.toLocaleDateString()
+    fetchItems: function () {
+      this.slots = [];
+      let date = this.date.toLocaleDateString();
       database
         .collection("consultslots")
         .get()
@@ -48,21 +44,21 @@ export default {
           querySnapShot.forEach((doc) => {
             item = doc.data();
             if (item.date === date) {
-              this.slots.push(item)
+              this.slots.push(item);
             }
           });
         });
-    }
+    },
   },
   components: {
-    "addSlot": create,
-    "tile": tile,
-    "schedule": scheduled
+    addSlot: create,
+    tile: tile,
+    schedule: scheduled,
   },
   watch: {
     date: function () {
       this.fetchItems();
-    }
+    },
   },
   created() {
     this.fetchItems();
@@ -84,7 +80,7 @@ export default {
   margin-left: 50px;
 }
 .schedule {
-  margin-top: 200px
+  margin-top: 200px;
 }
 .placeholder {
   width: 450px;
