@@ -14,6 +14,7 @@
         step="1800"
         min="08:30"
         max="18:00"
+        list="slotTimes"
         required
         v-model="slotStartTime"
       />
@@ -21,6 +22,17 @@
       <!--label>Choose Slot <b>End Time</b></label-->
       <!--input type="time" id="endTime" name="consultEnd" step="1800" min=this.slotStartTime max="18:00" required v-model="slotEndTime"-->
       <!--min and max can be the opening and closing time of the clinic :D -->
+      <datalist id="slotTimes">
+        <option value="08:30"></option>
+        <option value="09:00"></option>
+        <option value="09:30"></option>
+        <option value="10:00"></option>
+        <option value="10:30"></option>
+        <option value="11:00"></option>
+        <option value="11:30"></option>
+        <option value="12:00"></option>
+        <option value="12:30"></option>
+      </datalist>
 
       <br />
       <label for="repeatSlot"
@@ -41,8 +53,8 @@
       </select>
       <br />
       <label v-if="selectedValue != doesNotRepeat"
-        >Please choose the start and end dates for the slots selected to
-        repeat.</label
+        >Please choose the start and end dates (inclusive) for the slots
+        selected to repeat.</label
       >
       <v-date-picker
         color="blue"
@@ -59,7 +71,7 @@
 <script>
 import VDatePicker from "v-calendar/lib/components/date-picker.umd";
 import database from "../firebase.js";
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 
 export default {
   components: {
@@ -72,7 +84,6 @@ export default {
         end: new Date(),
       },
       slotStartTime: "08:30",
-      slotEndTime: "09:00",
       selectedValue: "Does Not Repeat",
       doesNotRepeat: "Does Not Repeat",
     };
@@ -89,7 +100,7 @@ export default {
      ** @param {Date} start - date to start from
      ** @param {Date} end - date to end on
      ** @param {string} dayName - name of day
-     ** @returns {Array} array of Dates
+     ** @returns {Array} array of Date objects
      */
     getDaysBetweenDates: function (start, end, dayName) {
       var result = [];
@@ -97,19 +108,27 @@ export default {
       var day = days[dayName];
       // Copy start date
       var current = new Date(start);
+      var newDate;
       // Shift to next of required days
       current.setDate(current.getDate() + ((day - current.getDay() + 7) % 7));
       // While less than end date, add dates to result array
       while (current <= end) {
-        result.push(new Date(+current));
+        newDate = new Date(current);
+        newDate.setHours(parseInt(this.slotStartTime.substr(0, 2)));
+        newDate.setMinutes(parseInt(this.slotStartTime.substr(3, 2)));
+        result.push(newDate);
         current.setDate(current.getDate() + 7);
       }
       return result;
     },
     createSelectedSlots: function () {
-      let format_date = this.selectedDate.toLocaleDateString().split( '/' ).reverse( ).join( '-' )
-      let datetime = new Date(format_date + "T" + this.slotStartTime + ":00")
-      let timestamp = new firebase.firestore.Timestamp.fromDate(datetime)
+      let format_date = this.selectedDate
+        .toLocaleDateString()
+        .split("/")
+        .reverse()
+        .join("-");
+      let datetime = new Date(format_date + "T" + this.slotStartTime + ":00");
+      let timestamp = new firebase.firestore.Timestamp.fromDate(datetime);
       //create new document in the consultSlots collection
       //but also need take into account if this slot is gonna be looped
 
@@ -168,8 +187,10 @@ export default {
           );
           for (var weekday = 0; weekday < weekdayArray.length; weekday++) {
             database.collection("consultslots").add({
-              date: weekdayArray[weekday].toDateString(), //remove toDateString() when we store date as Date obj
-              time: this.slotStartTime,
+              date: new firebase.firestore.Timestamp.fromDate(
+                weekdayArray[weekday]
+              ), //remove toDateString() when we store date as Date obj
+              //time: this.slotStartTime,
               patient: null,
               doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
@@ -179,13 +200,37 @@ export default {
           let weekendArray = satArray.concat(sunArray);
           for (var weekend = 0; weekend < weekendArray.length; weekend++) {
             database.collection("consultslots").add({
-              date: weekendArray[weekend].toDateString(), //remove toDateString() when we store date as Date obj
-              time: this.slotStartTime,
+              date: new firebase.firestore.Timestamp.fromDate(
+                weekendArray[weekend]
+              ), //remove toDateString() when we store date as Date obj
+              //time: this.slotStartTime,
               patient: null,
               doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
           }
         }
+        // if "Daily"
+        if (this.selectedValue == "Daily") {
+          let dailyArray = monArray.concat(
+            tueArray,
+            wedArray,
+            thuArray,
+            friArray,
+            satArray,
+            sunArray
+          );
+          for (var daily = 0; daily < dailyArray.length; daily++) {
+            database.collection("consultslots").add({
+              date: new firebase.firestore.Timestamp.fromDate(
+                dailyArray[daily]
+              ), //remove toDateString() when we store date as Date obj
+              //time: this.slotStartTime,
+              patient: null,
+              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+            });
+          }
+        }
+
         //if "Every Monday"/Tuesday/Wed/Thu/Fri/Sat/Sun
         else {
           let datesOfDayArray = this.getDaysBetweenDates(
@@ -195,8 +240,10 @@ export default {
           );
           for (var d = 0; d < datesOfDayArray.length; d++) {
             database.collection("consultslots").add({
-              date: datesOfDayArray[d].toDateString(), //remove toDateString() when we store date as Date obj
-              time: this.slotStartTime,
+              date: new firebase.firestore.Timestamp.fromDate(
+                datesOfDayArray[d]
+              ), //remove toDateString() when we store date as Date obj
+              //time: this.slotStartTime,
               patient: null,
               doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
