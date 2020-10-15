@@ -32,9 +32,8 @@ export default {
                 changes.forEach(change => {
                     if (change.type =='removed') {
                         console.log(change.doc.id);
-                        const tileList = document.querySelector('#tile-list');
-                        let li = tileList.querySelector('[id=' + change.doc.id + ']')
-                        tileList.removeChild(li);
+                        let li = document.querySelector('[id=' + change.doc.id + ']')
+                        li.parentNode.removeChild(li);
                     }
                 })
             })
