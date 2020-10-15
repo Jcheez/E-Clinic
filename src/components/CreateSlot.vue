@@ -69,14 +69,10 @@
 </template>
  
 <script>
-import VDatePicker from "v-calendar/lib/components/date-picker.umd";
 import database from "../firebase.js";
 import firebase from "firebase/app";
 
 export default {
-  components: {
-    VDatePicker,
-  },
   data() {
     return {
       range: {
