@@ -251,7 +251,6 @@ export default {
         }
       }
       alert("Successfully added slots!");
-      this.$router.push("/appointment")
     },
   },
 };
