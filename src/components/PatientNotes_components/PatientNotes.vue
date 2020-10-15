@@ -3,12 +3,14 @@
     <h1>{{ msg }}</h1>
     <hr />
     <h2>Patients</h2>
-    <ul>
-      <li v-for="patient in itemsList" :key="patient">
+    <ul id="patients">
+      <li v-for="(patient, index) in this.itemsList" :key="index">
         <div id="inner">
           <span>{{ "Patient: " + patient.name }}</span>
         </div>
-        <button id="view">View</button>
+        <button id="view">
+          <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
+        </button>
       </li>
     </ul>
     <input
@@ -16,23 +18,37 @@
       type="text"
       placeholder="Search patient..."
       name="search"
+      v-model="nameQuery"
+      v-on:keyup.enter="nameSearch()"
     />
-    <button id="searchbutton" type="submit">Search</button>
+    <button id="searchbox" type="submit" v-on:click="nameSearch()">Search</button>
   </div>
 </template>
-
+ 
 <script>
-import database from "../firebase.js";
+import database from "../../firebase.js";
 
 export default {
   data() {
     return {
       msg: "Patient's Notes ",
       itemsList: [],
+      nameQuery: "",
+      data: []
     };
   },
 
   methods: {
+    nameSearch: function() {
+      let copied = this.data;
+      copied = copied.filter(x => this.nameQuery.localeCompare(x.name) == 0)
+      this.itemsList = copied;
+      if (this.nameQuery.localeCompare("") == 0) {
+        this.itemsList = this.data;
+      }
+      this.$forceUpdate();      
+    },
+
     fetchItems: function () {
       database
         .collection("patients")
@@ -42,7 +58,7 @@ export default {
           querySnapShot.forEach((doc) => {
             item = doc.data();
             this.itemsList.push(item);
-            console.log(doc.data());
+            this.data.push(item);
           });
         });
     },
@@ -137,11 +153,16 @@ button:focus {
   outline: none;
 }
 
-button#searchbutton {
+button#searchbox {
   position: absolute;
   top: 400px;
   left: 1473px;
   font-size: 30px;
   background-color: aqua;
+}
+
+a {
+  color: black;
+  text-decoration: none;
 }
 </style>
