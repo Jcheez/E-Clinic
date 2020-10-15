@@ -6,12 +6,12 @@
     </div>
     <div v-else-if="!status" class="inner">
       <div class="placeholder">
-        <!--p>No slots yet! Add slots by clicking on "Add Slots"</p-->
+        <p v-if="slots.length == 0" >No slots yet! Add slots by clicking on "Add Slots"</p>
         <tile v-bind:consultData="slots" class="tile" />
         <schedule v-bind:consultData="slots" class="schedule" />
       </div>
     </div>
-    <button v-on:click="addslot" class="button">Add Slots</button>
+    <button v-on:click="toggle" class="button">{{text}}</button>
   </div>
 </template>
 
@@ -27,10 +27,11 @@ export default {
       date: new Date(),
       slots: [],
       status: false,
+      text: 'Add Slots'
     };
   },
   methods: {
-    addslot: function () {
+    toggle: function () {
       this.status = !this.status;
     },
     fetchItems: function () {
@@ -43,13 +44,15 @@ export default {
         .then((querySnapShot) => {
           let item = {};
           querySnapShot.forEach((doc) => {
-            database.collection("consultslots").doc(doc.id).set({
+            /*database.collection("consultslots").doc(doc.id).set({
               id: doc.id,
               hover: false 
-              }, { merge: true });
+              }, { merge: true });*/
             item = doc.data();
             let item_date = item.date.toDate().toLocaleDateString().split( '/' ).reverse( ).join( '-' )
             if (item_date == date) {
+              item.id = doc.id
+              item.hover = false
               this.slots.push(item)
             }
           });
@@ -65,6 +68,14 @@ export default {
     date: function () {
       this.fetchItems();
     },
+    status: function() {
+      if (this.text == 'Add Slots') {
+        this.text = 'Back'
+      } else {
+        this.text = 'Add Slots'
+      }
+      this.fetchItems();
+    }
   },
   created() {
     this.fetchItems();

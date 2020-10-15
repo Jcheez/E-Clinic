@@ -1,7 +1,9 @@
 <template>
     <div class="container">
         <div class="heading">
-            <h4>Upcoming Appointments</h4>
+            <h4 v-if="consultData.length > 0">Upcoming Appointments</h4>
+            <h4 v-else-if="consultData.length == 0">No appointments yet</h4>
+
         </div>
         <div class="containerBtm">
             <ul>

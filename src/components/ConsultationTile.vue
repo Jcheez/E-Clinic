@@ -26,6 +26,7 @@ export default {
     },
     methods: {
         removeSlot: function(data) {
+            console.log("calling remove function")
             database.collection("consultslots").doc(data.id).delete();
             database.collection("consultslots").onSnapshot(snapshot => {
                 let changes = snapshot.docChanges();
@@ -33,7 +34,7 @@ export default {
                     if (change.type =='removed') {
                         console.log(change.doc.id);
                         const tileList = document.querySelector('#tile-list');
-                        let li = tileList.querySelector('[id=' + change.doc.id + ']')
+                        let li = document.getElementById(change.doc.id);
                         tileList.removeChild(li);
                     }
                 })
