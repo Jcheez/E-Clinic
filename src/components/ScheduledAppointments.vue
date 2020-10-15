@@ -5,13 +5,13 @@
         </div>
         <div class="containerBtm">
             <ul>
-                <li v-for="data in consultData" v-bind:key="data.patient">
+                <li v-for="data in filteredData" v-bind:key="data.patient">
                     <div class="labels">
                         <span>Time:</span><br>
                         <span>Patient:</span>
                     </div>
                     <div class="data">
-                        <span>{{data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()}}</span><br>
+                        <span v-html="showTime(data)"></span><br>
                         <span>{{data.patient}}</span>
                     </div>
                 </li>
@@ -33,7 +33,22 @@ export default {
       }
     },
     methods: {
+        showTime: function(data) {
+            let min = data.date.toDate().getMinutes();
+            if (min==0) {
+                return data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes() + "0";
+            } else {
+                return data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes();
+            }
+        },
     },
+    computed: {
+        filteredData: function() {
+            return this.consultData.filter(function(data) {
+                return data.patient != null;
+            })
+        }
+    }
 }
 </script>
 
@@ -44,10 +59,11 @@ div .container {
     transition: box-shadow 0.3s;
     transition: 0.3s;
     background-color:rgb(0, 114, 180); 
-    width: 350px;
+    width: 300px;
     height: 200px;
     border-radius: 10px;
-    position: relative;
+    position: absolute;
+    margin-bottom: 8px;
 }
 
 div .container:after {

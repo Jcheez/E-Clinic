@@ -38,10 +38,15 @@ export default {
       let date = this.date.toLocaleDateString().split( '/' ).reverse( ).join( '-' )
       database
         .collection("consultslots")
+        .orderBy("date")
         .get()
         .then((querySnapShot) => {
           let item = {};
           querySnapShot.forEach((doc) => {
+            database.collection("consultslots").doc(doc.id).set({
+              id: doc.id,
+              hover: false 
+              }, { merge: true });
             item = doc.data();
             let item_date = item.date.toDate().toLocaleDateString().split( '/' ).reverse( ).join( '-' )
             if (item_date == date) {
@@ -49,7 +54,7 @@ export default {
             }
           });
         });
-    },
+    }
   },
   components: {
     addSlot: create,

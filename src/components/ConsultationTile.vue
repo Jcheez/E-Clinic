@@ -1,34 +1,53 @@
 <template>
     <div>
-        <ul style="list-style-type:none">
-        <li v-for="data in consultData" v-bind:key="data.patient">
-        <button v-if="hover==false" @mouseover="hover = true">
-            <span v-if="consultData.patient" class="freeSlot"></span>
-            <span v-if="!consultData.patient" class="bookedSlot"></span>            
-            <span class="time">{{data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()}}</span>
-        </button>
-        <button v-if="hover == true" @mouseleave="hover=false">
-            <span class="removeSlot">Remove Slot</span>
-        </button>
-        </li>
+        <ul id="tile-list" style="list-style-type:none">
+            <li v-for="data in consultData" v-bind:key="data.id" :id="data.id">
+                <button v-if="data.hover==false" @mouseover="data.hover = true">
+                    <span v-if="data.patient==null" class="freeSlot"></span>
+                    <span v-if="data.patient!=null" class="bookedSlot"></span>            
+                    <span class="time" v-html="showTime(data)"></span>
+                </button>
+                <button v-if="data.hover == true" @mouseleave="data.hover=false" v-on:click="removeSlot(data)">
+                    <span class="removeSlot">Remove Slot</span>
+                </button>
+            </li>
         </ul>
     </div>
     
 </template>
 
 <script>
-//import database from '../firebase.js'
+import database from '../firebase.js'
 export default {
-    data() {
-        return {
-            hover: false
-        }
-    },
     props:{
       consultData:{
           type:Array
       }
     },
+    methods: {
+        removeSlot: function(data) {
+            database.collection("consultslots").doc(data.id).delete();
+            database.collection("consultslots").onSnapshot(snapshot => {
+                let changes = snapshot.docChanges();
+                changes.forEach(change => {
+                    if (change.type =='removed') {
+                        console.log(change.doc.id);
+                        const tileList = document.querySelector('#tile-list');
+                        let li = tileList.querySelector('[id=' + change.doc.id + ']')
+                        tileList.removeChild(li);
+                    }
+                })
+            })
+        },
+        showTime: function(data) {
+            let min = data.date.toDate().getMinutes();
+            if (min==0) {
+                return data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes() + "0";
+            } else {
+                return data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes();
+            }
+        }
+    }
 }
 </script>
 
@@ -76,5 +95,9 @@ button:hover {
 
 .removeSlot {
     color: white;
+}
+
+li {
+    padding-bottom: 2px;
 }
 </style>
