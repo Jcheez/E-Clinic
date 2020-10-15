@@ -113,7 +113,7 @@ export default {
       current.setDate(current.getDate() + ((day - current.getDay() + 7) % 7));
       // While less than end date, add dates to result array
       while (current <= end) {
-        newDate = new Date(current);
+        newDate = new Date(+current);
         newDate.setHours(parseInt(this.slotStartTime.substr(0, 2)));
         newDate.setMinutes(parseInt(this.slotStartTime.substr(3, 2)));
         result.push(newDate);
@@ -122,23 +122,30 @@ export default {
       return result;
     },
     createSelectedSlots: function () {
-      let format_date = this.selectedDate
-        .toLocaleDateString()
-        .split("/")
-        .reverse()
-        .join("-");
-      let datetime = new Date(format_date + "T" + this.slotStartTime + ":00");
-      let timestamp = new firebase.firestore.Timestamp.fromDate(datetime);
+      //let format_date = this.selectedDate
+      //  .toLocaleDateString()
+      //  .split("/")
+      //  .reverse()
+      //  .join("-");
+      //let datetime = new Date(format_date + "T" + this.slotStartTime + ":00");
+
       //create new document in the consultSlots collection
       //but also need take into account if this slot is gonna be looped
 
       //if "Does Not Repeat", create slot object
       if (this.selectedValue == this.doesNotRepeat) {
-        database.collection("consultslots").add({
-          date: timestamp,
-          patient: null,
-          doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-        });
+        if (+this.range.start == +this.range.end) {
+          let datetime = this.selectedDate.setHours(
+            parseInt(this.slotStartTime.substr(0, 2))
+          );
+          datetime.setMinutes(parseInt(this.slotStartTime.substr(3, 2)));
+
+          database.collection("consultslots").add({
+            date: new firebase.firestore.Timestamp.fromDate(datetime),
+            patient: null,
+            doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+          });
+        }
       } else {
         let monArray = this.getDaysBetweenDates(
           this.range.start,
@@ -195,8 +202,7 @@ export default {
               doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
           }
-        }
-        if (this.selectedValue == "Only on Weekends") {
+        } else if (this.selectedValue == "Only on Weekends") {
           let weekendArray = satArray.concat(sunArray);
           for (var weekend = 0; weekend < weekendArray.length; weekend++) {
             database.collection("consultslots").add({
@@ -210,7 +216,7 @@ export default {
           }
         }
         // if "Daily"
-        if (this.selectedValue == "Daily") {
+        else if (this.selectedValue == "Daily") {
           let dailyArray = monArray.concat(
             tueArray,
             wedArray,
