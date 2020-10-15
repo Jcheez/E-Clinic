@@ -3,15 +3,15 @@
         <div class="heading">
             <h4>Upcoming Appointments</h4>
         </div>
-        <div class="data">
+        <div class="containerBtm">
             <ul>
-                <li v-for="data in consultData" v-bind:key="data.patient">
-                    <div class="column">
+                <li v-for="data in filteredData" v-bind:key="data.patient">
+                    <div class="labels">
                         <span>Time:</span><br>
                         <span>Patient:</span>
                     </div>
-                    <div class="column">
-                        <span>{{data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()}}</span><br>
+                    <div class="data">
+                        <span v-html="showTime(data)"></span><br>
                         <span>{{data.patient}}</span>
                     </div>
                 </li>
@@ -33,7 +33,22 @@ export default {
       }
     },
     methods: {
+        showTime: function(data) {
+            let min = data.date.toDate().getMinutes();
+            if (min==0) {
+                return data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes() + "0";
+            } else {
+                return data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes();
+            }
+        },
     },
+    computed: {
+        filteredData: function() {
+            return this.consultData.filter(function(data) {
+                return data.patient != null;
+            })
+        }
+    }
 }
 </script>
 
@@ -44,9 +59,11 @@ div .container {
     transition: box-shadow 0.3s;
     transition: 0.3s;
     background-color:rgb(0, 114, 180); 
-    width: 450px;
+    width: 300px;
     height: 200px;
     border-radius: 10px;
+    position: absolute;
+    margin-bottom: 8px;
 }
 
 div .container:after {
@@ -60,25 +77,32 @@ div .container:hover {
     box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 
-div .data {
+div .containerBtm {
     overflow: hidden;
     overflow-y: scroll;
-    height: 150px;
+    height: 140px;
+    width: 300px;
+    position: absolute;
+    left: 10px;
+    bottom: 5px;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-div .data::-webkit-scrollbar {
+div .containerBtm::-webkit-scrollbar {
     display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-div .data {
+div .containerBtm {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
 div .heading {
     height: 30px;
+    position: absolute;
+    top: 0px;
+    left: 8px;
 }
 h4 {
     color: white;
@@ -87,21 +111,26 @@ h4 {
     letter-spacing: 2px;
     margin-left: 15px;
     text-align: left;
-    padding: 0px;
+    padding-bottom: 5px;
 }
 
 li {
     color: white;
     text-align: left;
     list-style: none;
-    margin-left: -30px;
 }
 
-div .column {
+div .labels {
     float: left;
-    width: 30%;
-    padding: 0px 20px 30px 7px;
+    width: 50%;
+    padding: 10px 0px 10px 7px;
     font-family: Roboto;
+}
+
+div .data {
+    float: left;
+    font-family: Roboto;
+    padding: 10px 0px 0px 0px;
 }
 
 </style>
