@@ -26,17 +26,21 @@ export default {
     },
     methods: {
         removeSlot: function(data) {
-            database.collection("consultslots").doc(data.id).delete();
-            database.collection("consultslots").onSnapshot(snapshot => {
-                let changes = snapshot.docChanges();
-                changes.forEach(change => {
-                    if (change.type =='removed') {
-                        console.log(change.doc.id);
-                        let li = document.querySelector('[id=' + change.doc.id + ']')
-                        li.parentNode.removeChild(li);
-                    }
-                })
+            database.collection("consultslots").doc(data.id).get().then( doc => {
+                let li = document.getElementById(doc.id);
+                li.parentNode.removeChild(li);
+                database.collection("consultslots").doc(data.id).delete();
             })
+            // database.collection("consultslots").doc(data.id).delete();
+            // database.collection("consultslots").onSnapshot(snapshot => {
+            //     let changes = snapshot.docChanges();
+            //     changes.forEach(change => {
+            //         if (change.type == 'removed') {
+            //             let li = document.getElementById(change.doc.id);
+            //             li.parentNode.removeChild(li);
+            //         }
+            //     })
+            // })
         },
         showTime: function(data) {
             let min = data.date.toDate().getMinutes();
