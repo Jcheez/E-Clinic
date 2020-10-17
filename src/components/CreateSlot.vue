@@ -289,7 +289,7 @@ export default {
           })
         } else if (this.selectedValue == "Only on Weekends") {
           let weekendArray = satArray.concat(sunArray);
-          this.checkAddEligible(weekendArray)[0].then(res => {
+          this.checkAddEligible(weekendArray).then(res => {
             if (res != false) {
               for (var weekend = 0; weekend < weekendArray.length; weekend++) {
                 database.collection("consultslots").add({
