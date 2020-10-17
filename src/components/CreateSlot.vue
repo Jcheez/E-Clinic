@@ -106,6 +106,7 @@ export default {
             for (var ts of timestampArray) {
               console.log(ts)
               console.log(item.date)
+              console.log(item.date.toDate())
               if (item.date.isEqual(ts)) {
                 results.push(item)
               }
@@ -188,6 +189,7 @@ export default {
         newDate.setHours(parseInt(this.slotStartTime.substr(0, 2)));
         newDate.setMinutes(parseInt(this.slotStartTime.substr(3, 2)));
         newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
         result.push(newDate);
         current.setDate(current.getDate() + 7);
       }
@@ -290,7 +292,7 @@ export default {
         } else if (this.selectedValue == "Only on Weekends") {
           let weekendArray = satArray.concat(sunArray);
           this.checkAddEligible(weekendArray).then(res => {
-            if (res != false) {
+            if (res) {
               for (var weekend = 0; weekend < weekendArray.length; weekend++) {
                 database.collection("consultslots").add({
                   date: new firebase.firestore.Timestamp.fromDate(
