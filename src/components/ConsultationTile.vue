@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul id="tile-list" style="list-style-type: none">
+    <ul id="tile-list" style="list-style-type: none; padding-inline-start: 0px">
       <li v-for="data in consultData" v-bind:key="data.id" :id="data.id">
         <button v-if="data.hover == false" @mouseover="data.hover = true">
           <span v-if="data.patient == null" class="freeSlot"></span>
@@ -8,11 +8,17 @@
           <span class="time" v-html="showTime(data)"></span>
         </button>
         <button
-          v-if="data.hover == true"
+          v-if="data.hover == true && data.patient == null"
           @mouseleave="data.hover = false"
           v-on:click="removeSlot(data)"
         >
           <span class="removeSlot">Remove Slot</span>
+        </button>
+        <button
+          v-if="data.hover == true && data.patient != null"
+          @mouseleave="data.hover = false"
+        >
+          <span class="rescheduleSlot">Reschedule</span>
         </button>
       </li>
     </ul>
@@ -38,16 +44,6 @@ export default {
           li.parentNode.removeChild(li);
           database.collection("consultslots").doc(data.id).delete();
         });
-      // database.collection("consultslots").doc(data.id).delete();
-      // database.collection("consultslots").onSnapshot(snapshot => {
-      //     let changes = snapshot.docChanges();
-      //     changes.forEach(change => {
-      //         if (change.type == 'removed') {
-      //             let li = document.getElementById(change.doc.id);
-      //             li.parentNode.removeChild(li);
-      //         }
-      //     })
-      // })
     },
     showTime: function (data) {
       let min = data.date.toDate().getMinutes();
@@ -110,11 +106,12 @@ button:hover {
   margin-right: -35px;
 }
 
-.removeSlot {
+.removeSlot,
+.rescheduleSlot {
   color: white;
 }
 
 li {
-  padding-bottom: 2px;
+  padding-bottom: 10px;
 }
 </style>

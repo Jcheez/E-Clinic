@@ -2,10 +2,11 @@
   <div class="container">
     <div class="leftColumn">
       <v-date-picker v-model="date" is-inline :min-date="new Date()" />
+      <join-zoom class="zoom" />
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
     <div v-if="status" class="addslot">
-      <addSlot class="addslot" v-bind:selectedDate="date" />
+      <addSlot v-bind:selectedDate="date" />
     </div>
     <div v-else-if="!status" class="inner">
       <div class="placeholder">
@@ -24,6 +25,7 @@ import database from "../firebase.js";
 import create from "./CreateSlot";
 import scheduled from "./ScheduledAppointments";
 import tile from "./ConsultationTile";
+import joinTeleConsult from "./JoinTeleconsult";
 
 export default {
   data() {
@@ -72,6 +74,7 @@ export default {
     addSlot: create,
     tile: tile,
     schedule: scheduled,
+    joinZoom: joinTeleConsult,
   },
   watch: {
     date: function () {
@@ -100,23 +103,26 @@ export default {
   justify-content: center;
 }
 .inner {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   left: 0px;
-  margin-top: 50px;
+  margin-top: 10px;
+  height: 450px;
 }
-.addSlot {
+.addslot {
   display: flex;
   flex-direction: column;
   align-items: center;
   left: 0px;
-  margin-top: 50px;
+  width: 500px;
+  height: 500px;
 }
 
 .schedule {
-  margin-top: 20px;
-  left: 110px;
+  left: 120px;
+  margin: 20px;
+  display: flex;
 }
 .vc-container {
   left: -100px;
@@ -126,10 +132,14 @@ export default {
   width: 200px;
   height: 500px;
   float: left;
+  margin: 10px;
 }
-
+.zoom {
+  margin: 20px;
+  left: -115px;
+}
 .placeholder {
-  width: 450px;
+  width: 500px;
   height: 350px;
   align-items: center;
   justify-content: center;
@@ -137,14 +147,28 @@ export default {
 .button {
   position: relative;
   top: -100px;
-  background-color: lightblue;
-  border: 2px solid darkslateblue;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
   font-weight: bold;
   font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: inline-block;
+  top: -220px;
+  width: 80px;
+  text-align: center;
+}
+
+button:hover {
+  background-color: white;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+  color: rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
 }
 .tile {
   margin-top: 50px;
