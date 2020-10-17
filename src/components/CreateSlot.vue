@@ -63,7 +63,14 @@
         :min-date="new Date()"
         v-if="selectedValue != doesNotRepeat"
       />
-
+      <label>Please create a Zoom link and paste it in the box provided:</label>
+      <input
+        type="text"
+        placeholder="Zoom Link for this new Consulation Slot"
+        v-bind="zoomLink"
+        id="zoomLinkInput"
+      />
+      <br />
       <input id="submitButton" type="submit" value="Submit" />
     </form>
   </div>
@@ -83,6 +90,7 @@ export default {
       slotStartTime: "08:30",
       selectedValue: "Does Not Repeat",
       doesNotRepeat: "Does Not Repeat",
+      zoomLink: "",
     };
   },
   props: {
@@ -300,23 +308,18 @@ export default {
 </script>
  
 <style scoped>
-#defaultSlot {
-  border: 2px lightblue;
-  border-radius: 8px;
-  background-color: white;
-  border: 2px solid lightblue;
-  padding: 10px;
-  width: 150px;
-  margin: 10px;
+#zoomLinkInput {
   display: block;
+  width: 550px;
+  font-family: Roboto;
 }
-
 #submitButton {
   background-color: lightblue;
   border: 2px solid darkslateblue;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
+  font-family: Roboto;
 }
 
 form {
@@ -333,6 +336,7 @@ form {
 label {
   margin: 20px;
   display: inline-block;
+  font-family: Roboto;
 }
 
 #startTime,

@@ -1,17 +1,21 @@
 <template>
   <div class="container">
-    <v-date-picker v-model="date" is-inline :min-date="new Date()" />
-    <div v-if="status" class="inner">
+    <div class="leftColumn">
+      <v-date-picker v-model="date" is-inline :min-date="new Date()" />
+      <schedule v-bind:consultData="slots" class="schedule" />
+    </div>
+    <div v-if="status" class="addslot">
       <addSlot class="addslot" v-bind:selectedDate="date" />
     </div>
     <div v-else-if="!status" class="inner">
       <div class="placeholder">
-        <p v-if="slots.length == 0" >No slots yet! Add slots by clicking on "Add Slots"</p>
+        <p v-if="slots.length == 0">
+          No slots yet! Add slots by clicking on "Add Slots"
+        </p>
         <tile v-bind:consultData="slots" class="tile" />
-        <schedule v-bind:consultData="slots" class="schedule" />
       </div>
     </div>
-    <button v-on:click="toggle" class="button">{{text}}</button>
+    <button v-on:click="toggle" class="button">{{ text }}</button>
   </div>
 </template>
 
@@ -27,7 +31,7 @@ export default {
       date: new Date(),
       slots: [],
       status: false,
-      text: 'Add Slots'
+      text: "Add Slots",
     };
   },
   methods: {
@@ -36,7 +40,7 @@ export default {
     },
     fetchItems: function () {
       this.slots = [];
-      let date = this.date.toLocaleDateString().split( '/' ).reverse( ).join( '-' )
+      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
       database
         .collection("consultslots")
         .orderBy("date")
@@ -49,15 +53,20 @@ export default {
               hover: false 
               }, { merge: true });*/
             item = doc.data();
-            let item_date = item.date.toDate().toLocaleDateString().split( '/' ).reverse( ).join( '-' )
+            let item_date = item.date
+              .toDate()
+              .toLocaleDateString()
+              .split("/")
+              .reverse()
+              .join("-");
             if (item_date == date) {
-              item.id = doc.id
-              item.hover = false
-              this.slots.push(item)
+              item.id = doc.id;
+              item.hover = false;
+              this.slots.push(item);
             }
           });
         });
-    }
+    },
   },
   components: {
     addSlot: create,
@@ -68,14 +77,14 @@ export default {
     date: function () {
       this.fetchItems();
     },
-    status: function() {
-      if (this.text == 'Add Slots') {
-        this.text = 'Back'
+    status: function () {
+      if (this.text == "Add Slots") {
+        this.text = "Back";
       } else {
-        this.text = 'Add Slots'
+        this.text = "Add Slots";
       }
       this.fetchItems();
-    }
+    },
   },
   created() {
     this.fetchItems();
@@ -94,11 +103,31 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 50px;
+  left: 0px;
+  margin-top: 50px;
 }
+.addSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  left: 0px;
+  margin-top: 50px;
+}
+
 .schedule {
-  margin-top: 200px;
+  margin-top: 20px;
+  left: 110px;
 }
+.vc-container {
+  left: -100px;
+}
+
+.leftColumn {
+  width: 200px;
+  height: 500px;
+  float: left;
+}
+
 .placeholder {
   width: 450px;
   height: 350px;
@@ -113,6 +142,9 @@ export default {
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 14px;
 }
 .tile {
   margin-top: 50px;
