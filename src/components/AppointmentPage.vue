@@ -2,7 +2,7 @@
   <div class="container">
     <div class="leftColumn">
       <v-date-picker v-model="date" is-inline :min-date="new Date()" />
-      <join-zoom class="zoom" />
+      <join-zoom class="zoom" v-bind:href="zoomString"></join-zoom>
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
     <div v-if="status" class="addslot">
@@ -34,6 +34,7 @@ export default {
       slots: [],
       status: false,
       text: "Add Slots",
+      zoomString: "",
     };
   },
   methods: {
@@ -110,6 +111,12 @@ export default {
   margin-top: 10px;
   height: 450px;
 }
+
+.zoom {
+  margin: 10px;
+  margin-bottom: 0px;
+  left: -110px;
+}
 .addslot {
   display: flex;
   flex-direction: column;
@@ -134,10 +141,7 @@ export default {
   float: left;
   margin: 10px;
 }
-.zoom {
-  margin: 20px;
-  left: -115px;
-}
+
 .placeholder {
   width: 500px;
   height: 350px;

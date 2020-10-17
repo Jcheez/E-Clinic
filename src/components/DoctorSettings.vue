@@ -1,16 +1,21 @@
 <template>
   <div>
-    <label>Please create a Zoom link and paste it in the box provided:</label>
-    <input
-      type="text"
-      placeholder="Zoom Link for this new Consulation Slot"
-      v-bind="zoomLink"
-      id="zoomLinkInput"
-    />
+    <input-zoom></input-zoom>
   </div>
 </template>
 
 <script>
+import inputZoom from "./InputZoom";
+export default {
+  data() {
+    return {
+      zoomLink: "",
+    };
+  },
+  components: {
+    inputZoom,
+  },
+};
 </script>
 <style scoped>
 #zoomLinkInput {
@@ -22,8 +27,27 @@
 }
 label {
   float: left;
-  display: inline-block;
   font-family: Roboto;
+}
+#submitButton {
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  color: rgb(0, 114, 180);
+  letter-spacing: 3px;
+  font-weight: bold;
+  outline: none;
+}
+
+#submitButton:hover {
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+  color: rgb(0, 114, 180);
+  color: white;
 }
 </style>
 
