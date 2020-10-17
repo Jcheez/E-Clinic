@@ -60,6 +60,7 @@
         color="blue"
         mode="range"
         v-model="range"
+        :min-date="new Date()"
         v-if="selectedValue != doesNotRepeat"
       />
 
@@ -90,6 +91,32 @@ export default {
     },
   },
   methods: {
+    checkAddEligible(datesToAddArray) {
+      //let timestamp = new firebase.firestore.Timestamp.fromDate(dateToAdd);
+      const timestampArray = datesToAddArray.map(function (dateobj) {
+        return new firebase.firestore.Timestamp.fromDate(dateobj); //not comparing properly???
+      });
+      const results = [];
+      database
+        .collection("consultslots")
+        //.where("doctor", "==", "") //doctor that is logged in
+        .where("date", "in", timestampArray)
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            results.push(doc.id, " => ", doc.data());
+          });
+        });
+      //results.forEach((ele) => console.log(ele));
+      console.log(results.length);
+      if (results.length == 0) {
+        return true;
+      } else {
+        alert("Slot you are trying to add already exists!");
+        return false;
+      }
+    },
     /* Given a start date, end date and day name, return
      ** an array of dates between the two dates for the
      ** given day inclusive
@@ -109,32 +136,43 @@ export default {
       current.setDate(current.getDate() + ((day - current.getDay() + 7) % 7));
       // While less than end date, add dates to result array
       while (current <= end) {
-        newDate = new Date(current);
+        newDate = new Date(+current);
         newDate.setHours(parseInt(this.slotStartTime.substr(0, 2)));
         newDate.setMinutes(parseInt(this.slotStartTime.substr(3, 2)));
+        newDate.setSeconds(0);
         result.push(newDate);
         current.setDate(current.getDate() + 7);
       }
       return result;
     },
+
     createSelectedSlots: function () {
-      let format_date = this.selectedDate
-        .toLocaleDateString()
-        .split("/")
-        .reverse()
-        .join("-");
-      let datetime = new Date(format_date + "T" + this.slotStartTime + ":00");
-      let timestamp = new firebase.firestore.Timestamp.fromDate(datetime);
+      //let format_date = this.selectedDate
+      //  .toLocaleDateString()
+      //  .split("/")
+      //  .reverse()
+      //  .join("-");
+      //let datetime = new Date(format_date + "T" + this.slotStartTime + ":00");
+
       //create new document in the consultSlots collection
       //but also need take into account if this slot is gonna be looped
 
       //if "Does Not Repeat", create slot object
       if (this.selectedValue == this.doesNotRepeat) {
-        database.collection("consultslots").add({
-          date: timestamp,
-          patient: null,
-          doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-        });
+        const datetime = this.selectedDate;
+        datetime.setHours(parseInt(this.slotStartTime.substr(0, 2)));
+        datetime.setMinutes(parseInt(this.slotStartTime.substr(3, 2)));
+        datetime.setSeconds(0);
+        console.log(datetime);
+
+        if (this.checkAddEligible([datetime])) {
+          database.collection("consultslots").add({
+            date: new firebase.firestore.Timestamp.fromDate(datetime),
+            patient: null,
+            doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+          });
+          alert("Successfully added slots!");
+        }
       } else {
         let monArray = this.getDaysBetweenDates(
           this.range.start,
@@ -172,8 +210,6 @@ export default {
           "sun"
         );
 
-        //if (this.selectedValue == "Daily") {
-        //}
         if (this.selectedValue == "Only on Weekdays") {
           let weekdayArray = monArray.concat(
             tueArray,
@@ -181,32 +217,38 @@ export default {
             thuArray,
             friArray
           );
-          for (var weekday = 0; weekday < weekdayArray.length; weekday++) {
-            database.collection("consultslots").add({
-              date: new firebase.firestore.Timestamp.fromDate(
-                weekdayArray[weekday]
-              ), //remove toDateString() when we store date as Date obj
-              //time: this.slotStartTime,
-              patient: null,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-            });
+          if (this.checkAddEligible(weekdayArray)) {
+            for (var weekday = 0; weekday < weekdayArray.length; weekday++) {
+              database.collection("consultslots").add({
+                date: new firebase.firestore.Timestamp.fromDate(
+                  weekdayArray[weekday]
+                ), //remove toDateString() when we store date as Date obj
+                //time: this.slotStartTime,
+                patient: null,
+                doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              });
+            }
+
+            alert("Successfully added slots!");
           }
-        }
-        if (this.selectedValue == "Only on Weekends") {
+        } else if (this.selectedValue == "Only on Weekends") {
           let weekendArray = satArray.concat(sunArray);
-          for (var weekend = 0; weekend < weekendArray.length; weekend++) {
-            database.collection("consultslots").add({
-              date: new firebase.firestore.Timestamp.fromDate(
-                weekendArray[weekend]
-              ), //remove toDateString() when we store date as Date obj
-              //time: this.slotStartTime,
-              patient: null,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-            });
+          if (this.checkAddEligible(weekendArray)) {
+            for (var weekend = 0; weekend < weekendArray.length; weekend++) {
+              database.collection("consultslots").add({
+                date: new firebase.firestore.Timestamp.fromDate(
+                  weekendArray[weekend]
+                ), //remove toDateString() when we store date as Date obj
+                //time: this.slotStartTime,
+                patient: null,
+                doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              });
+            }
+            alert("Successfully added slots!");
           }
         }
         // if "Daily"
-        if (this.selectedValue == "Daily") {
+        else if (this.selectedValue == "Daily") {
           let dailyArray = monArray.concat(
             tueArray,
             wedArray,
@@ -215,15 +257,18 @@ export default {
             satArray,
             sunArray
           );
-          for (var daily = 0; daily < dailyArray.length; daily++) {
-            database.collection("consultslots").add({
-              date: new firebase.firestore.Timestamp.fromDate(
-                dailyArray[daily]
-              ), //remove toDateString() when we store date as Date obj
-              //time: this.slotStartTime,
-              patient: null,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-            });
+          if (this.checkAddEligible(dailyArray)) {
+            for (var daily = 0; daily < dailyArray.length; daily++) {
+              database.collection("consultslots").add({
+                date: new firebase.firestore.Timestamp.fromDate(
+                  dailyArray[daily]
+                ), //remove toDateString() when we store date as Date obj
+                //time: this.slotStartTime,
+                patient: null,
+                doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              });
+            }
+            alert("Successfully added slots!");
           }
         }
 
@@ -234,19 +279,21 @@ export default {
             this.range.end,
             this.selectedValue.substr(6, 3).toLowerCase()
           );
-          for (var d = 0; d < datesOfDayArray.length; d++) {
-            database.collection("consultslots").add({
-              date: new firebase.firestore.Timestamp.fromDate(
-                datesOfDayArray[d]
-              ), //remove toDateString() when we store date as Date obj
-              //time: this.slotStartTime,
-              patient: null,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-            });
+          if (this.checkAddEligible(datesOfDayArray)) {
+            for (var d = 0; d < datesOfDayArray.length; d++) {
+              database.collection("consultslots").add({
+                date: new firebase.firestore.Timestamp.fromDate(
+                  datesOfDayArray[d]
+                ), //remove toDateString() when we store date as Date obj
+                //time: this.slotStartTime,
+                patient: null,
+                doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              });
+            }
+            alert("Successfully added slots!");
           }
         }
       }
-      alert("Successfully added slots!");
     },
   },
 };
