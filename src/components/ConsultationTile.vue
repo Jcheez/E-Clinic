@@ -7,9 +7,12 @@
                     <span v-if="data.patient!=null" class="bookedSlot"></span>            
                     <span class="time" v-html="showTime(data)"></span>
                 </button>
-                <button v-if="data.hover == true" @mouseleave="data.hover=false" v-on:click="removeSlot(data)">
+                <button v-if="data.hover == true && data.patient == null" @mouseleave="data.hover=false" v-on:click="removeSlot(data)">
                     <span class="removeSlot">Remove Slot</span>
                 </button>
+                <button v-if="data.hover == true && data.patient != null" @mouseleave="data.hover=false">
+                    <span class="rescheduleSlot">Reschedule</span>
+                </button>                
             </li>
         </ul>
     </div>
@@ -31,16 +34,6 @@ export default {
                 li.parentNode.removeChild(li);
                 database.collection("consultslots").doc(data.id).delete();
             })
-            // database.collection("consultslots").doc(data.id).delete();
-            // database.collection("consultslots").onSnapshot(snapshot => {
-            //     let changes = snapshot.docChanges();
-            //     changes.forEach(change => {
-            //         if (change.type == 'removed') {
-            //             let li = document.getElementById(change.doc.id);
-            //             li.parentNode.removeChild(li);
-            //         }
-            //     })
-            // })
         },
         showTime: function(data) {
             let min = data.date.toDate().getMinutes();
@@ -96,9 +89,10 @@ button:hover {
     margin-right: -35px;
 }
 
-.removeSlot {
+.removeSlot, .rescheduleSlot {
     color: white;
 }
+
 
 li {
     padding-bottom: 2px;
