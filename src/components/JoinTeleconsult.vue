@@ -10,7 +10,7 @@
 export default {
     data() {
         return {
-            zoomlink: "google.com.sg"
+            zoomlink: "https://www.google.com.sg"
         }
     }
 }
@@ -22,21 +22,21 @@ export default {
 div #zoom {
     transition: box-shadow 0.3s;
     transition: 0.3s;
+    background-color:rgb(0, 114, 180); 
     width: 250px;
     height: 40px;
-    border: 1px solid rgb(0, 114, 180);
     border-radius: 3px;
     position: relative;
     margin-bottom: 0px;
 }
 
 div #zoom:hover {
-    background-color:rgb(0, 114, 180);
+    background-color:rgb(0, 135, 212);
     box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 
 a {
-    color: rgb(0, 114, 180);
+    color: white;
     font-size: 16px;
     font-family: Nunito;
     letter-spacing: 3px;
@@ -45,10 +45,6 @@ a {
     display: inline-block;
     text-align: center;
     padding: 10px;
-}
-
-a:hover {
-    color: white;
 }
 
 </style>
