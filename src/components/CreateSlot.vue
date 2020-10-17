@@ -97,35 +97,10 @@ export default {
         return new firebase.firestore.Timestamp.fromDate(dateobj); //not comparing properly???
       });
       let results = [];
+      let batches = [];
+      let toMerge = [];
 
-      let final = database.collection('consultslots').get().then((querySnapShot) => {
-          let item = {};
-          querySnapShot.forEach((doc) => {
-            item = doc.data();
-            
-            for (var ts of timestampArray) {
-              console.log(ts)
-              console.log(item.date)
-              console.log(item.date.toDate())
-              if (item.date.isEqual(ts)) {
-                results.push(item)
-              }
-            }
-          })
-          if (results.length > 0) {
-            return false
-          } else {
-            return true
-          }
-      })
-
-      console.log(final)
-
-      return final
-      //let batches = [];
-      //let toMerge = [];
-
-      /*while (timestampArray.length > 0) {
+      while (timestampArray.length > 0) {
           let removed = timestampArray.splice(0,10)
           batches.push(removed)
       }
@@ -149,7 +124,7 @@ export default {
         }
       }
       console.log(toMerge)
-      return toMerge;*/ 
+      return toMerge; 
       
       //results.forEach((ele) => console.log(ele));
       /*database.collection("consultslots").get().then((snapshot) => {
@@ -216,8 +191,8 @@ export default {
         datetime.setMilliseconds(0);
         console.log(datetime);
         
-        this.checkAddEligible([datetime]).then(res => {
-          if (res) {
+        this.checkAddEligible([datetime])[0].then(res => {
+          if (res != false) {
             database.collection("consultslots").add({
             date: new firebase.firestore.Timestamp.fromDate(datetime),
             patient: null,
@@ -272,8 +247,8 @@ export default {
             thuArray,
             friArray
           );
-          this.checkAddEligible(weekdayArray).then(res => {
-            if (res) {
+          this.checkAddEligible(weekdayArray)[0].then(res => {
+            if (res != false) {
               for (var weekday = 0; weekday < weekdayArray.length; weekday++) {
                 database.collection("consultslots").add({
                   date: new firebase.firestore.Timestamp.fromDate(
@@ -291,8 +266,8 @@ export default {
           })
         } else if (this.selectedValue == "Only on Weekends") {
           let weekendArray = satArray.concat(sunArray);
-          this.checkAddEligible(weekendArray).then(res => {
-            if (res) {
+          this.checkAddEligible(weekendArray)[0].then(res => {
+            if (res != false) {
               for (var weekend = 0; weekend < weekendArray.length; weekend++) {
                 database.collection("consultslots").add({
                   date: new firebase.firestore.Timestamp.fromDate(
@@ -319,8 +294,8 @@ export default {
             satArray,
             sunArray
           );
-          this.checkAddEligible(dailyArray).then(res => {
-            if (res) {
+          this.checkAddEligible(dailyArray)[0].then(res => {
+            if (res != false) {
               for (var daily = 0; daily < dailyArray.length; daily++) {
                 database.collection("consultslots").add({
                   date: new firebase.firestore.Timestamp.fromDate(
@@ -345,8 +320,8 @@ export default {
             this.range.end,
             this.selectedValue.substr(6, 3).toLowerCase()
           );
-          this.checkAddEligible(datesOfDayArray).then(res => {
-            if (res) {
+          this.checkAddEligible(datesOfDayArray)[0].then(res => {
+            if (res != false) {
               for (var d = 0; d < datesOfDayArray.length; d++) {
                 database.collection("consultslots").add({
                   date: new firebase.firestore.Timestamp.fromDate(
