@@ -1,13 +1,12 @@
 <template>
     <div class="container">
         <div class="heading">
-            <h4 v-if="consultData.length > 0">Upcoming Appointments</h4>
-            <h4 v-else-if="consultData.length == 0">No appointments yet</h4>
-
+            <h4 v-if="filteredData.length > 0">Upcoming Appointments</h4>
+            <h4 v-else-if="filteredData.length == 0">No appointments yet</h4>
         </div>
         <div class="containerBtm">
             <ul>
-                <li v-for="data in filteredData" v-bind:key="data.patient">
+                <li v-for="data in filteredData" v-bind:key="data.patient" :id="data.id">
                     <div class="labels">
                         <span>Time:</span><br>
                         <span>Patient:</span>
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-//import database from '../firebase.js'
+import database from '../firebase.js'
 export default {
     data() {
         return {
@@ -48,6 +47,19 @@ export default {
         filteredData: function() {
             return this.consultData.filter(function(data) {
                 return data.patient != null;
+            })
+        },
+    },
+    watch: {
+        filteredData: function() {
+            database.collection("consultslots").onSnapshot(snapshot => {
+                let changes = snapshot.docChanges();
+                changes.forEach(change => {
+                    if (change.type == 'removed') {
+                        let li = document.getElementById(change.doc.id);
+                        li.parentNode.removeChild(li);
+                    }
+                })
             })
         }
     }
