@@ -8,6 +8,9 @@
       <li>
         <router-link to="/uploadDocs">Go to Upload Documents</router-link>
       </li>
+      <li>
+        <router-link to="/makebooking">Go to Make Booking</router-link>
+      </li>
     </ul>
   </div>
 </template>
