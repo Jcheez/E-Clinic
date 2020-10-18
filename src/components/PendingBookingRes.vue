@@ -55,6 +55,7 @@ export default {
             })  
         }
     },
+    /*
     created() {
         if (performance.navigation.type == 2 ) {
             console.log("not reloaded")
@@ -63,7 +64,8 @@ export default {
                 this.$router.push('/pendingbooking')
             }        
         }
-    } 
+    }
+    */
 }
 </script>
 
