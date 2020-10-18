@@ -57,7 +57,11 @@ export default {
           let li = document.getElementById(doc.id);
           li.parentNode.removeChild(li);
           database.collection("consultslots").doc(data.id).delete();
-          this.$emit('fetchItems')
+          this.consultData.pop()
+          console.log(this.consultData.length)
+          if (this.consultData.length == 0) {
+            this.$emit('fetchItems')
+          }
         });
     },
     showTime: function (data) {
