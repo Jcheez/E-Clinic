@@ -13,10 +13,14 @@
             >
           </div>
           <button id="outofplace" v-if="patient.physical && patient.firstTime">
+            <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
             Make A Booking
+            </router-link>
           </button>
           <button v-else-if="patient.physical || patient.firstTime">
+            <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
             Make A Booking
+            </router-link>
           </button>
         </li>
       </template>
@@ -117,6 +121,12 @@ button {
   box-sizing: border-box;
   border-radius: 15px;
 }
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
 button#outofplace {
   position: relative;
   bottom: 16px;
