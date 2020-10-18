@@ -34,7 +34,7 @@ export default {
       msg: "Patient's Notes ",
       itemsList: [],
       nameQuery: "",
-      data: []
+      data: [],
     };
   },
 

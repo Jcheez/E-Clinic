@@ -5,24 +5,24 @@
         <p id="name">Patient: {{pName}}</p>
         <p id="date">Appointment Date: {{appDate}}</p>
         <h2 id="mc1">Medical Certificate</h2>
-        <uploader v-if="this.doc[this.appDate][mc] == u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc1">
             <a id="links" v-bind:href="this.doc[this.appDate][mc]">View</a>
             <a id="removers" v-on:click="remove(mc)">Remove</a>
         </div>
         <h2 id="mc2">Invoice</h2>
-        <uploader v-if="this.doc[this.appDate][i] == u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc2">
             <a id="links" v-bind:href="this.doc[this.appDate][i]">View</a>
             <a id="removers" v-on:click="remove(i)">Remove</a>
         </div>
         <h2 id="mc3">Prescription</h2>
-        <uploader v-if="this.doc[this.appDate][p] == u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc3">
             <a id="links" v-bind:href="this.doc[this.appDate][p]">View</a>
             <a id="removers" v-on:click="remove(p)">Remove</a>
         </div>
-        <h3>{{mc}}</h3>
+        <h3>{{this.doc}}</h3>
     </div>
 </template>
 
@@ -60,6 +60,7 @@ export default {
           querySnapShot.forEach((doc) => {
             this.docid.push(doc.id);
             this.doc = doc.data().notes;
+            console.log(this.doc)
           });
         });
         },
