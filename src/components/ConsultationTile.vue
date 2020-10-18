@@ -57,10 +57,10 @@ export default {
           let li = document.getElementById(doc.id);
           li.parentNode.removeChild(li);
           database.collection("consultslots").doc(data.id).delete();
-          this.consultData.pop()
-          console.log(this.consultData.length)
+          this.consultData.pop();
+          console.log(this.consultData.length);
           if (this.consultData.length == 0) {
-            this.$emit('fetchItems')
+            this.$emit("fetchItems");
           }
         });
     },
@@ -91,6 +91,7 @@ button {
   background-color: white;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
+  z-index: -1;
 }
 
 button:hover {
@@ -148,5 +149,6 @@ li {
   background-color: white;
   margin: 20px;
   left: 450px;
+  z-index: 0;
 }
 </style>
