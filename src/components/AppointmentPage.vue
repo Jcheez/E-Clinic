@@ -75,7 +75,7 @@ export default {
         this.text = 'Add Slots'
       }
       this.fetchItems();
-    }
+    },
   },
   created() {
     this.fetchItems();
