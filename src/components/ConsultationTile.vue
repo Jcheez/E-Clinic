@@ -57,6 +57,7 @@ export default {
           let li = document.getElementById(doc.id);
           li.parentNode.removeChild(li);
           database.collection("consultslots").doc(data.id).delete();
+          this.$emit('fetchItems')
         });
     },
     showTime: function (data) {
