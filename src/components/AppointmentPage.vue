@@ -1,17 +1,22 @@
 <template>
   <div class="container">
-    <v-date-picker v-model="date" is-inline :min-date="new Date()" />
-    <div v-if="status" class="inner">
-      <addSlot class="addslot" v-bind:selectedDate="date" />
+    <div class="leftColumn">
+      <v-date-picker v-model="date" is-inline :min-date="new Date()" />
+      <join-zoom class="zoom" v-bind:href="zoomString"></join-zoom>
+      <schedule v-bind:consultData="slots" class="schedule" />
+    </div>
+    <div v-if="status" class="addslot">
+      <addSlot v-bind:selectedDate="date" />
     </div>
     <div v-else-if="!status" class="inner">
       <div class="placeholder">
-        <p v-if="slots.length == 0" >No slots yet! Add slots by clicking on "Add Slots"</p>
+        <p v-if="slots.length == 0">
+          No slots yet! Add slots by clicking on "Add Slots"
+        </p>
         <tile v-bind:consultData="slots" class="tile" />
-        <schedule v-bind:consultData="slots" class="schedule" />
       </div>
     </div>
-    <button v-on:click="toggle" class="button">{{text}}</button>
+    <button v-on:click="toggle" class="button">{{ text }}</button>
   </div>
 </template>
 
@@ -20,6 +25,7 @@ import database from "../firebase.js";
 import create from "./CreateSlot";
 import scheduled from "./ScheduledAppointments";
 import tile from "./ConsultationTile";
+import joinTeleConsult from "./JoinTeleconsult";
 
 export default {
   data() {
@@ -27,7 +33,8 @@ export default {
       date: new Date(),
       slots: [],
       status: false,
-      text: 'Add Slots'
+      text: "Add Slots",
+      zoomString: "",
     };
   },
   methods: {
@@ -36,7 +43,7 @@ export default {
     },
     fetchItems: function () {
       this.slots = [];
-      let date = this.date.toLocaleDateString().split( '/' ).reverse( ).join( '-' )
+      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
       database
         .collection("consultslots")
         .orderBy("date")
@@ -49,33 +56,40 @@ export default {
               hover: false 
               }, { merge: true });*/
             item = doc.data();
-            let item_date = item.date.toDate().toLocaleDateString().split( '/' ).reverse( ).join( '-' )
+            let item_date = item.date
+              .toDate()
+              .toLocaleDateString()
+              .split("/")
+              .reverse()
+              .join("-");
             if (item_date == date) {
-              item.id = doc.id
-              item.hover = false
-              this.slots.push(item)
+              item.id = doc.id;
+              item.hover = false;
+              item.reschedule = false;
+              this.slots.push(item);
             }
           });
         });
-    }
+    },
   },
   components: {
     addSlot: create,
     tile: tile,
     schedule: scheduled,
+    joinZoom: joinTeleConsult,
   },
   watch: {
     date: function () {
       this.fetchItems();
     },
-    status: function() {
-      if (this.text == 'Add Slots') {
-        this.text = 'Back'
+    status: function () {
+      if (this.text == "Add Slots") {
+        this.text = "Back";
       } else {
-        this.text = 'Add Slots'
+        this.text = "Add Slots";
       }
       this.fetchItems();
-    }
+    },
   },
   created() {
     this.fetchItems();
@@ -91,16 +105,46 @@ export default {
   justify-content: center;
 }
 .inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  left: 0px;
+  margin-top: 10px;
+  height: 450px;
+}
+
+.zoom {
+  margin: 10px;
+  margin-bottom: 0px;
+  left: -110px;
+}
+.addslot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 50px;
+  left: 0px;
+  width: 500px;
+  height: 500px;
 }
+
 .schedule {
-  margin-top: 200px;
+  left: 120px;
+  margin: 20px;
+  display: flex;
 }
+.vc-container {
+  left: -100px;
+}
+
+.leftColumn {
+  width: 200px;
+  height: 500px;
+  float: left;
+  margin: 10px;
+}
+
 .placeholder {
-  width: 450px;
+  width: 500px;
   height: 350px;
   align-items: center;
   justify-content: center;
@@ -108,11 +152,28 @@ export default {
 .button {
   position: relative;
   top: -100px;
-  background-color: lightblue;
-  border: 2px solid darkslateblue;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: inline-block;
+  top: -220px;
+  width: 80px;
+  text-align: center;
+}
+
+button:hover {
+  background-color: white;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+  color: rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
 }
 .tile {
   margin-top: 50px;
