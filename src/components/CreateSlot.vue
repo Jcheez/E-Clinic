@@ -36,8 +36,7 @@
 
       <br />
       <label for="repeatSlot"
-        >How often do you want the selected slots to repeat?</label
-      >
+        >How often do you want the selected slots to repeat?</label>
       <select name="freqOfSlots" id="repeatSlots" v-model="selectedValue">
         <option>Does Not Repeat</option>
         <option>Daily</option>
@@ -54,15 +53,13 @@
       <br />
       <label v-if="selectedValue != doesNotRepeat"
         >Please choose the start and end dates (inclusive) for the slots
-        selected to repeat.</label
-      >
+        selected to repeat.</label>
       <v-date-picker
         color="blue"
         mode="range"
         v-model="range"
         :min-date="new Date()"
-        v-if="selectedValue != doesNotRepeat"
-      />
+        v-if="selectedValue != doesNotRepeat"/>
 
       <br />
       <input id="submitButton" type="submit" value="Submit" />
@@ -342,6 +339,7 @@ export default {
  
 <style scoped>
 #submitButton {
+  transition: 0.3s;
   background-color: white;
   border: 1px solid rgb(0, 114, 180);
   padding: 10px;

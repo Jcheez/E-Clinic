@@ -138,7 +138,7 @@ li {
   flex-direction: column;
   align-items: center;
   width: 480px;
-  height: 240px;
+  height: 370px;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
   background-color: white;

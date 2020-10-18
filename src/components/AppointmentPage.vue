@@ -151,6 +151,7 @@ export default {
   justify-content: center;
 }
 .button {
+  transition: 0.3s;
   position: relative;
   top: -100px;
   background-color: rgb(0, 114, 180);
