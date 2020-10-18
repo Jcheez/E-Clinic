@@ -31,12 +31,24 @@
         <option>12:30</option>
       </datalist>
 
+      <label>Choose the new <b>Start Date</b></label>
+      <v-date-picker v-model="date" :masks="masks">
+        <template v-slot="{ inputValue, inputEvents }">
+          <input
+            class="bg-white border px-2 py-1 rounded"
+            :value="inputValue"
+            v-on="inputEvents"
+          />
+        </template>
+      </v-date-picker>
+
+
       <span>
         <input id="submitButton" type="submit" value="Submit" />
         <button v-on:click="slotData.reschedule = false" id="cancelButton">
           Cancel
-        </button></span
-      >
+        </button>
+      </span>
     </form>
   </div>
 </template>
@@ -48,6 +60,10 @@ export default {
   data() {
     return {
       newStartTime: "",
+      date: new Date(),
+      masks: {
+        input: 'DD/MM/YYYY',
+      },
     };
   },
   props: {
@@ -63,13 +79,13 @@ export default {
   methods: {
     rescheduleSlot: function (d) {
       var currentSlot = database.collection("consultslots").doc(d.id);
-
       var newDate = d.date.toDate();
       newDate.setHours(parseInt(this.newStartTime.substr(0, 2)));
       newDate.setMinutes(parseInt(this.newStartTime.substr(3, 2)));
       newDate.setMilliseconds(0);
       var newTimestamp = firebase.firestore.Timestamp.fromDate(newDate);
 
+      alert("Successfully rescheduled slot!")
       return currentSlot.update({
         date: newTimestamp,
       });
