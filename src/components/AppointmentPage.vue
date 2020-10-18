@@ -65,6 +65,7 @@ export default {
             if (item_date == date) {
               item.id = doc.id;
               item.hover = false;
+              item.reschedule = false;
               this.slots.push(item);
             }
           });

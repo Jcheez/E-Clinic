@@ -17,9 +17,16 @@
         <button
           v-if="data.hover == true && data.patient != null"
           @mouseleave="data.hover = false"
+          v-on:click="data.reschedule = true"
         >
           <span class="rescheduleSlot">Reschedule</span>
         </button>
+        <div
+          class="reschedule"
+          v-if="data.patient != null && data.reschedule == true"
+        >
+          <reschedule v-bind:slotData="data"></reschedule>
+        </div>
       </li>
     </ul>
   </div>
@@ -27,11 +34,18 @@
 
 <script>
 import database from "../firebase.js";
+import Reschedule from "./RescheduleSlot";
 export default {
+  data() {
+    return {};
+  },
   props: {
     consultData: {
       type: Array,
     },
+  },
+  components: {
+    Reschedule,
   },
   methods: {
     removeSlot: function (data) {
@@ -47,18 +61,15 @@ export default {
     },
     showTime: function (data) {
       let min = data.date.toDate().getMinutes();
-      if (min == 0) {
-        return (
-          data.date.toDate().getHours() +
-          ":" +
-          data.date.toDate().getMinutes() +
-          "0"
-        );
-      } else {
-        return (
-          data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()
-        );
+      let h = data.date.toDate().getHours();
+
+      if (h < 10) {
+        h = "0" + h;
       }
+      if (min == 0) {
+        min = "00";
+      }
+      return h + ":" + min;
     },
   },
 };
@@ -112,6 +123,25 @@ button:hover {
 }
 
 li {
-  padding-bottom: 10px;
+  width: 100px;
+  height: 20px;
+  display: inline-block;
+  margin: 20px;
+  float: left;
+}
+
+.reschedule {
+  position: absolute;
+  display: block;
+  float: left;
+  flex-direction: column;
+  align-items: center;
+  width: 480px;
+  height: 240px;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  background-color: white;
+  margin: 20px;
+  left: 450px;
 }
 </style>

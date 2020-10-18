@@ -23,15 +23,15 @@
       <!--input type="time" id="endTime" name="consultEnd" step="1800" min=this.slotStartTime max="18:00" required v-model="slotEndTime"-->
       <!--min and max can be the opening and closing time of the clinic :D -->
       <datalist id="slotTimes">
-        <option value="08:30"></option>
-        <option value="09:00"></option>
-        <option value="09:30"></option>
-        <option value="10:00"></option>
-        <option value="10:30"></option>
-        <option value="11:00"></option>
-        <option value="11:30"></option>
-        <option value="12:00"></option>
-        <option value="12:30"></option>
+        <option>08:30</option>
+        <option>09:00</option>
+        <option>09:30</option>
+        <option>10:00</option>
+        <option>10:30</option>
+        <option>11:00</option>
+        <option>11:30</option>
+        <option>12:00</option>
+        <option>12:30</option>
       </datalist>
 
       <br />
@@ -103,31 +103,33 @@ export default {
       let toMerge = [];
 
       while (timestampArray.length > 0) {
-          let removed = timestampArray.splice(0,10)
-          batches.push(removed)
+        let removed = timestampArray.splice(0, 10);
+        batches.push(removed);
       }
       for (var batch of batches) {
-        toMerge.push(database
-          .collection("consultslots")
-          //.where("doctor", "==", "") //doctor that is logged in
-          .where("date", "in", batch)
-          .get()
-          .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            results.push(doc.id, " => ", doc.data());
-          })
-          if (results.length > 0) {
-            return false;
-          }
-        }))
+        toMerge.push(
+          database
+            .collection("consultslots")
+            //.where("doctor", "==", "") //doctor that is logged in
+            .where("date", "in", batch)
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                results.push(doc.id, " => ", doc.data());
+              });
+              if (results.length > 0) {
+                return false;
+              }
+            })
+        );
         if (toMerge.length > 0) {
-          break
+          break;
         }
       }
-      console.log(toMerge)
-      return toMerge; 
-      
+      console.log(toMerge);
+      return toMerge;
+
       //results.forEach((ele) => console.log(ele));
       /*database.collection("consultslots").get().then((snapshot) => {
         let item = {}
@@ -141,7 +143,6 @@ export default {
             }
         })
       })*/
-      
     },
     /* Given a start date, end date and day name, return
      ** an array of dates between the two dates for the
@@ -174,13 +175,6 @@ export default {
     },
 
     createSelectedSlots: function () {
-      //let format_date = this.selectedDate
-      //  .toLocaleDateString()
-      //  .split("/")
-      //  .reverse()
-      //  .join("-");
-      //let datetime = new Date(format_date + "T" + this.slotStartTime + ":00");
-
       //create new document in the consultSlots collection
       //but also need take into account if this slot is gonna be looped
 
@@ -192,19 +186,19 @@ export default {
         datetime.setSeconds(0);
         datetime.setMilliseconds(0);
         console.log(datetime);
-        
-        this.checkAddEligible([datetime])[0].then(res => {
+
+        this.checkAddEligible([datetime])[0].then((res) => {
           if (res != false) {
             database.collection("consultslots").add({
-            date: new firebase.firestore.Timestamp.fromDate(datetime),
-            patient: null,
-            doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              date: new firebase.firestore.Timestamp.fromDate(datetime),
+              patient: null,
+              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
             alert("Successfully added slots!");
           } else {
             alert("Slot you are trying to add already exists!");
           }
-        })
+        });
       } else {
         let monArray = this.getDaysBetweenDates(
           this.range.start,
@@ -249,7 +243,7 @@ export default {
             thuArray,
             friArray
           );
-          this.checkAddEligible(weekdayArray)[0].then(res => {
+          this.checkAddEligible(weekdayArray)[0].then((res) => {
             if (res != false) {
               for (var weekday = 0; weekday < weekdayArray.length; weekday++) {
                 database.collection("consultslots").add({
@@ -265,10 +259,10 @@ export default {
             } else {
               alert("Slot you are trying to add already exists!");
             }
-          })
+          });
         } else if (this.selectedValue == "Only on Weekends") {
           let weekendArray = satArray.concat(sunArray);
-          this.checkAddEligible(weekendArray)[0].then(res => {
+          this.checkAddEligible(weekendArray)[0].then((res) => {
             if (res != false) {
               for (var weekend = 0; weekend < weekendArray.length; weekend++) {
                 database.collection("consultslots").add({
@@ -284,7 +278,7 @@ export default {
             } else {
               alert("Slot you are trying to add already exists!");
             }
-          })
+          });
         }
         // if "Daily"
         else if (this.selectedValue == "Daily") {
@@ -296,7 +290,7 @@ export default {
             satArray,
             sunArray
           );
-          this.checkAddEligible(dailyArray)[0].then(res => {
+          this.checkAddEligible(dailyArray)[0].then((res) => {
             if (res != false) {
               for (var daily = 0; daily < dailyArray.length; daily++) {
                 database.collection("consultslots").add({
@@ -312,7 +306,7 @@ export default {
             } else {
               alert("Slot you are trying to add already exists!");
             }
-          })
+          });
         }
 
         //if "Every Monday"/Tuesday/Wed/Thu/Fri/Sat/Sun
@@ -322,7 +316,7 @@ export default {
             this.range.end,
             this.selectedValue.substr(6, 3).toLowerCase()
           );
-          this.checkAddEligible(datesOfDayArray)[0].then(res => {
+          this.checkAddEligible(datesOfDayArray)[0].then((res) => {
             if (res != false) {
               for (var d = 0; d < datesOfDayArray.length; d++) {
                 database.collection("consultslots").add({
@@ -338,7 +332,7 @@ export default {
             } else {
               alert("Slot you are trying to add already exists!");
             }
-          })
+          });
         }
       }
     },
