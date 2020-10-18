@@ -23,7 +23,7 @@ export default {
 div #zoom {
   transition: box-shadow 0.3s;
   transition: 0.3s;
-  width: 250px;
+  width: 255px;
   height: 40px;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 3px;
