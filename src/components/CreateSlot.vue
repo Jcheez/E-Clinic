@@ -193,6 +193,7 @@ export default {
             database.collection("consultslots").add({
               date: new firebase.firestore.Timestamp.fromDate(datetime),
               patient: null,
+              rating: 0,
               doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
             });
             alert("Successfully added slots!");
@@ -254,6 +255,7 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  rating: 0,
                 });
               }
               alert("Successfully added slots!");
@@ -272,6 +274,7 @@ export default {
                   ), //remove toDateString() when we store date as Date obj
                   //time: this.slotStartTime,
                   patient: null,
+                  rating: 0,
                   doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
                 });
               }
@@ -300,6 +303,7 @@ export default {
                   ), //remove toDateString() when we store date as Date obj
                   //time: this.slotStartTime,
                   patient: null,
+                  rating: 0,
                   doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
                 });
               }
@@ -326,6 +330,7 @@ export default {
                   ), //remove toDateString() when we store date as Date obj
                   //time: this.slotStartTime,
                   patient: null,
+                  rating: 0,
                   doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
                 });
               }
