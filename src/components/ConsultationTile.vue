@@ -26,7 +26,7 @@
           class="reschedule"
           v-if="data.patient != null && data.reschedule == true"
         >
-          <reschedule v-bind:slotData="data" ></reschedule>
+          <reschedule @changeTile = "changeTile" v-bind:slotData="data" ></reschedule>
         </div>
       </li>
     </ul>
@@ -79,6 +79,22 @@ export default {
       }
       return h + ":" + min;
     },
+    changeTile: function(removeData, addData, bool) {
+      if (bool) {
+        this.consultData.push(addData)
+      } else {
+        let index = this.consultData.indexOf(removeData)
+        console.log(index)
+        this.consultData.splice(index, 1)
+        console.log(this.consultData)
+        if (this.consultData.length == 0) {
+          this.$emit("fetchItems");
+        }
+      }
+      let li = document.getElementById(removeData.id)
+      li.parentNode.removeChild(li)
+      
+    }
   },
 };
 </script>
