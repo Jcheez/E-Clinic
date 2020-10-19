@@ -32,7 +32,7 @@
       </datalist>
 
       <label>Choose the new <b>Start Date</b></label>
-      <v-date-picker v-model="date" :masks="masks">
+      <v-date-picker v-model="date" :masks="masks" :min-date="new Date()">
         <template v-slot="{ inputValue, inputEvents }">
           <input
             class="bg-white border px-2 py-1 rounded"
@@ -41,7 +41,6 @@
           />
         </template>
       </v-date-picker>
-
 
       <span>
         <input id="submitButton" type="submit" value="Submit" />
@@ -62,7 +61,7 @@ export default {
       newStartTime: "",
       date: new Date(),
       masks: {
-        input: 'DD/MM/YYYY',
+        input: "DD/MM/YYYY",
       },
     };
   },
@@ -77,17 +76,60 @@ export default {
     },
   },
   methods: {
+    checkNewDate: function (rDate) {
+      let results = [];
+      let promise = [];
+      promise.push(
+        database
+          .collection("consultslots")
+          //.where("doctor", "==", "") //doctor that is logged in
+          .where("date", "==", rDate)
+          .where("patient", "!=", null)
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              results.push(doc.id, " => ", doc.data());
+            });
+            if (results.length > 0) {
+              return false;
+            }
+          })
+      );
+      return promise;
+    },
     rescheduleSlot: function (d) {
       var currentSlot = database.collection("consultslots").doc(d.id);
-      var newDate = d.date.toDate();
+      //var newDate = d.date.toDate();
+      var newDate = this.date;
       newDate.setHours(parseInt(this.newStartTime.substr(0, 2)));
       newDate.setMinutes(parseInt(this.newStartTime.substr(3, 2)));
       newDate.setMilliseconds(0);
       var newTimestamp = firebase.firestore.Timestamp.fromDate(newDate);
 
-      alert("Successfully rescheduled slot!")
-      return currentSlot.update({
-        date: newTimestamp,
+      this.checkNewDate(newTimestamp)[0].then((res) => {
+        if (res != false) {
+          //add
+          database.collection("consultslots").add({
+            date: newTimestamp,
+            patient: d.patient,
+            doctor: d.doctor, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+          });
+          //remove
+          currentSlot.get().then(
+            //let li = document.getElementById(doc.id);
+            //li.parentNode.removeChild(li);
+            currentSlot.delete()
+            //this.consultData.pop(); should I emit this?
+            //console.log(this.consultData.length);
+            //if (this.consultData.length == 0) {
+            //  this.$emit("fetchItems");
+            //}
+          );
+
+          alert("Successfully rescheduled slot!");
+        } else {
+          alert("Slot you are trying to reschedule to is not available!");
+        }
       });
     },
   },
