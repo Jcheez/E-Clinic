@@ -39,21 +39,16 @@ export default {
   methods: {
     showTime: function (data) {
       let min = data.date.toDate().getMinutes();
-      if (min == 0) {
-        return (
-          data.date.toDate().getHours() +
-          ":" +
-          data.date.toDate().getMinutes() +
-          "0"
-        );
-      } else {
-        return (
-          data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()
-        );
+      let h = data.date.toDate().getHours();
+      if (h < 10) {
+        h = "0" + h;
       }
-    },
+      if (min == 0) {
+        min = "00";
+      }
+      return h + ":" + min;
+    }
   },
-
   computed: {
     filteredData: function () {
       return this.consultData.filter(function (data) {
