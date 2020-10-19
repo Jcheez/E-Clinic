@@ -57,8 +57,10 @@ export default {
           let li = document.getElementById(doc.id);
           li.parentNode.removeChild(li);
           database.collection("consultslots").doc(data.id).delete();
-          this.consultData.pop();
-          console.log(this.consultData.length);
+          let index = this.consultData.indexOf(data)
+          console.log(index)
+          this.consultData.splice(index, 1)
+          console.log(this.consultData)
           if (this.consultData.length == 0) {
             this.$emit("fetchItems");
           }
