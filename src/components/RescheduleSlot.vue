@@ -113,7 +113,7 @@ export default {
                 date: newTimestamp,
                 patient: d.patient,
                 doctor: d.doctor, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-                rating: d.rating
+                //rating: d.rating
               }
           //add
           database.collection("consultslots").add(item);
@@ -150,7 +150,7 @@ export default {
             }
           })
           
-           var ifASlotExistsQuery = database
+          var ifASlotExistsQuery = database
             .collection("consultslots")
             .where("date", "==", newDate)
             .where("patient", "==", null);
