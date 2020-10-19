@@ -114,10 +114,12 @@ export default {
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
+                console.log("loop")
                 // doc.data() is never undefined for query doc snapshots
                 results.push(doc.id, " => ", doc.data());
               });
               if (results.length > 0) {
+                console.log("shld break")
                 return false;
               }
             })
