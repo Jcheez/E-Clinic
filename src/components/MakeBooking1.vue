@@ -99,7 +99,7 @@ export default {
                         } else {
                             console.log("you have reached here")
                             //this.$router.push('/makebooking1')
-                            //include any props
+                            //include passing of props to the next section
                         }           
                     });
                 })
