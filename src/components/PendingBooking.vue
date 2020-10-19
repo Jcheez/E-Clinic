@@ -33,6 +33,9 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
+      /* when clinic login is complete, remember to props clinic name / something unique
+       * otherwise doctors will be able to see pending bookings of all clinic
+       */ 
       msg: "Pending Booking",
       itemsList: [],
     };
@@ -131,4 +134,6 @@ button#outofplace {
   position: relative;
   bottom: 16px;
 }
+
+
 </style>
