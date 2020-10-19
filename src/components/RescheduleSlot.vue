@@ -126,6 +126,14 @@ export default {
             //}
           );
 
+          var ifASlotExistsQuery = database.collection("consultslots").where("date","==",newDate).where("patient","==",null);
+          ifASlotExistsQuery.get().then( querySnapshot => {
+            querySnapshot.forEach(doc => {
+              console.log("deleted corresponding free slot");
+              doc.ref.delete();
+            })
+          })
+
           alert("Successfully rescheduled slot!");
         } else {
           alert("Slot you are trying to reschedule to is not available!");
@@ -133,21 +141,21 @@ export default {
       });
     },
   },
-  watch: {
-    rescheduleSlot: function () {
-      database.collection("consultslots").onSnapshot((snapshot) => {
-        let changes = snapshot.docChanges();
-        changes.forEach((change) => {
-          console.log(change.doc.data());
-          if (change.type == "modified") {
-            console.log("Modified Time Slot: ", change.doc.data());
-            let li = document.getElementById(change.doc.id);
-            li.setAttribute("data-id", change.doc.id);
-          }
-        });
-      });
-    },
-  },
+  // watch: {
+  //   rescheduleSlot: function () {
+  //     database.collection("consultslots").onSnapshot((snapshot) => {
+  //       let changes = snapshot.docChanges();
+  //       changes.forEach((change) => {
+  //         console.log(change.doc.data());
+  //         if (change.type == "modified") {
+  //           console.log("Modified Time Slot: ", change.doc.data());
+  //           let li = document.getElementById(change.doc.id);
+  //           li.setAttribute("data-id", change.doc.id);
+  //         }
+  //       });
+  //     });
+  //   },
+  // },
 };
 </script>
 

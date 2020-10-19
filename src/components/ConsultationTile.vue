@@ -21,11 +21,12 @@
         >
           <span class="rescheduleSlot">Reschedule</span>
         </button>
+        
         <div
           class="reschedule"
           v-if="data.patient != null && data.reschedule == true"
         >
-          <reschedule v-bind:slotData="data"></reschedule>
+          <reschedule v-bind:slotData="data" ></reschedule>
         </div>
       </li>
     </ul>
@@ -83,6 +84,7 @@ export default {
 </script>
 
 <style scoped>
+
 button {
   transition: box-shadow 0.3s;
   transition: 0.3s;
@@ -151,6 +153,6 @@ li {
   background-color: white;
   margin: 20px;
   left: 450px;
-  z-index: 0;
+  z-index: 2;
 }
 </style>

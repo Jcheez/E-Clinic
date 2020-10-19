@@ -39,21 +39,16 @@ export default {
   methods: {
     showTime: function (data) {
       let min = data.date.toDate().getMinutes();
-      if (min == 0) {
-        return (
-          data.date.toDate().getHours() +
-          ":" +
-          data.date.toDate().getMinutes() +
-          "0"
-        );
-      } else {
-        return (
-          data.date.toDate().getHours() + ":" + data.date.toDate().getMinutes()
-        );
+      let h = data.date.toDate().getHours();
+      if (h < 10) {
+        h = "0" + h;
       }
-    },
+      if (min == 0) {
+        min = "00";
+      }
+      return h + ":" + min;
+    }
   },
-
   computed: {
     filteredData: function () {
       return this.consultData.filter(function (data) {
@@ -148,14 +143,14 @@ li {
 
 div .labels {
   float: left;
-  width: 50%;
-  padding: 10px 0px 10px 7px;
+  width: 45%;
+  padding: 12px 0px 0px 0px;
   font-family: Roboto;
 }
 
 div .data {
   float: left;
   font-family: Roboto;
-  padding: 10px 0px 0px 0px;
+  padding: 12px 0px 0px 0px;
 }
 </style>
