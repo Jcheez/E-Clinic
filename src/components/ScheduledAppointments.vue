@@ -143,14 +143,14 @@ li {
 
 div .labels {
   float: left;
-  width: 50%;
-  padding: 10px 0px 10px 7px;
+  width: 45%;
+  padding: 12px 0px 0px 0px;
   font-family: Roboto;
 }
 
 div .data {
   float: left;
   font-family: Roboto;
-  padding: 10px 0px 0px 0px;
+  padding: 12px 0px 0px 0px;
 }
 </style>
