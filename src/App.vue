@@ -13,6 +13,16 @@ export default {
   components: {
     HelloWorld,
   },
+
+  created() {
+      if (performance.navigation.type == 1 && this.$route.path == '/patientsnotes/appointments') {
+          this.$router.push('/patientsnotes')
+      } else if (performance.navigation.type == 1 && this.$route.path == '/pendingbooking/resolve') {
+          if (confirm('Reload site? You will be redirected back 1 page.')) {
+            this.$router.push('/pendingbooking')
+        }
+      }
+  }
 };
 </script>
 
