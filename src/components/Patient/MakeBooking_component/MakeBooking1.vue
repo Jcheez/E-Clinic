@@ -85,7 +85,7 @@ export default {
                         console.log(physicalbool)
 
                         if (physicalbool || firstbool) {
-                            this.$router.push('/makebookingter')
+                            this.$router.push('/makebooking/makebookingter')
                             database.collection("pendingbooking").add(
                             {
                             name: this.name,
@@ -99,6 +99,13 @@ export default {
                             )
                         } else {
                             console.log("you have reached here")
+                            this.$router.push({
+                                name: "makebookingpass",
+                                params: {
+                                    conditions: this.checkedConditions,
+                                    patientName: this.name
+                                }
+                            })
                             //this.$router.push('/makebooking1')
                             //include passing of props to the next section
                         }           
