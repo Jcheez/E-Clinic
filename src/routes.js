@@ -1,18 +1,15 @@
-
 // All routes for Patient Notes Component
 import PatientNotes from "./components/Patient/PatientNotes_components/PatientNotes.vue";
 import PatientAppointments from "./components/Patient/PatientNotes_components/PatientAppointments.vue";
 import Documents from "./components/Patient/PatientNotes_components/Documents.vue"
 import AppointmentPage from "./components/Clinic/Doctor/DoctorAppointmentPage/AppointmentPage";
 import DoctorSettings from "./components/Clinic/Doctor/DoctorSettings";
-import PendingBookingRes from "./components/Clinic/PendingBookingRes.vue";
-import PendingBooking from "./components/Clinic/PendingBooking.vue";
-import MakeBooking from "./components/Patient/MakeBooking1.vue"
-import MakeBookingTer from "./components/Patient/MakeBookingTer.vue"
+import PendingBookingRes from "./components/Clinic/PendingBooking_component/PendingBookingRes.vue";
+import PendingBooking from "./components/Clinic/PendingBooking_component/PendingBooking.vue";
+import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue"
+import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
-
-
 
 export default [
   { path: "/patienthome", component: PatientHome },

@@ -5,12 +5,11 @@
     <ul>
         <li id=pending>
             <span>{{"Patient: " + patientDetails.name}}</span>
-            <span v-if="patientDetails.firstTime">{{"First Time Online"}}</span>
+            <span v-if="patientDetails.firstTime">{{"First Time Online / First Time at Clinic"}}</span>
             <span v-if="patientDetails.physical">{{"Conditions: " + patientDetails.conditions}}</span>
             <span>{{"Registered Phone Number: " + patientDetails.phonenum}}</span>
             <span>{{"Status: " + patientDetails.pendingstatus}}</span>
         </li>
-        <button id=fail v-on:click='failcall'>Failed to get to Patient</button>
     </ul>
     
     <div id=physicalform>
@@ -21,11 +20,15 @@
         <br>
         <input type="submit" value="Confirm" v-on:click="scheduled">
     </div>
+
+    <button id=fail v-if="patientDetails.status=='Awaiting clinic staff to contact'" v-on:click='failcall'>Failed to get to Patient</button>
+    <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
   </div>
 </template>
 
 <script scoped>
-import database from "../../firebase.js";
+import database from "../../../firebase.js";
+import * as firebase from "firebase";
 export default {
     data() {
         return {
@@ -50,9 +53,38 @@ export default {
                             pendingstatus: "Clinic failed to reach patient on mobile"
                         
                         })
-                        console.log("pendingbooking collection has been updated")
+                        /* Add a notifications part to the user */
+                        console.log("pendingbooking document has been updated")
                     })
             })  
+        },
+        verify: function () {
+            confirm("Proceed in verifying?")
+            var x = this.patientDetails.name
+            database.collection("patients").where("name", "==", x)
+            .get()
+            .then((querySnapShot) => {
+                    let item = {};
+                    querySnapShot.forEach((doc) => {
+                        item = doc.id;
+                        database.collection("patients").doc(item).update({
+                            verifiedclinics: firebase.firestore.FieldValue.arrayUnion(this.patientDetails.clinic)
+                        })
+                        console.log("patients has been verified")
+                    })
+            })
+            database.collection("pendingbooking").where("name", "==", x)
+            .get()
+            .then((querySnapShot) => {
+                    let item = {};
+                    querySnapShot.forEach((doc) => {
+                        item = doc.id;
+                        database.collection("pendingbooking").doc(item).delete()
+                        console.log("pendingbooking document has been deleted")
+                    })
+            })
+            /* Add a notifications part to the user */
+            this.$router.push("/pendingbooking");   
         },
 
         scheduled: function () {
@@ -81,9 +113,10 @@ export default {
                     querySnapShot.forEach((doc) => {
                         item = doc.id;
                         database.collection("pendingbooking").doc(item).delete()
-                        console.log("pendingbooking collection has been deleted")
+                        console.log("pendingbooking document has been deleted")
                     })
             })
+            /* Add a notifications part to the user */
             this.$router.push("/pendingbooking");  
         }
     }
@@ -129,14 +162,19 @@ li#pending {
 }
 button#fail {
     position: relative;
-    top: 230px;
+    top: 100px;
 }
+button#verify {
+    position: relative;
+    top: 100px;
+}
+
 div#physicalform {
     position: relative;
     width: 562px;
     height: 140px;
     left: 700px;
-    top: 32px;
+    top: 54px;
 
     border: 1px solid #000000;
     box-sizing: border-box;
