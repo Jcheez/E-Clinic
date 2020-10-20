@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import uploader from "../uploadDocs.vue";
+import uploader from "./uploadDocs.vue";
 import database from "../../firebase.js";
 
 export default {
