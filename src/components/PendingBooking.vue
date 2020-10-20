@@ -13,10 +13,14 @@
             >
           </div>
           <button id="outofplace" v-if="patient.physical && patient.firstTime">
+            <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
             Make A Booking
+            </router-link>
           </button>
           <button v-else-if="patient.physical || patient.firstTime">
+            <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
             Make A Booking
+            </router-link>
           </button>
         </li>
       </template>
@@ -29,6 +33,9 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
+      /* when clinic login is complete, remember to props clinic name / something unique
+       * otherwise doctors will be able to see pending bookings of all clinic
+       */ 
       msg: "Pending Booking",
       itemsList: [],
     };
@@ -117,8 +124,16 @@ button {
   box-sizing: border-box;
   border-radius: 15px;
 }
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
 button#outofplace {
   position: relative;
   bottom: 16px;
 }
+
+
 </style>

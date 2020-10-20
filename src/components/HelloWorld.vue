@@ -8,6 +8,15 @@
       <li>
         <router-link to="/patientsnotes">Go to Patient Notes</router-link>
       </li>
+      <li>
+        <router-link to="/makebooking">Go to Make Booking</router-link>
+      </li>
+      <li>
+        <router-link to="/appointment">Appointment Page</router-link>
+      </li>
+      <li>
+        <router-link to="/doctorsettings">Doctor's Settings</router-link>
+      </li>
     </ul>
   </div>
 </template>
