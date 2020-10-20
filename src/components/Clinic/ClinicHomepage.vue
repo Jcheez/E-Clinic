@@ -15,6 +15,7 @@
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
     </ul>
+    <p>------insert dashboard in this space!------</p>
   </div>
 </template>
 
