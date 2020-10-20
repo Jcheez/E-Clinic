@@ -10,7 +10,7 @@
           <span>{{ patient }}</span>
         </div>
         <button id="view">
-          Test
+          <router-link :to="{ name:'uploaddocuments', params: {patientName: patientName, appointmentDate: patient}}">View</router-link>
         </button>
       </li>
     </ul>
@@ -49,6 +49,7 @@ export default {
       this.data = copied;
       if (this.nameQuery.localeCompare("") == 0) {
         this.data = this.apptDates;
+        
       }
       this.$forceUpdate();
     },
@@ -154,5 +155,10 @@ p {
     left: 140px;
     font-size:30px;
     color:brown
+}
+
+a {
+  color: black;
+  text-decoration: none;
 }
 </style>
