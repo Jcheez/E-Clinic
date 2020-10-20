@@ -6,6 +6,9 @@
       <li>
         <router-link to="/makebooking">Go to Make Booking</router-link>
       </li>
+      <li>
+        <router-link to="/pending">See Pending Booking</router-link>
+      </li>
     </ul>
   </div>
 </template>

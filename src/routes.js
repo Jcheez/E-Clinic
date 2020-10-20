@@ -6,6 +6,7 @@ import AppointmentPage from "./components/Clinic/Doctor/DoctorAppointmentPage/Ap
 import DoctorSettings from "./components/Clinic/Doctor/DoctorSettings";
 import PendingBookingRes from "./components/Clinic/PendingBooking_component/PendingBookingRes.vue";
 import PendingBooking from "./components/Clinic/PendingBooking_component/PendingBooking.vue";
+import PendingPatient from "./components/Patient/PendingBooking_component/Pending.vue"
 import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue"
 import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
@@ -14,6 +15,7 @@ import ClinicHome from "./components/Clinic/ClinicHomepage"
 export default [
   { path: "/patienthome", component: PatientHome },
   { path: "/clinichome", component: ClinicHome },
+  { path: "/pending", component: PendingPatient },
   { path: "/pendingbooking", component: PendingBooking },
   { path: "/pendingbooking/resolve", name:"resolve", props: true, component: PendingBookingRes },
   { path: "/patientsnotes", component: PatientNotes },
@@ -21,7 +23,6 @@ export default [
   { path: "/patientsnotes/appointments/uploaddocuments", name: "uploaddocuments", props: true, component: Documents},
   { path: "/appointment", component: AppointmentPage },
   { path: "/doctorsettings", component: DoctorSettings },
-  { path: "/patientsnotes/appointments", name:"appointments", props: true, component: PatientAppointments },
   { path: "/makebooking", component: MakeBooking},
   { path: "/makebookingter", component: MakeBookingTer},
 ];
