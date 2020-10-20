@@ -8,6 +8,7 @@ import PendingBooking from "./components/Clinic/PendingBooking_component/Pending
 import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue"
 import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue"
 import MakeBookingPass from "./components/Patient/MakeBooking_component/MakeBookingPass.vue"
+import MakeBookingConfirmation from "./components/Patient/MakeBooking_component/MakeBookingConfirmationOnline.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
 
@@ -24,5 +25,6 @@ export default [
   { path: "/makebooking", component: MakeBooking},
   { path: "/makebooking/makebookingter", component: MakeBookingTer},
   { path: "/makebooking/makebookingpass", name:"makebookingpass", props: true, component: MakeBookingPass},
+  { path: "/makebooking/makebookingpass/makebookingconfirmation", props: true, name:"makebookingconfirmation", component: MakeBookingConfirmation},
 ];
 

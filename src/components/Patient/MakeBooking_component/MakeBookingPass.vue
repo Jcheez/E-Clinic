@@ -9,7 +9,7 @@
           <span>Time: {{  formatTime(s.date) }}</span>
           <span>Doctor: {{ s.doctor }}</span>
         </div>
-        <button id="view" v-on:click="makeBooking(s.id)">
+        <button id="view" v-on:click="getdoc(s.id); makeBooking(s.id);">
           Make Booking
         </button>
       </li>
@@ -24,9 +24,10 @@ import database from "../../../firebase.js"
 export default {
   data() {
     return {
-        msg: "This page will allow patients to make bookings",
+        msg: "Make Booking",
         date: new Date(),
-        slot: []
+        slot: [],
+        datadoc: {}
     };
   },
   
@@ -46,22 +47,19 @@ export default {
                 .split("/")
                 .reverse()
                 .join("-");
-
-                console.log(item_date)
+                
                 let filtered_date = this.date.toLocaleDateString()
                 .split("/")
                 .reverse()
                 .join("-")
-                console.log(filtered_date)
-                console.log(item_date.localeCompare(filtered_date))
-                console.log("Next")
+
                 if (item_date.localeCompare(filtered_date) == 0 && item.patient == null) {
                 item.id = doc.id;
                 this.slot.push(item);
-                }
-              });
-          });
-      },
+                    }
+                });
+            });
+        },
 
       formatDate: function(date) {
           let ldate = date.toDate().toLocaleDateString().split("/")
@@ -69,26 +67,48 @@ export default {
           ldate[0] = ldate[1]
           ldate[1] = i0
           return ldate.join("/")
-      },
+        },
 
       formatTime: function(time) {
           let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
           ltime.splice(2,1)
           return ltime[0] + ":" + ltime[1] + " " + ltime[2]
+        },
+
+      getdoc: function(ide) {
+          database
+          .collection("consultslots")
+          .get()
+          .then((querySnapShot) => {
+              querySnapShot.forEach((doc) => {
+                  if (ide.localeCompare(doc.id) == 0) {
+                      this.datadoc = doc.data()
+                  }
+              })
+           })
       },
 
       makeBooking: function(id) {
-          database
-          .collection("consultslots")
-          .doc(id)
-          .update({
-              patient: this.patientName
-          })
-          .then(() => {
-            alert("Appointment Slot booked")
-            })
+          this.getdoc(id)
+        database
+        .collection("consultslots")
+        .doc(id)
+        .update({
+            patient: this.patientName
+        })
+        .then(() => {
+        console.log(this.datadoc)
+        this.$router.push({
+            name: "makebookingconfirmation",
+            params: {
+                appdate: this.datadoc.date,
+                doctor: this.datadoc.doctor,
+            }   
+        })
+        alert("Appointment Slot booked")
+        })
           
-      }
+        },
         
   },
   created() {
@@ -117,7 +137,7 @@ div#inner {
 ul#slots {
     position:absolute;
     left: 500px;
-    top: -10px
+    top:-100px
 }
 
 li {
