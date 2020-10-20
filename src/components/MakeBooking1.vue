@@ -10,27 +10,27 @@
         <span>Selected: {{ selected }}</span>
         <br>
         <br>
-        <input type="checkbox" id="fever" value="fever" v-model="checkedConditions">
-        <label for="fever">Fever</label>
-        <input type="checkbox" id="cough" value="cough" v-model="checkedConditions">
-        <label for="cough">Cough</label>
-        <input type="checkbox" id="runny nose" value="runny nose" v-model="checkedConditions">
-        <label for="runny nose">Runny Nose</label>
-        <input type="checkbox" id="sore throat" value="sore throat" v-model="checkedConditions">
-        <label for="sore throat">Sore Throat</label>
-        <input type="checkbox" id="chest pain" value="chest pain" v-model="checkedConditions">
-        <label for="chest pain">Chest Pain</label>
+        <input type="checkbox" id="Fever" value="Fever" v-model="checkedConditions">
+        <label for="Fever">Fever</label>
+        <input type="checkbox" id="Cough" value="Cough" v-model="checkedConditions">
+        <label for="Cough">Cough</label>
+        <input type="checkbox" id="Runny Nose" value="Runny Nose" v-model="checkedConditions">
+        <label for="Runny Nose">Runny Nose</label>
+        <input type="checkbox" id="Sore Throat" value="Sore Throat" v-model="checkedConditions">
+        <label for="Sore Throat">Sore Throat</label>
+        <input type="checkbox" id="Chest Pain" value="Chest Pain" v-model="checkedConditions">
+        <label for="Chest Pain">Chest Pain</label>
         <br>
-        <input type="checkbox" id="diarrhoea" value="diarrhoea" v-model="checkedConditions">
-        <label for="diarrhoea">Diarrhoea</label>
-        <input type="checkbox" id="skin conditions" value="skin conditions" v-model="checkedConditions">
-        <label for="skin conditions">Skin Conditions</label>
-        <input type="checkbox" id="high blood pressure" value="high blood pressure" v-model="checkedConditions">
-        <label for="high blood pressure">High Blood Pressure</label>
-        <input type="checkbox" id="diabetes" value="diabetes" v-model="checkedConditions">
-        <label for="diabetes">Diabetes</label>
-        <input type="checkbox" id="family planning" value="family planning" v-model="checkedConditions">
-        <label for="family planning">Family Planning</label>
+        <input type="checkbox" id="Diarrhoea" value="Diarrhoea" v-model="checkedConditions">
+        <label for="Diarrhoea">Diarrhoea</label>
+        <input type="checkbox" id="Skin Conditions" value="Skin Conditions" v-model="checkedConditions">
+        <label for="Skin Conditions">Skin Conditions</label>
+        <input type="checkbox" id="High Blood Pressure" value="High Blood Pressure" v-model="checkedConditions">
+        <label for="High Blood Pressure">High Blood Pressure</label>
+        <input type="checkbox" id="Diabetes" value="Diabetes" v-model="checkedConditions">
+        <label for="Diabetes">Diabetes</label>
+        <input type="checkbox" id="Family Planning" value="Family Planning" v-model="checkedConditions">
+        <label for="Family Planning">Family Planning</label>
         <br>
         <span>Checked Conditions: {{ checkedConditions }}</span>
         <br>
@@ -72,7 +72,7 @@ export default {
             } else {
                 this.errorstring = "";
                 var a = this.checkedConditions;
-                var physicalbool = (a.includes('fever') || a.includes('cough') || a.includes('sore throat') || a.includes('runny nose') || a.includes('chest pain')) 
+                var physicalbool = (a.includes('Fever') || a.includes('Cough') || a.includes('Sore Throat') || a.includes('Runny Nose') || a.includes('Chest Pain')) 
                 database.collection('patients').where("name", "==", this.name)
                 .get()
                 .then((querySnapShot) => {
@@ -82,6 +82,7 @@ export default {
                         console.log(item.verifiedclinics)
                         var firstbool = !item.verifiedclinics.includes(this.selected)
                         
+                        console.log(physicalbool)
 
                         if (physicalbool || firstbool) {
                             this.$router.push('/makebookingter')
