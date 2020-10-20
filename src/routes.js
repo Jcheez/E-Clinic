@@ -1,9 +1,9 @@
-import PendingBooking from "./components/PendingBooking.vue";
-import PendingBookingRes from "./components/PendingBookingRes.vue";
+import PendingBooking from "./components/PendingBooking_component/PendingBooking.vue";
+import PendingBookingRes from "./components/PendingBooking_component/PendingBookingRes.vue";
 import PatientNotes from "./components/PatientNotes_components/PatientNotes.vue";
 import PatientAppointments from "./components/PatientNotes_components/PatientAppointments.vue";
-import MakeBooking from "./components/MakeBooking1.vue"
-import MakeBookingTer from "./components/MakeBookingTer.vue"
+import MakeBooking from "./components/MakeBooking_component/MakeBooking1.vue"
+import MakeBookingTer from "./components/MakeBooking_component/MakeBookingTer.vue"
 
 export default [
   { path: "/pendingbooking", component: PendingBooking },

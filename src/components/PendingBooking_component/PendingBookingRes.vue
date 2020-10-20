@@ -27,7 +27,7 @@
 </template>
 
 <script scoped>
-import database from "../firebase.js";
+import database from "../../firebase.js";
 import * as firebase from "firebase";
 export default {
     data() {
