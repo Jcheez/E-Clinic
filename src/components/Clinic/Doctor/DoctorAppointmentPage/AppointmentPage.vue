@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import database from "../firebase.js";
+import database from "../../../../firebase";
 import create from "./CreateSlot";
 import scheduled from "./ScheduledAppointments";
 import tile from "./ConsultationTile";

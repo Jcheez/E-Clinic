@@ -2,11 +2,9 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <ul>
+
       <li>
-        <router-link to="/clinichome">Clinic</router-link>
-      </li>
-      <li>
-        <router-link to="/patienthome">Patient</router-link>
+        <router-link to="/makebooking">Go to Make Booking</router-link>
       </li>
     </ul>
   </div>
@@ -14,7 +12,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "patientHome",
   props: {
     msg: String,
   },

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import database from "../firebase.js";
+import database from "../../../../firebase";
 import firebase from "firebase/app";
 export default {
   data() {

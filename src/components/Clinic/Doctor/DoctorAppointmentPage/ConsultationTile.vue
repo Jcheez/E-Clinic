@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import database from "../firebase.js";
+import database from "../../../../firebase";
 import Reschedule from "./RescheduleSlot";
 export default {
   data() {

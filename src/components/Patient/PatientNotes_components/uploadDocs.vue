@@ -19,7 +19,7 @@
 
 <script>
 import firebase from "firebase";
-import database from "../../firebase.js";
+import database from "../../../firebase.js";
 
 export default {
   name: "Upload",

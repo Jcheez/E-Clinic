@@ -3,10 +3,16 @@
     <h1>{{ msg }}</h1>
     <ul>
       <li>
-        <router-link to="/clinichome">Clinic</router-link>
+        <router-link to="/pendingbooking">Go to Pending Booking</router-link>
       </li>
       <li>
-        <router-link to="/patienthome">Patient</router-link>
+        <router-link to="/patientsnotes">Go to Patient Notes</router-link>
+      </li>
+      <li>
+        <router-link to="/appointment">Appointment Page</router-link>
+      </li>
+      <li>
+        <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
     </ul>
   </div>
