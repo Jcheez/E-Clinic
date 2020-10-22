@@ -15,16 +15,38 @@
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
     </ul>
-    <p>------insert dashboard in this space!------</p>
+    <!--div>
+      <p>Choose year</p>
+      <select id="year">
+        <option value="0">Year:</option>
+        <option>2020</option>
+        <option>2021</option>
+        <option>2022</option>
+        <option>2023</option>
+
+      </select>
+    </div-->
+    <div id="chart">
+      <ratingchart></ratingchart>
+    </div>
   </div>
 </template>
 
 <script>
+import ratingchart from './ratingchart'
 export default {
   name: "HelloWorld",
   props: {
     msg: String,
   },
+  data() {
+    return {
+      selected: '',
+    }
+  },
+  components: {
+    ratingchart
+  }
 };
 </script>
 
@@ -43,5 +65,12 @@ li {
 }
 a {
   color: #42b983;
+}
+#chart{
+  height:240px;
+  width:300px;
+  border-color:rgb(155, 84, 84);
+  padding-bottom: 60px;
+  padding-right: 100px;
 }
 </style>
