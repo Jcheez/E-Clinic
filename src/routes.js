@@ -10,10 +10,15 @@ import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1
 import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
+import ClinicLogin from "./components/ClinicLogin"
+import ClinicSignup from "./components/ClinicSignup"
+
 
 export default [
+  { path: "/clinicsignup", component: ClinicSignup },
+  { path: "/cliniclogin", name: "cliniclogin", component: ClinicLogin },
   { path: "/patienthome", component: PatientHome },
-  { path: "/clinichome", component: ClinicHome },
+  { path: "/clinichome", name: "clinichome", component: ClinicHome, meta: {requiresAuth: true} },
   { path: "/pendingbooking", component: PendingBooking },
   { path: "/pendingbooking/resolve", name:"resolve", props: true, component: PendingBookingRes },
   { path: "/patientsnotes", component: PatientNotes },

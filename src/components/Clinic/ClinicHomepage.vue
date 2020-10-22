@@ -14,18 +14,10 @@
       <li>
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
+      <li>
+        <router-link to="/">Logout</router-link>
+      </li>
     </ul>
-    <!--div>
-      <p>Choose year</p>
-      <select id="year">
-        <option value="0">Year:</option>
-        <option>2020</option>
-        <option>2021</option>
-        <option>2022</option>
-        <option>2023</option>
-
-      </select>
-    </div-->
     <div id="chart">
       <ratingchart></ratingchart>
     </div>
@@ -34,18 +26,26 @@
 
 <script>
 import ratingchart from './ratingchart'
+import firebase from "firebase"
 export default {
-  name: "HelloWorld",
+  name: "clinichome",
   props: {
     msg: String,
   },
   data() {
     return {
-      selected: '',
     }
   },
   components: {
     ratingchart
+  },
+  
+  methods: {
+    signOut() {
+      firebase
+        .auth()
+        .signOut()
+    }
   }
 };
 </script>

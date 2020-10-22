@@ -1,5 +1,6 @@
 import {Bar} from 'vue-chartjs'
 import database from '../../firebase'
+import firebase from "firebase";
 
 export default{
     extends:Bar,
@@ -52,7 +53,7 @@ export default{
         },
     
         fetchData : function(){
-            let x = "Ruffles" //change to firebase.auth().getUser()
+            let x = firebase.auth().currentUser.displayName
             let doctors = {}
             database.collection('doctors').where("clinic", "==", x).get().then((snapshot) => {
                 snapshot.forEach((doc) => {
