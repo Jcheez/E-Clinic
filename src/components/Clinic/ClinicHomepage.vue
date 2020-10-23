@@ -15,15 +15,22 @@
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
     </ul>
+
+    <div id="chart">
+      <linechart></linechart>
+    </div>
   </div>
 </template>
 
 <script>
+import ME from "./MonthlyEarnings.js";
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String,
   },
+  components: { linechart: ME },
 };
 </script>
 
@@ -42,5 +49,15 @@ li {
 }
 a {
   color: #42b983;
+}
+
+#chart {
+  height: 400px;
+  width: 400px;
+  border-style: solid;
+  border-color: rgb(155, 84, 84);
+  border-width: 1px;
+  padding: 30px;
+  float: left;
 }
 </style>
