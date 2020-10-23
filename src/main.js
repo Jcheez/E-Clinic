@@ -19,6 +19,7 @@ myRouter.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
   const { authorize } = to.meta;
   const currentUser = firebase.auth().currentUser
+  console.log(currentUser)
 
   if (authorize) {
       if (!currentUser) {
@@ -41,8 +42,11 @@ myRouter.beforeEach((to, from, next) => {
   next();
 })
 
-new Vue({
-  render: (h) => h(App),
-  router: myRouter,
-  store
-}).$mount("#app");
+firebase.auth().onAuthStateChanged(function(user) {
+  console.log(user)
+  new Vue({
+      router: myRouter,
+      render: h => h(App),
+      store
+    }).$mount('#app')
+  })

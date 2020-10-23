@@ -4,6 +4,8 @@
 import database from "../../firebase";
 import firebase from "firebase/app";
 import { Line } from "vue-chartjs";
+import { mapGetters} from "vuex";
+
 export default {
   extends: Line,
   data: () => ({
@@ -46,6 +48,9 @@ export default {
       },
     },
   }),
+  computed: {
+    ...mapGetters(["getUser"])
+  },
   methods: {
     getPastSixMonthsString: function(monthsNumArray) {
       let pastSixMonthsString = [];
@@ -86,6 +91,7 @@ export default {
 
     fetchData: function() {
       var monthsArray = this.getPastSixMonthsNum();
+      let x = this.getUser.displayName
       console.log(monthsArray);
       this.chartdata.labels = this.getPastSixMonthsString(monthsArray);
       console.log(this.getPastSixMonthsString(monthsArray));
@@ -101,7 +107,7 @@ export default {
         console.log(startOfMonth, endOfMonth);
         var clinicMonthTotal = database
           .collection("consultslots")
-          .where("clinic", "==", "Ruffles")
+          .where("clinic", "==", x)
           //.where("patient", "!=", null) not allowed:(
           .where(
             "date",

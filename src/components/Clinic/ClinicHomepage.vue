@@ -21,7 +21,7 @@
     <div v-if="isUserAuth" id="chart">
       <ratingchart></ratingchart>
     </div>
-    <div id="monthlyRev">
+    <div v-if="isUserAuth" id="monthlyRev">
       <linechart></linechart>
     </div>
   </div>

@@ -21,12 +21,12 @@ const actions = {
               displayName: payload.name,
               photoURL: "clinic"
             })
-            firebase.firestore().collection('clinics').doc(data.user.uid).set({
+            return firebase.firestore().collection('clinics').doc(data.user.uid).set({
                 name: payload.name,
                 //openingHours: this.form.hours,
                 doctors: [],
             })
-        })
+        }).then(res => console.log(res))
         .catch(error => {
           commit("setError", error.message);
         });
@@ -40,14 +40,14 @@ const actions = {
               displayName: payload.name,
               photoURL: "patient"
             })
-            firebase.firestore().collection('patients').doc(data.user.uid).set({
+            return firebase.firestore().collection('patients').doc(data.user.uid).set({
                 name: payload.name,
                 appointment_history: [],
                 verifiedclinics: [],
                 notes: {},
                 upcoming: {}
             })
-        })
+        }).then(res => console.log(res))
         .catch(error => {
           commit("setError", error.message);
         });
