@@ -14,11 +14,11 @@
       <li>
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
-      <li>
-        <router-link to="/">Logout</router-link>
-      </li>
     </ul>
-    <div id="chart">
+    <button @click="signOut" class="button is-primary">
+      <strong>Logout</strong>
+    </button>
+    <div v-if="isUserAuth" id="chart">
       <ratingchart></ratingchart>
     </div>
   </div>
@@ -26,7 +26,7 @@
 
 <script>
 import ratingchart from './ratingchart'
-import firebase from "firebase"
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "clinichome",
   props: {
@@ -39,12 +39,14 @@ export default {
   components: {
     ratingchart
   },
-  
+  computed: {
+    ...mapGetters(["getUser", "isUserAuth"])
+  },
   methods: {
+    ...mapActions(["signOutAction"]),
     signOut() {
-      firebase
-        .auth()
-        .signOut()
+      this.signOutAction();
+      this.$router.push('/cliniclogin')
     }
   }
 };

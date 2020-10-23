@@ -1,7 +1,6 @@
 import {Bar} from 'vue-chartjs'
 import database from '../../firebase'
-import firebase from "firebase";
-
+import { mapGetters} from "vuex";
 export default{
     extends:Bar,
     data: () => ({
@@ -41,6 +40,10 @@ export default{
             }
         }
       }),
+      computed: {
+        ...mapGetters(["getUser"])
+      },
+
     methods:{
 
         getRandomColor: function() {
@@ -53,7 +56,7 @@ export default{
         },
     
         fetchData : function(){
-            let x = firebase.auth().currentUser.displayName
+            let x = this.getUser.displayName
             let doctors = {}
             database.collection('doctors').where("clinic", "==", x).get().then((snapshot) => {
                 snapshot.forEach((doc) => {
@@ -122,6 +125,7 @@ export default{
     },
      mounted(){
         this.fetchData()
+        
         
      }
 
