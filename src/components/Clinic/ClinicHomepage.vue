@@ -21,10 +21,15 @@
     <div v-if="isUserAuth" id="chart">
       <ratingchart></ratingchart>
     </div>
+    <div id="monthlyRev">
+      <linechart></linechart>
+    </div>
   </div>
 </template>
 
 <script>
+
+import MonthlyRev from "./MonthlyRev.js";
 import ratingchart from './ratingchart'
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -32,12 +37,9 @@ export default {
   props: {
     msg: String,
   },
+  components: { linechart: MonthlyRev, ratingchart },
   data() {
-    return {
-    }
-  },
-  components: {
-    ratingchart
+    return {};
   },
   computed: {
     ...mapGetters(["getUser", "isUserAuth"])
@@ -68,10 +70,20 @@ li {
 a {
   color: #42b983;
 }
-#chart{
-  height:240px;
-  width:300px;
-  border-color:rgb(155, 84, 84);
+
+#monthlyRev {
+  height: 400px;
+  width: 400px;
+  border-style: solid;
+  border-color: rgb(155, 84, 84);
+  border-width: 1px;
+  padding: 30px;
+  float: left;
+}
+#chart {
+  height: 240px;
+  width: 300px;
+  border-color: rgb(155, 84, 84);
   padding-bottom: 60px;
   padding-right: 100px;
 }
