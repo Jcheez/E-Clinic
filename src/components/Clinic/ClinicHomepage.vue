@@ -14,40 +14,43 @@
       <li>
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
-      <li>
-        <router-link to="/">Logout</router-link>
-      </li>
     </ul>
+    <button @click="signOut" class="button is-primary">
+      <strong>Logout</strong>
+    </button>
+    <div v-if="isUserAuth" id="chart">
+      <ratingchart></ratingchart>
+    </div>
     <div id="monthlyRev">
       <linechart></linechart>
-    <div id="chart">
-      <ratingchart></ratingchart>
     </div>
   </div>
 </template>
 
 <script>
-import ratingchart from "./ratingchart";
-import firebase from "firebase";
+
 import MonthlyRev from "./MonthlyRev.js";
+import ratingchart from './ratingchart'
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "clinichome",
   props: {
     msg: String,
   },
-  components: { linechart: MonthlyRev },
+  components: { linechart: MonthlyRev, ratingchart },
   data() {
     return {};
   },
-  components: {
-    ratingchart,
+  computed: {
+    ...mapGetters(["getUser", "isUserAuth"])
   },
-
   methods: {
+    ...mapActions(["signOutAction"]),
     signOut() {
-      firebase.auth().signOut();
-    },
-  },
+      this.signOutAction();
+      this.$router.push('/cliniclogin')
+    }
+  }
 };
 </script>
 

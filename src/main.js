@@ -3,6 +3,7 @@ import App from "./App.vue";
 import VCalendar from 'v-calendar'
 import VueRouter from "vue-router";
 import Routes from "./routes.js";
+import store from "./store/store"
 import firebase from "firebase"
 
 Vue.use(VueRouter);
@@ -15,20 +16,33 @@ const myRouter = new VueRouter({
 });
 
 myRouter.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const isAuthenticated = firebase.auth().currentUser
-  console.log(isAuthenticated)
-  if(isAuthenticated && to.path == '/') {
-    next('/clinichome')
+  // redirect to login page if not logged in and trying to access a restricted page
+  const { authorize } = to.meta;
+  const currentUser = firebase.auth().currentUser
+
+  if (authorize) {
+      if (!currentUser) {
+          alert("Page requires login")
+          // not logged in so redirect to login page with the return url
+          if (to.name == "clinichome") {
+            return next({ path: '/cliniclogin', query: { returnUrl: to.path } });
+          } else {
+            return next({ path: '/patientlogin', query: { returnUrl: to.path } });
+          }
+      }
+      // check if route is restricted by role
+      if (authorize.length && !authorize.includes(currentUser.photoURL)) {
+          alert("Restricted page access, not available")
+          // role not authorised so redirect to home page
+          return next({ path: '/' });
+      }
   }
-  if (requiresAuth && !isAuthenticated) {
-    next('/cliniclogin')
-  } else {
-    next()
-  }
-}) 
+
+  next();
+})
 
 new Vue({
   render: (h) => h(App),
   router: myRouter,
+  store
 }).$mount("#app");

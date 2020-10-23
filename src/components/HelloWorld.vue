@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <ul>
+    <ul v-if="!isUserAuth">
       <li>
         <router-link to="/cliniclogin">Clinic</router-link>
       </li>
@@ -13,10 +13,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "HelloWorld",
   props: {
     msg: String,
+  },
+  computed: {
+    ...mapGetters(["getUser", "isUserAuth"])
   },
 };
 </script>
