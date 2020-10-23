@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <ul>
       <li>
-        <router-link to="/clinichome">Clinic</router-link>
+        <router-link to="/cliniclogin">Clinic</router-link>
       </li>
       <li>
         <router-link to="/patienthome">Patient</router-link>

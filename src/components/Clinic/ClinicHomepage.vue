@@ -14,23 +14,40 @@
       <li>
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
+      <li>
+        <router-link to="/">Logout</router-link>
+      </li>
     </ul>
-
-    <div id="chart">
+    <div id="monthlyRev">
       <linechart></linechart>
+    <div id="chart">
+      <ratingchart></ratingchart>
     </div>
   </div>
 </template>
 
 <script>
-import ME from "./MonthlyEarnings.js";
-
+import ratingchart from "./ratingchart";
+import firebase from "firebase";
+import MonthlyRev from "./MonthlyRev.js";
 export default {
-  name: "HelloWorld",
+  name: "clinichome",
   props: {
     msg: String,
   },
-  components: { linechart: ME },
+  components: { linechart: MonthlyRev },
+  data() {
+    return {};
+  },
+  components: {
+    ratingchart,
+  },
+
+  methods: {
+    signOut() {
+      firebase.auth().signOut();
+    },
+  },
 };
 </script>
 
@@ -51,7 +68,7 @@ a {
   color: #42b983;
 }
 
-#chart {
+#monthlyRev {
   height: 400px;
   width: 400px;
   border-style: solid;
@@ -59,5 +76,12 @@ a {
   border-width: 1px;
   padding: 30px;
   float: left;
+}
+#chart {
+  height: 240px;
+  width: 300px;
+  border-color: rgb(155, 84, 84);
+  padding-bottom: 60px;
+  padding-right: 100px;
 }
 </style>
