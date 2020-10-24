@@ -7,6 +7,7 @@
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -22,6 +23,15 @@ export default {
             this.$router.push('/pendingbooking')
         }
       }
+  },
+  mounted() {
+    this.authAction();
+  },
+  computed: {
+    ...mapGetters(["getUser", "isUserAuth"])
+  },
+  methods: {
+    ...mapActions(["authAction"])
   }
 };
 </script>
