@@ -15,10 +15,22 @@
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
     </ul>
+
+    <div id="sideNavBar">
+      <!--router-link to="/DoctorsList">Doctors</router-link-->
+      <h4>Doctors</h4>
+      <!--router-link to="/ClinicSettings"-->
+      <h4>Settings</h4>
+      <!--/router-link-->
+    </div>
     <button @click="signOut" class="button is-primary">
       <strong>Logout</strong>
     </button>
-    <div v-if="isUserAuth" id="chart">
+    <br />
+    <div v-if="isUserAuth" id="monthlyPatient">
+      <mp></mp>
+    </div>
+    <div v-if="isUserAuth" id="rating">
       <ratingchart></ratingchart>
     </div>
     <div v-if="isUserAuth" id="monthlyRev">
@@ -28,29 +40,29 @@
 </template>
 
 <script>
-
 import MonthlyRev from "./MonthlyRev.js";
-import ratingchart from './ratingchart'
+import ratingchart from "./ratingchart";
+import MonthlyPatient from "./MonthlyPatients.js";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "clinichome",
   props: {
     msg: String,
   },
-  components: { linechart: MonthlyRev, ratingchart },
+  components: { linechart: MonthlyRev, ratingchart, mp: MonthlyPatient },
   data() {
     return {};
   },
   computed: {
-    ...mapGetters(["getUser", "isUserAuth"])
+    ...mapGetters(["getUser", "isUserAuth"]),
   },
   methods: {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push('/cliniclogin')
-    }
-  }
+      this.$router.push("/cliniclogin");
+    },
+  },
 };
 </script>
 
@@ -71,20 +83,44 @@ a {
   color: #42b983;
 }
 
-#monthlyRev {
-  height: 400px;
-  width: 400px;
+#monthlyRev,
+#rating {
+  height: 300px;
+  width: 300px;
   border-style: solid;
-  border-color: rgb(155, 84, 84);
+  border-color: rgb(0, 114, 180);
   border-width: 1px;
   padding: 30px;
+  margin: 10px;
   float: left;
 }
-#chart {
+
+#monthlyPatient {
+  height: 750px;
+  width: 750px;
+  border-style: solid;
+  border-color: rgb(0, 114, 180);
+  border-width: 1px;
+  padding: 30px;
+  margin: 10px;
+  display: inline-block;
+  float: left;
+}
+/*#rating {
   height: 240px;
   width: 300px;
-  border-color: rgb(155, 84, 84);
+  border-color: rgb(0, 114, 180);
   padding-bottom: 60px;
   padding-right: 100px;
+}*/
+
+#sideNavBar {
+  width: 100px;
+  float: left;
+  height: 1000px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: rgb(0, 114, 180);
+  color: white;
 }
 </style>
