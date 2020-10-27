@@ -19,51 +19,51 @@
               <button @click="resetError()" class="delete">Ok</button>
             </div>
           </div>
-          <form>
+          <form class="signup">
             <div class="field">
-              <label class="label">Name</label>
+              <!-- <label class="label">Name</label> -->
               <div class="control">
                 <input
                   v-model="name"
                   class="input"
                   type="text"
-                  placeholder="Name"
+                  placeholder="Enter Name"
                 />
               </div>
             </div>
             <div class="field">
-              <label class="label">E-mail</label>
+              <!-- <label class="label">E-mail</label> -->
               <div class="control">
                 <input
                   v-model="email"
                   class="input"
                   type="text"
                   autocomplete="email"
-                  placeholder="example@email.com"
+                  placeholder="Enter Email"
                 />
               </div>
             </div>
             <div class="field">
-              <label class="label">Password</label>
+              <!-- <label class="label">Password</label> -->
               <div class="control">
                 <input
                   v-model="password"
                   class="input"
                   type="password"
                   autocomplete="current-password"
-                  placeholder="Password"
+                  placeholder="Enter Password"
                 />
               </div>
             </div>
             <div class="field">
-              <label class="label">Repeat password</label>
+              <!-- <label class="label">Repeat password</label> -->
               <div class="control">
                 <input
                   v-model="passwordRepeat"
                   class="input"
                   type="password"
                   autocomplete="new-password"
-                  placeholder="Password"
+                  placeholder="Repeat Password"
                 />
               </div>
             </div>
@@ -141,3 +141,48 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.signup {
+  background-color: white;
+  width: 380px;
+  height: 300px;
+  margin: auto;
+  border-radius: 20px;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+input[type=text], input[type=password] {
+  position: relative;
+  top: 20px;
+  display:block;
+  text-align: left;
+  color: rgb(0, 114, 180);
+  font-family: Nunito;
+  font-size: 14px;
+  width: 280px;
+  padding: 10px;
+  margin: 15px 0px 5px 30px;
+  border:none;
+  background-color: rgba(122, 113, 113, 0.04);
+}
+
+.control button {
+  display:block;
+  margin: 40px 0px 0px 250px;
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  background-color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 80px;
+  height: 36px;
+  color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+}
+
+.control button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
+</style>

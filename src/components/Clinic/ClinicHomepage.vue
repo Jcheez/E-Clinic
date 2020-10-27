@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <ul>
+    <!-- <ul>
       <li>
         <router-link to="/pendingbooking">Go to Pending Booking</router-link>
       </li>
@@ -14,27 +13,28 @@
       <li>
         <router-link to="/doctorsettings">Doctor's Settings</router-link>
       </li>
-    </ul>
+    </ul> -->
 
     <div id="sideNavBar">
-      <!--router-link to="/DoctorsList">Doctors</router-link-->
-      <h4>Doctors</h4>
-      <!--router-link to="/ClinicSettings"-->
-      <h4>Settings</h4>
-      <!--/router-link-->
+      <h3>E-Clinic</h3>
+      <router-link to="/clinichome">Dashboard</router-link><br>
+      <router-link to="/doctorslist">Doctors</router-link><br>
+      <router-link to="/clinicsettings">
+      Settings</router-link><br>
+      <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <button @click="signOut" class="button is-primary">
-      <strong>Logout</strong>
-    </button>
+
     <br />
-    <div v-if="isUserAuth" id="monthlyPatient">
-      <mp></mp>
-    </div>
-    <div v-if="isUserAuth" id="rating">
-      <ratingchart></ratingchart>
-    </div>
-    <div v-if="isUserAuth" id="monthlyRev">
-      <linechart></linechart>
+    <div class="main">
+      <div v-if="isUserAuth" id="monthlyPatient">
+        <mp></mp>
+      </div>
+      <div v-if="isUserAuth" id="monthlyRev">
+        <linechart></linechart>
+      </div>
+      <div v-if="isUserAuth" id="rating">
+        <ratingchart></ratingchart>
+      </div>
     </div>
   </div>
 </template>
@@ -46,10 +46,11 @@ import MonthlyPatient from "./MonthlyPatients.js";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "clinichome",
-  props: {
-    msg: String,
-  },
-  components: { linechart: MonthlyRev, ratingchart, mp: MonthlyPatient },
+  // props: {
+  //   msg: String,
+  // },
+  components: { 
+    linechart: MonthlyRev, ratingchart, mp: MonthlyPatient,},
   data() {
     return {};
   },
@@ -68,9 +69,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -79,29 +79,42 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
-  color: #42b983;
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 17px;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin: 60px 0 0 0;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-#monthlyRev,
-#rating {
-  height: 300px;
-  width: 300px;
-  border-style: solid;
+a:hover {
+  font-size: 18px;
+  color: white;
+}
+
+#monthlyPatient {
+  height: 100%;
+  width: 700px;
+  /* border-style: solid;
   border-color: rgb(0, 114, 180);
-  border-width: 1px;
-  padding: 30px;
+  border-width: 1px; */
+  padding: 0px 80px;
   margin: 10px;
   float: left;
 }
 
-#monthlyPatient {
-  height: 750px;
-  width: 750px;
-  border-style: solid;
+#monthlyRev, #rating {
+  height: 100%;
+  width: 360px;
+  /* border-style: solid;
   border-color: rgb(0, 114, 180);
-  border-width: 1px;
-  padding: 30px;
+  border-width: 1px; */
+  padding: 0px 30px;
   margin: 10px;
   display: inline-block;
   float: left;
@@ -115,12 +128,31 @@ a {
 }*/
 
 #sideNavBar {
-  width: 100px;
-  float: left;
-  height: 1000px;
-  border: 1px solid white;
-  border-radius: 5px;
+  width: 180px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
-  color: white;
+  color: rgb(238, 249, 255);
 }
+
+h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bold;
+  padding: 10px 0px 20px 0px;
+}
+
+.main {
+  margin-top: -20px;
+  margin-left: 160px;
+  padding: 0px 60px;
+}
+
 </style>

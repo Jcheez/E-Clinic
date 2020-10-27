@@ -5,7 +5,20 @@ export default{
     extends:Bar,
     data: () => ({
         chartdata: {
-          labels:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels:[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
           datasets: [
           ]
           
@@ -13,22 +26,20 @@ export default{
         options: {
             title:{
                 display:true,
-                text:'Average Rating Received',
+                text:'Monthly Average Rating Score',
                 fontColor:'Black',
-                fontSize:15
-
+                fontSize:15,
             },
-            legend:{
-                position:'bottom'
-            },
-            layout:{
-                padding:{
-                    left: 5,
-                    right: 5,
-                    top: 0,
-                    bottom: 5
-                }
-            },
+            responsive: true,
+            maintainAspectRatio: false,
+            // layout:{
+            //     padding:{
+            //         left: 5,
+            //         right: 5,
+            //         top: 0,
+            //         bottom: 5
+            //     }
+            // },
             scales:{
                 yAxes:[{
                     ticks:{
@@ -45,7 +56,6 @@ export default{
       },
 
     methods:{
-
         getRandomColor: function() {
             var letters = '0123456789ABCDEF'.split('');
             var color = '#';
@@ -103,7 +113,7 @@ export default{
                     data:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     borderWidth:0.5,
                     //borderColor:"black",
-                    backgroundColor:'black',
+                    backgroundColor: "rgb(0, 114, 180)",
                     fill:false
                 }
                 let index = this.chartdata.datasets.length
