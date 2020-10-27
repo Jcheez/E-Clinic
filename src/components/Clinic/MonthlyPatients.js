@@ -1,5 +1,6 @@
 import { Bar } from "vue-chartjs";
 import database from "../../firebase.js";
+import { mapGetters } from "vuex";
 
 export default {
   extends: Bar,
@@ -27,12 +28,15 @@ export default {
           display: true,
           text: "Monthly Number of Patients",
           fontColor: "Black",
-          fontSize: 15,
-          response: true,
-          maintainAspectRatio: false,
+          fontSize: 20,
         },
+        responsive: true,
+        maintainAspectRatio: false,
       },
     };
+  },
+  computed: {
+    ...mapGetters(["getUser"])
   },
   methods: {
     getRandomColor: function() {
@@ -45,11 +49,12 @@ export default {
     },
     //Must modify clinic to be the one currently logged in not hardcode a clinic
     fetchItems: function() {
+      let x = this.getUser.displayName;
       var doctors = {};
       //store doctor ID and name as key:value pair
       database
         .collection("doctors")
-        .where("clinic", "==", "Ruffles")
+        .where("clinic", "==", x)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -59,7 +64,7 @@ export default {
 
       database
         .collection("consultslots")
-        .where("clinic", "==", "Ruffles")
+        .where("clinic", "==", x)
         .where("patient", "!=", null)
         .get()
         .then((querySnapshot) => {
@@ -102,7 +107,7 @@ export default {
           let total = {
             label: "Overall",
             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            backgroundColor: "black",
+            backgroundColor: "rgb(0, 114, 180)",
           };
           let index = this.datacollection.datasets.length;
           this.datacollection.datasets.push(total);

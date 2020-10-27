@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h2>Empowering Medicine <br>Through the Internet</h2>
+    <h4>Choose Your Account Type</h4>
     <ul v-if="!isUserAuth">
       <li>
         <router-link to="/cliniclogin">Clinic</router-link>
@@ -27,11 +29,33 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap');
+
+h1 {
+  text-align: left;
+  padding-left: 20px;
+  color: rgb(0, 114, 180);
+  font-family: Nunito;
+  font-weight: bolder;
+  font-size: 40px;
 }
+
+h2 {
+  margin: -20px;
+  font-size: 34px;
+  font-family: Nunito;
+  font-weight: bolder;
+}
+
+h4 {
+  font-size: 20px;
+  font-family: Nunito;
+  font-weight: normal;
+}
+
 ul {
   list-style-type: none;
+  margin-top: -20px;
   padding: 0;
 }
 li {
@@ -39,6 +63,9 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  font-family: Nunito;
+  font-weight: bold;
+  color: rgb(0, 114, 180);
+  text-decoration: none;
 }
 </style>
