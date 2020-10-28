@@ -1,4 +1,3 @@
-// All routes for Patient Notes Component
 import PatientNotes from "./components/Patient/PatientNotes_components/PatientNotes.vue";
 import PatientAppointments from "./components/Patient/PatientNotes_components/PatientAppointments.vue";
 import Documents from "./components/Patient/PatientNotes_components/Documents.vue"
@@ -9,6 +8,8 @@ import PendingBooking from "./components/Clinic/PendingBooking_component/Pending
 import PendingPatient from "./components/Patient/PendingBooking_component/Pending.vue"
 import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue"
 import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue"
+import MakeBookingPass from "./components/Patient/MakeBooking_component/MakeBookingPass.vue"
+import MakeBookingConfirmation from "./components/Patient/MakeBooking_component/MakeBookingConfirmationOnline.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
 
@@ -24,6 +25,8 @@ export default [
   { path: "/appointment", component: AppointmentPage },
   { path: "/doctorsettings", component: DoctorSettings },
   { path: "/makebooking", component: MakeBooking},
-  { path: "/makebookingter", component: MakeBookingTer},
+  { path: "/makebooking/makebookingter", component: MakeBookingTer},
+  { path: "/makebooking/makebookingpass", name:"makebookingpass", props: true, component: MakeBookingPass},
+  { path: "/makebooking/makebookingpass/makebookingconfirmation", props: true, name:"makebookingconfirmation", component: MakeBookingConfirmation},
 ];
 
