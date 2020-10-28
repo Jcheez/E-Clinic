@@ -96,10 +96,9 @@ export default {
                     querySnapShot.forEach((doc) => {
                         item = doc.id;
                         database.collection("patients").doc(item).update({
-                            upcoming: {
-                                0: "physical",
-                                1: this.date,
-                                2: this.time
+                            physicalupcoming: {
+                                0: this.date,
+                                1: this.time
                             }
                         })
                         console.log("physical appt has been added")
