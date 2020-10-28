@@ -58,17 +58,22 @@ export default {
         checkedConditions: [],
         errorstring: "",
         firstbool: [],
+        availableToBook:""
         }
     },
 
     methods: {
         next: function () {
+            console.log(this.availableToBook)
             if (!this.selected && this.checkedConditions.length == 0) {
                 this.errorstring = "Please choose a clinic and at least 1 condition"
             } else if (!this.selected) {
                 this.errorstring = "Please choose a clinic"
             } else if (this.checkedConditions.length == 0) {
                 this.errorstring = "Please choose at least 1 condition"
+            } else if (this.availableToBook == false) {
+                alert("You have an upcoming appointment. Unable to make a new Booking")
+                //REMEMBER TO ROUTE TO VIEW APPOINTMENT COMPONENT
             } else {
                 this.errorstring = "";
                 var a = this.checkedConditions;
@@ -113,6 +118,31 @@ export default {
                 })
             }
         },
+
+        checkAbleToBook: function() {
+            database.collection('patients').where("name", "==", this.name)
+                .get()
+                .then((querySnapShot) => {
+                    let item = {};
+                    querySnapShot.forEach((doc) => {
+                        item = doc.data();
+                        var today = new Date()
+                        console.log(Date.parse(item.upcoming[1]) == today.getTime())
+                        if (Date.parse(item.upcoming[1]) > today.getTime()) {
+                            this.availableToBook = false
+                        } else if (Date.parse(item.upcoming[1]) == today.getTime()) {
+                            if (item.upcoming[2].localeCompare(today.getHours() + "" + today.getMinutes() > 0)) {
+                                this.availableToBook = false
+                            }
+                        } else {
+                            console.log('asdasd')
+                            this.availableToBook = true
+                            console.log(this.availableToBook)
+                        }
+                    });
+                })
+        },
+
         fetchItems: function () {
             database.collection("clinics").get().then((querySnapShot) => {
                 let item = {};
@@ -128,6 +158,7 @@ export default {
     },
     created() {
         this.fetchItems();
+        this.checkAbleToBook()
     }
     
 }

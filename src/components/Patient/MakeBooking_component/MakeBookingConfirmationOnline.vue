@@ -5,7 +5,7 @@
     <p>Appointment Time: {{formatTime(appdate) }}</p>
     <p>Doctor: {{doctor}}</p>
     <p>Consultation type: Online</p>
-    <button>Back to home (NOT CONFIGURED)</button>
+    <button v-on:click="routeHome()">Back to home</button>
   </div>
 </template>
 
@@ -31,6 +31,10 @@ export default {
         return ltime[0] + ":" + ltime[1] + " " + ltime[2]
     },
     
+    routeHome: function() {
+      this.$router.push('/')
+      //To update again where to push this button
+    }
   },
 
   props: {

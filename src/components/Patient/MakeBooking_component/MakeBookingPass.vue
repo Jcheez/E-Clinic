@@ -9,7 +9,7 @@
           <span>Time: {{  formatTime(s.date) }}</span>
           <span>Doctor: {{ s.doctor }}</span>
         </div>
-        <button id="view" v-on:click="getdoc(s.id); makeBooking(s.id);">
+        <button id="view" v-on:click="getdoc(s.id); makeBooking(s.id); updateApptHist();">
           Make Booking
         </button>
       </li>
@@ -19,7 +19,7 @@
 
 <script>
 import database from "../../../firebase.js"
-
+import * as firebase from "firebase";
 
 export default {
   data() {
@@ -75,6 +75,12 @@ export default {
           return ltime[0] + ":" + ltime[1] + " " + ltime[2]
         },
 
+      formatTime2: function(time) {
+        let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
+        ltime.splice(2,1)
+        return ltime[0] + "" + ltime[1]
+      },
+
       getdoc: function(ide) {
           database
           .collection("consultslots")
@@ -86,6 +92,41 @@ export default {
                   }
               })
            })
+      },
+
+      updateApptHist: function() {
+        var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+        ];
+
+        var day = this.date.getDate();
+        var monthIndex = this.date.getMonth();
+        var year = this.date.getFullYear();
+
+        database
+        .collection('patients')
+        .where('name', "==", this.patientName)
+        .get()
+        .then((querySnapShot) => {
+                let item = {};
+                querySnapShot.forEach((doc) => {
+                    item = doc.id;
+                    database.collection("patients").doc(item).update({
+                      appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
+                    })
+                    database.collection("patients").doc(item).update({
+                            upcoming: {
+                                0: "online",
+                                1: day + ' ' + monthNames[monthIndex] + ' ' + year,
+                                2: this.formatTime2(this.datadoc.date)
+                            }
+                        })
+                    console.log("physical appt has been added")
+                })
+        })
       },
 
       makeBooking: function(id) {
