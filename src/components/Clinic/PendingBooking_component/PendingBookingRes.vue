@@ -59,20 +59,20 @@ export default {
             })  
         },
         verify: function () {
-            confirm("Proceed in verifying?")
-            var x = this.patientDetails.name
-            database.collection("patients").where("name", "==", x)
-            .get()
-            .then((querySnapShot) => {
-                    let item = {};
-                    querySnapShot.forEach((doc) => {
-                        item = doc.id;
-                        database.collection("patients").doc(item).update({
-                            verifiedclinics: firebase.firestore.FieldValue.arrayUnion(this.patientDetails.clinic)
+            if (confirm("Proceed in verifying?")) {
+                var x = this.patientDetails.name
+                database.collection("patients").where("name", "==", x)
+                .get()
+                .then((querySnapShot) => {
+                        let item = {};
+                        querySnapShot.forEach((doc) => {
+                            item = doc.id;
+                            database.collection("patients").doc(item).update({
+                                verifiedclinics: firebase.firestore.FieldValue.arrayUnion(this.patientDetails.clinic)
+                            })
+                            console.log("patients has been verified")
                         })
-                        console.log("patients has been verified")
-                    })
-            })
+            })}
             database.collection("pendingbooking").where("name", "==", x)
             .get()
             .then((querySnapShot) => {
