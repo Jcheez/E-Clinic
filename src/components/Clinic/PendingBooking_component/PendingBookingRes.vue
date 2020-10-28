@@ -96,10 +96,13 @@ export default {
                     querySnapShot.forEach((doc) => {
                         item = doc.id;
                         database.collection("patients").doc(item).update({
-                            physicalupcoming: {
-                                0: this.date,
-                                1: this.time
-                            }
+                            upcoming: {
+                                0: "physical",
+                                1: this.date,
+                                2: this.time
+                            },
+
+                            appointment_history: firebase.firestore.FieldValue.arrayUnion(this.date)
                         })
                         console.log("physical appt has been added")
                     })
