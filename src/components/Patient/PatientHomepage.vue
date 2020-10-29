@@ -9,6 +9,9 @@
       <li>
         <router-link to="/pending">See Pending Booking</router-link>
       </li>
+      <li>
+        <router-link to="/viewdocuments">View Documents</router-link>
+      </li>
     </ul>
   </div>
 </template>
