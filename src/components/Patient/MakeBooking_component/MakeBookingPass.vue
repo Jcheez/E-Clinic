@@ -135,7 +135,8 @@ export default {
         .collection("consultslots")
         .doc(id)
         .update({
-            patient: this.patientName
+            patient: this.patientName,
+            conditions: this.conditions
         })
         .then(() => {
         console.log(this.datadoc)
