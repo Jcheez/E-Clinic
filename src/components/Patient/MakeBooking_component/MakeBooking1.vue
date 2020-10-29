@@ -108,7 +108,8 @@ export default {
                                 name: "makebookingpass",
                                 params: {
                                     conditions: this.checkedConditions,
-                                    patientName: this.name
+                                    patientName: this.name,
+                                    clinic: this.selected
                                 }
                             })
                             //this.$router.push('/makebooking1')

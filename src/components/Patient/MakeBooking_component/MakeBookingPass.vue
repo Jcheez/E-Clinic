@@ -53,7 +53,7 @@ export default {
                 .reverse()
                 .join("-")
 
-                if (item_date.localeCompare(filtered_date) == 0 && item.patient == null) {
+                if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
                 item.id = doc.id;
                 this.slot.push(item);
                     }
@@ -164,7 +164,8 @@ export default {
 
   props: {
       conditions: Array,
-      patientName: String
+      patientName: String,
+      clinic: String
   },
 };
 </script>
