@@ -12,8 +12,8 @@ import MakeBookingPass from "./components/Patient/MakeBooking_component/MakeBook
 import MakeBookingConfirmation from "./components/Patient/MakeBooking_component/MakeBookingConfirmationOnline.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
-import ViewDocuments from "./components/Patient/ViewDocuments.vue"
-import ViewDocumentsInner from "./components/Patient/ViewDocumentsInner.vue"
+import ViewDocuments from "./components/Patient/ViewDocument_component/ViewDocuments.vue"
+import ViewDocumentsInner from "./components/Patient/ViewDocument_component/ViewDocumentsInner.vue"
 
 export default [
   { path: "/patienthome", component: PatientHome },

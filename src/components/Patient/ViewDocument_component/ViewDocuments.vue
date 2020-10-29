@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import database from "../../firebase.js";
+import database from "../../../firebase.js";
 
 export default {
   data() {
