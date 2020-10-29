@@ -73,7 +73,7 @@ export default {
                 this.errorstring = "Please choose at least 1 condition"
             } else if (this.availableToBook == false) {
                 alert("You have an upcoming appointment. Unable to make a new Booking")
-                //REMEMBER TO ROUTE TO VIEW APPOINTMENT COMPONENT
+                this.$router.push('/viewappt')
             } else {
                 this.errorstring = "";
                 var a = this.checkedConditions;
@@ -111,8 +111,6 @@ export default {
                                     patientName: this.name
                                 }
                             })
-                            //this.$router.push('/makebooking1')
-                            //include passing of props to the next section
                         }           
                     });
                 })

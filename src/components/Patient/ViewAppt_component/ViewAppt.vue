@@ -13,8 +13,9 @@
         <span>{{ "Date: " + this.date}}</span>
        <!-- <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span> -->
         <span>{{ "Zoom Link: " }} <a v-bind:href="this.itemsList[0].zoom">Link</a> </span>
+        <button id="reschedule" v-on:click="reschedule()">Reschedule Appointment</button>
       </div>
-      <button id="home" v-on:click="routeHome()">Back to home</button>
+      <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
 
@@ -27,6 +28,7 @@ export default {
         return {
         msg: "View Appointment",
         itemsList: [],
+        consult: [],
         physicalList:[],
         noupcoming: null,
         date: "",
@@ -42,6 +44,15 @@ export default {
     methods: {
         routeHome: function() {
             this.$router.push('/patienthome')
+        },
+
+        reschedule: function() {
+            this.$router.push({
+                name: "rebook",
+                params: {
+                    consult: this.consult
+                }
+            })
         },
 
         formatDate: function(date) {
@@ -87,6 +98,7 @@ export default {
                                             var today = new Date()
                                             item = doc.data();
                                             if (item.date.seconds * 1000 >= today.getTime()) {
+                                                this.consult.push(item);
                                                 this.date = itemx.upcoming[1] + " " + itemx.upcoming[2];
                                                 //this.date = new Date(item.date.seconds * 1000)
                                                 database
