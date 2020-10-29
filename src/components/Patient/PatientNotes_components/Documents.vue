@@ -85,9 +85,12 @@ export default {
         if (this.pName == null || this.appDate == null) {
             this.pName = localStorage.getItem('pn3name');
             this.appDate = localStorage.getItem('pn3date');
-        } else if (this.pName.localeCompare(localStorage.getItem('pn3name')) != 0 && this.appDate.localeCompare(localStorage.getItem('pn3date')) != 0) {
+        } else if (this.pName.localeCompare(localStorage.getItem('pn3name')) != 0 || this.appDate.localeCompare(localStorage.getItem('pn3date')) != 0) {
             localStorage.setItem('pn3name', this.pName);
             localStorage.setItem('pn3date', this.appDate);
+
+            this.pName = localStorage.getItem('pn3name');
+            this.appDate = localStorage.getItem('pn3date');
         } else {
             this.pName = localStorage.getItem('pn3name');
             this.appDate = localStorage.getItem('pn3date');
