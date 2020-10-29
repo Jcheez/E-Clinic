@@ -11,6 +11,7 @@
             </button>
           </li>
         </ul>
+        <button id="home" v-on:click="routeHome()">Back to home</button>
     </div>  
 </template>
 
@@ -32,6 +33,10 @@ export default {
   },
 
   methods: {
+    routeHome: function() {
+        this.$router.push('/patienthome')
+    },
+        
     fetchItems: function () {
         var x = this.name;
         database
@@ -108,5 +113,9 @@ button:hover {
 }
 button:focus {
   outline: none;
+}
+button#home{
+  position: relative;
+  top: 250px;
 }
 </style>

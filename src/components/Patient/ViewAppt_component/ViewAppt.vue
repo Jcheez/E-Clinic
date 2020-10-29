@@ -14,6 +14,7 @@
        <!-- <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span> -->
         <span>{{ "Zoom Link: " }} <a v-bind:href="this.itemsList[0].zoom">Link</a> </span>
       </div>
+      <button id="home" v-on:click="routeHome()">Back to home</button>
   </div>
 </template>
 
@@ -39,6 +40,10 @@ export default {
     },
 
     methods: {
+        routeHome: function() {
+            this.$router.push('/patienthome')
+        },
+
         formatDate: function(date) {
           let ldate = date.toLocaleDateString().split("/")
           let i0 = ldate[0]
@@ -151,5 +156,9 @@ div#noupcoming {
 span {
   display: block;
   text-align: left;
+}
+button#home{
+  position: relative;
+  top: 250px;
 }
 </style>

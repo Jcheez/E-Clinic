@@ -9,6 +9,7 @@
             </div>
           </li>
         </ul>
+        <button id="back" v-on:click="routeBack()">Back</button>
   </div>
 </template>
 
@@ -28,6 +29,9 @@ export default {
     },
 
     methods: {
+        routeBack: function() {
+            this.$router.push('/viewdocuments')
+        },
         fetchItems: function () {
             var x = this.patientName;
             database
@@ -90,5 +94,9 @@ p#nodoc{
   height: 100px;
   left: 70px;
   top: 230px;
+}
+button#back{
+  position: relative;
+  top: 250px;
 }
 </style>
