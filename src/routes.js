@@ -12,6 +12,8 @@ import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
 import ClinicLogin from "./components/Clinic/ClinicLogin"
 import ClinicSignup from "./components/Clinic/ClinicSignup"
+import PatientLogin from "./components/Patient/PatientLogin"
+import PatientSignup from "./components/Patient/PatientSignup"
 import DoctorsList from "./components/Clinic/DoctorsList"
 import ClinicSettings from "./components/Clinic/ClinicSettings"
 import { Role } from './store/role';
@@ -19,10 +21,12 @@ import { Role } from './store/role';
 export default [
   { path: "/clinicsignup", name: "clinicsignup", component: ClinicSignup },
   { path: "/cliniclogin", name: "cliniclogin", component: ClinicLogin },
-  { path: "/patienthome", component: PatientHome, meta: {authorize: [Role.Patient]}},
+  { path: "/patientsignup", name: "patientsignup", component: PatientSignup },
+  { path: "/patientlogin", name: "patientlogin", component: PatientLogin },
+  { path: "/patienthome", name: "patienthome", component: PatientHome, meta: {authorize: Role.Patient}},
   { path: "/clinichome", name: "clinichome", component: ClinicHome, meta: {authorize: Role.Clinic} },
-  { path: "/doctorslist", component: DoctorsList},
-  { path: "/clinicsettings", component: ClinicSettings},
+  { path: "/doctorslist", component: DoctorsList, meta: {authorize: Role.Clinic}},
+  { path: "/clinicsettings", component: ClinicSettings, meta: {authorize: Role.Clinic}},
   { path: "/pendingbooking", component: PendingBooking },
   { path: "/pendingbooking/resolve", name:"resolve", props: true, component: PendingBookingRes },
   { path: "/patientsnotes", component: PatientNotes },

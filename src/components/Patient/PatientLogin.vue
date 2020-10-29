@@ -9,7 +9,7 @@
           >
             <div class="content">
               Please resolve the following error(s) before proceeding.
-              <ul style="list-style-type: none">
+              <ul style = "list-style-type: none">
                 <li
                   v-for="(error, index) in validationErrors"
                   :key="`error-${index}`"
@@ -53,7 +53,7 @@
               </p>
             </div>
             <p class="acc">No account yet?
-              <router-link to="/clinicsignup">Sign up!</router-link>
+              <router-link to="/patientsignup">Sign up!</router-link>
             </p>
           </form>
         </div>
@@ -114,7 +114,7 @@ export default {
     signIn() {
       this.signInAction({ email: this.email, password: this.password }).then(() => {
         if (this.isUserAuth) {
-          this.$router.push({ name: "clinichome" });
+          this.$router.push({ name: "patienthome" });
         }
       })
     }

@@ -23,10 +23,22 @@ const actions = {
             })
             return firebase.firestore().collection('clinics').doc(data.user.uid).set({
                 name: payload.name,
-                //openingHours: this.form.hours,
-                doctors: [],
+                doctors: payload.doctors.map(a => a.license),
+                interBank: "",
+                qrCode: ""
             })
-        }).then(res => console.log(res))
+        }).then(res => {
+          console.log(res)
+          let promiseArray = []
+          for (var doctor of payload.doctors) {
+            promiseArray.push(firebase.firestore().collection('doctors').doc(doctor.license).set({
+              name: doctor.name,
+              clinic: payload.name,
+              password: '',
+              zoom: ''
+            }))
+          }
+        })
         .catch(error => {
           commit("setError", error.message);
         });
@@ -45,9 +57,11 @@ const actions = {
                 appointment_history: [],
                 verifiedclinics: [],
                 notes: {},
-                upcoming: {}
+                upcoming: {},
+                outstandingAmount: {},
+                amountPaid: {}
             })
-        }).then(res => console.log(res))
+        })
         .catch(error => {
           commit("setError", error.message);
         });

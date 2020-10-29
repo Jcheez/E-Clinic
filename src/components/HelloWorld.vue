@@ -8,7 +8,7 @@
         <router-link to="/cliniclogin">Clinic</router-link>
       </li>
       <li>
-        <router-link to="/patienthome">Patient</router-link>
+        <router-link to="/patientlogin">Patient</router-link>
       </li>
     </ul>
   </div>

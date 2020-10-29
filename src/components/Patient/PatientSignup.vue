@@ -19,42 +19,61 @@
               <button @click="resetError()" class="delete">Ok</button>
             </div>
           </div>
-          <!-- <HelloWorld msg="Welcome to E-Clinic"/> -->
-          <form class="login">
+          <form class="signup">
             <div class="field">
-              <label class="label">E-mail</label>
+              <!-- <label class="label">Name</label> -->
+              <div class="control">
+                <input
+                  v-model="name"
+                  class="input"
+                  type="text"
+                  placeholder="Enter Name"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <!-- <label class="label">E-mail</label> -->
               <div class="control">
                 <input
                   v-model="email"
                   class="input"
                   type="text"
                   autocomplete="email"
-                  placeholder="example@email.com"
+                  placeholder="Enter Email"
                 />
               </div>
             </div>
             <div class="field">
-              <label class="label">Password</label>
+              <!-- <label class="label">Password</label> -->
               <div class="control">
                 <input
                   v-model="password"
                   class="input"
                   type="password"
                   autocomplete="current-password"
-                  placeholder="Password"
+                  placeholder="Enter Password"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <!-- <label class="label">Repeat password</label> -->
+              <div class="control">
+                <input
+                  v-model="passwordRepeat"
+                  class="input"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Repeat Password"
                 />
               </div>
             </div>
             <div class="field">
               <p class="control">
                 <button @click.prevent="validate()" class="button is-success">
-                  Login
+                  Register
                 </button>
               </p>
             </div>
-            <p class="acc">No account yet?
-              <router-link to="/clinicsignup">Sign up!</router-link>
-            </p>
           </form>
         </div>
       </div>
@@ -63,26 +82,22 @@
 </template>
 
 <script>
-// import HelloWorld from "../HelloWorld.vue"
-import { mapGetters, mapActions } from "vuex";
-
+import { mapActions, mapGetters } from "vuex";
 export default {
-  // components: {
-  //   HelloWorld,
-  // },
   data() {
     return {
+      name: null,
       email: null,
       password: null,
-      validationErrors: [],
-      firebaseError: ""
+      passwordRepeat: null,
+      validationErrors: []
     };
   },
   computed: {
     ...mapGetters(["isUserAuth"])
   },
   methods: {
-    ...mapActions(["signInAction"]),
+    ...mapActions(["signUpAction", "signOutAction"]),
     resetError() {
       this.validationErrors = [];
     },
@@ -106,26 +121,29 @@ export default {
           "<strong>Password</strong> must be at least 6 characters long"
         );
       }
+      if (!(this.password === this.passwordRepeat)) {
+        this.validationErrors.push("<strong>Passwords</strong> did not match");
+      }
+
       // when valid then sign in
       if (this.validationErrors.length <= 0) {
-        this.signIn();
+        this.signUp();
       }
     },
-    signIn() {
-      this.signInAction({ email: this.email, password: this.password }).then(() => {
+    signUp() {
+      this.signUpAction({ email: this.email, password: this.password, clinic: false, name: this.name }).then(() => {
         if (this.isUserAuth) {
-          this.$router.push({ name: "clinichome" });
+          this.signOutAction()
+          this.$router.replace({ name: "patientlogin" });
         }
       })
     }
-  },
+  }
 };
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-
-.login {
+.signup {
   background-color: white;
   width: 380px;
   height: 300px;
@@ -134,15 +152,9 @@ export default {
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
 }
 
-.label {
-  display: block;
-  text-align: left;
-  font-family: Nunito;
-  font-weight: bold;
-  padding: 20px 0px 0px 30px;
-}
-
 input[type=text], input[type=password] {
+  position: relative;
+  top: 20px;
   display:block;
   text-align: left;
   color: rgb(0, 114, 180);
@@ -150,14 +162,14 @@ input[type=text], input[type=password] {
   font-size: 14px;
   width: 280px;
   padding: 10px;
-  margin: 10px 0px 0px 30px;
+  margin: 15px 0px 5px 30px;
   border:none;
   background-color: rgba(122, 113, 113, 0.04);
 }
 
 .control button {
   display:block;
-  margin: 40px 0px 0px 30px;
+  margin: 40px 0px 0px 250px;
   transition: box-shadow 0.3s;
   transition: 0.3s;
   background-color: rgb(0, 114, 180);
@@ -172,19 +184,6 @@ input[type=text], input[type=password] {
 .control button:hover {
   cursor: pointer;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
-}
-
-.acc {
-  display: block;
-  margin: -38px 0px 0px 130px;
-  font-family: Nunito;
-  font-size: 14px;
-}
-
-.acc a {
-  text-decoration: none;
-  color: rgb(0, 114, 180);
-  font-weight: bolder;
 }
 
 .delete {
@@ -204,5 +203,4 @@ input[type=text], input[type=password] {
   cursor: pointer;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
-
 </style>

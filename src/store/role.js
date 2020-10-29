@@ -1,4 +1,4 @@
-export const Role = {
+export let Role = {
     Clinic: 'clinic',
     Patient: 'patient'
 }

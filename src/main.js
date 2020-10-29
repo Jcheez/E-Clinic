@@ -26,14 +26,15 @@ myRouter.beforeEach((to, from, next) => {
           alert("Page requires login")
           // not logged in so redirect to login page with the return url
           if (to.name == "clinichome") {
-            return next({ path: '/cliniclogin', query: { returnUrl: to.path } });
+            return next({ path: '/cliniclogin'});
           } else {
-            return next({ path: '/patientlogin', query: { returnUrl: to.path } });
+            return next({ path: '/patientlogin'});
           }
       }
       // check if route is restricted by role
       if (authorize.length && !authorize.includes(currentUser.photoURL)) {
           alert("Restricted page access, not available")
+          store.dispatch('signOutAction')
           // role not authorised so redirect to home page
           return next({ path: '/' });
       }

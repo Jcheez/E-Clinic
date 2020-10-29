@@ -9,7 +9,7 @@
           >
             <div class="content">
               Please resolve the following error(s) before proceeding.
-              <ul style="margin-top:0.3em; margin-left: 1em">
+              <ul style="list-style-type: none">
                 <li
                   v-for="(error, index) in validationErrors"
                   :key="`error-${index}`"
@@ -27,7 +27,7 @@
                   v-model="name"
                   class="input"
                   type="text"
-                  placeholder="Enter Name"
+                  placeholder="Enter Clinic Name"
                 />
               </div>
             </div>
@@ -67,14 +67,20 @@
                 />
               </div>
             </div>
-            <div class="field">
-              <p class="control">
-                <button @click.prevent="validate()" class="button is-success">
-                  Register
-                </button>
-              </p>
+            <div class="field" v-for="(doctor, counter) in doctors" v-bind:key="counter">
+              <br>
+              <span @click="deleteDoctor(counter)">x</span>
+              <input type="text" v-model="doctor.name" placeholder = "Doctor Name" required>
+              <input type="text" v-model="doctor.license" placeholder = "Doctor License No." required>
             </div>
+            <br><br>
+            <button @click="addDoctor" class = "delete">Add doctor</button>
           </form>
+          <p class="control">
+            <button @click.prevent="validate()">
+              Register
+            </button>
+          </p>
         </div>
       </div>
     </div>
@@ -90,13 +96,26 @@ export default {
       email: null,
       password: null,
       passwordRepeat: null,
-      validationErrors: []
+      validationErrors: [],
+      doctors: [{
+        name: '',
+        license: ''
+      }]
     };
   },
   computed: {
     ...mapGetters(["isUserAuth"])
   },
   methods: {
+    addDoctor () {
+      this.doctors.push({
+        name: '',
+        license: '',
+      })
+    },
+    deleteDoctor (index) {
+      this.doctors.splice(index, 1)
+    },
     ...mapActions(["signUpAction", "signOutAction"]),
     resetError() {
       this.validationErrors = [];
@@ -104,6 +123,10 @@ export default {
     validate() {
       // Clear the errors before we validate again
       this.resetError();
+
+      if(!this.name) {
+          this.validationErrors.push("<strong>Clinic name</strong> cannot be empty.");
+      }
 
       // email validation
       if (!this.email) {
@@ -124,6 +147,16 @@ export default {
       if (!(this.password === this.passwordRepeat)) {
         this.validationErrors.push("<strong>Passwords</strong> did not match");
       }
+      for (var d of this.doctors) {
+        if (!d.name) {
+          this.validationErrors.push("<strong>Doctor name</strong> cannot be empty.");
+        }
+        if (!d.license) {
+          this.validationErrors.push("<strong>Doctor license no.</strong> cannot be empty.");
+        } else if (d.license.length != 7 || d.license.substr(0,1) != 'M' || isNaN(d.license.substr(1,5)) || !isNaN(d.license.substr(6, 1))) {
+          this.validationErrors.push("<strong>Doctor license no.</strong> entered is not valid.")
+        }
+      }
 
       // when valid then sign in
       if (this.validationErrors.length <= 0) {
@@ -131,7 +164,7 @@ export default {
       }
     },
     signUp() {
-      this.signUpAction({ email: this.email, password: this.password, clinic: true, name: this.name }).then(() => {
+      this.signUpAction({ email: this.email, password: this.password, doctors: this.doctors, clinic: true, name: this.name }).then(() => {
         if (this.isUserAuth) {
           this.signOutAction()
           this.$router.replace({ name: "cliniclogin" });
@@ -146,7 +179,6 @@ export default {
 .signup {
   background-color: white;
   width: 380px;
-  height: 300px;
   margin: auto;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
@@ -169,7 +201,7 @@ input[type=text], input[type=password] {
 
 .control button {
   display:block;
-  margin: 40px 0px 0px 250px;
+  margin: 40px 0px 0px 720px;
   transition: box-shadow 0.3s;
   transition: 0.3s;
   background-color: rgb(0, 114, 180);
@@ -185,4 +217,32 @@ input[type=text], input[type=password] {
   cursor: pointer;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
+
+.delete {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  background-color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 80px;
+  height: 36px;
+  color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.delete:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
+
+span{
+  width: 30px;
+  float: right;
+  cursor: pointer;
+}
+span:hover{
+  color: brown;
+}
+
 </style>
