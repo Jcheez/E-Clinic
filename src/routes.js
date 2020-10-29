@@ -12,6 +12,7 @@ import MakeBookingPass from "./components/Patient/MakeBooking_component/MakeBook
 import MakeBookingConfirmation from "./components/Patient/MakeBooking_component/MakeBookingConfirmationOnline.vue"
 import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
+import ManagePayments from "./components/Patient/ManagePayments/managePayments.vue"
 
 export default [
   { path: "/patienthome", component: PatientHome },
@@ -28,5 +29,6 @@ export default [
   { path: "/makebooking/makebookingter", component: MakeBookingTer},
   { path: "/makebooking/makebookingpass", name:"makebookingpass", props: true, component: MakeBookingPass},
   { path: "/makebooking/makebookingpass/makebookingconfirmation", props: true, name:"makebookingconfirmation", component: MakeBookingConfirmation},
+  { path: "/managepayments", component: ManagePayments}
 ];
 

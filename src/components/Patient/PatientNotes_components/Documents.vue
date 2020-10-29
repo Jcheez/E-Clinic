@@ -11,6 +11,23 @@
             <a id="removers" v-on:click="remove(mc)">Remove</a>
         </div>
         <h2 id="mc2">Invoice</h2>
+        <label id="outpayment" for="paybox">Amount Paid:</label>
+        <div v-if="this.outstandingMap[this.appDate] == undefined">
+            <input type="text" id="paybox" name="paybox" >
+            <input type="submit" id="submitpay" v-on:click="paybutton()">
+        </div>
+        <div v-else id=paybox>
+            The Patient has been asked to pay ${{this.outstandingMap[this.appDate][0].toFixed(2)}}
+        </div>
+        <label id="inpayment" for="receivebox">Amount received:</label>
+        <input type="text" id="receivebox" name="receivebox">
+        <input type="submit" id="submitreceive" v-on:click="receivebutton()">
+        <div id="receivetext" v-if="this.amountPaidMap[this.appDate] == undefined">
+            Patient has paid $0
+        </div>
+        <div id="receivetext" v-else>
+            Patient has paid ${{this.amountPaidMap[this.appDate][0].toFixed(2)}}
+        </div>
         <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc2">
             <a id="links" v-bind:href="this.doc[this.appDate][i]">View</a>
@@ -42,6 +59,9 @@ export default {
             i: "Invoice",
             p: "Prescription",
             u: undefined,
+            clinic: "Ruffles", //Remember to localstorage clinic's name for this to work dynamically
+            outstandingMap: {},
+            amountPaidMap: {}
         }
     },
 
@@ -60,6 +80,8 @@ export default {
           querySnapShot.forEach((doc) => {
             this.docid.push(doc.id);
             this.doc = doc.data().notes;
+            this.outstandingMap = doc.data().outstandingAmount;
+            this.amountPaidMap = doc.data().amountPaid;
             console.log(this.doc)
           });
         });
@@ -79,6 +101,53 @@ export default {
             })
             
         },
+
+        paybutton: function() {
+            if (confirm("You can only submit this once, are you sure?")) {
+
+                this.outstandingMap[this.appDate] = [parseFloat(document.getElementById("paybox").value), this.clinic]
+                console.log(document.getElementById("paybox").value)
+                database
+                .collection('patients')
+                .doc(this.docid[0])
+                .update({
+                    outstandingAmount: this.outstandingMap
+                })
+                .then(() => {
+                console.log('Payment Sent!')
+                })
+                this.$forceUpdate()
+                
+                
+            }
+        },
+
+        receivebutton: function() {
+            console.log(document.getElementById("receivebox").value)
+            if (this.outstandingMap[this.appDate] == undefined) {
+                alert("Invalid entry, patient has not been asked to pay any amount")
+                return
+            }else if (this.amountPaidMap[this.appDate] == undefined) {
+                this.amountPaidMap[this.appDate] = [parseFloat(document.getElementById("receivebox").value), this.clinic]
+            } else {
+                this.amountPaidMap[this.appDate][0] += parseFloat(document.getElementById("receivebox").value)
+            }
+            if (this.outstandingMap[this.appDate][0] < this.amountPaidMap[this.appDate][0]) {
+                alert("Invalid entry, amount paid by patient is more than amount charged by clinic")
+                this.amountPaidMap[this.appDate][0] -= parseFloat(document.getElementById("receivebox").value)
+                return
+            }
+            database
+                .collection('patients')
+                .doc(this.docid[0])
+                .update({
+                    amountPaid: this.amountPaidMap
+                })
+                .then(() => {
+                console.log('Payment received updated!')
+                })
+                this.$forceUpdate()
+        }
     },
 
     created() {
@@ -204,4 +273,69 @@ a#removers {
     cursor: pointer;
 }
 
+label#outpayment {
+    position:absolute;
+    top:400px;
+    left: 1200px;
+    font-size: 20px;
+}
+
+label#inpayment {
+    position:absolute;
+    top:500px;
+    left: 1200px;
+    font-size: 20px;
+}
+
+input#paybox {
+    position:absolute;
+    top:395px;
+    left: 1360px;
+    height: 24px;
+    width:150px;
+    font-size: 20px;
+}
+
+input#receivebox {
+    position:absolute;
+    top:495px;
+    left: 1360px;
+    height: 24px;
+    width:150px;
+    font-size: 20px;
+}
+
+input#submitpay {
+    position:absolute;
+    top:395px;
+    left: 1550px;
+    font-size: 20px;
+}
+
+input#submitreceive {
+    position:absolute;
+    top:495px;
+    left: 1550px;
+    font-size: 20px;
+}
+
+div#paybox {
+    position:absolute;
+    top:400px;
+    left: 1360px;
+    height: 24px;
+    width:150px;
+    font-size: 20px;
+    white-space: nowrap;
+}
+
+div#receivetext{
+    position:absolute;
+    top:535px;
+    left: 1360px;
+    height: 24px;
+    width:150px;
+    font-size: 20px;
+    white-space: nowrap;
+}
 </style>
