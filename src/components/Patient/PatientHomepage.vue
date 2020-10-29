@@ -12,6 +12,9 @@
       <li>
         <router-link to="/viewdocuments">View Documents</router-link>
       </li>
+      <li>
+        <router-link to="/viewappt">View Appointment</router-link>
+      </li>
     </ul>
   </div>
 </template>

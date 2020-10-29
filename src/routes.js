@@ -14,12 +14,14 @@ import PatientHome from "./components/Patient/PatientHomepage"
 import ClinicHome from "./components/Clinic/ClinicHomepage"
 import ViewDocuments from "./components/Patient/ViewDocument_component/ViewDocuments.vue"
 import ViewDocumentsInner from "./components/Patient/ViewDocument_component/ViewDocumentsInner.vue"
+import ViewAppt from "./components/Patient/ViewAppt_component/ViewAppt.vue"
 
 export default [
   { path: "/patienthome", component: PatientHome },
   { path: "/clinichome", component: ClinicHome },
   { path: "/viewdocuments", component: ViewDocuments },
   { path: "/viewdocuments/view", name:"view", props: true, component: ViewDocumentsInner },
+  { path: "/viewappt", component: ViewAppt },
   { path: "/pending", component: PendingPatient },
   { path: "/pendingbooking", component: PendingBooking },
   { path: "/pendingbooking/resolve", name:"resolve", props: true, component: PendingBookingRes },
