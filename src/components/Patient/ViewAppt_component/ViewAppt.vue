@@ -1,10 +1,17 @@
 <template>
   <div>
       <h1>{{ msg }}</h1>
-      <div id="online">
+      <div v-if="noupcoming != null" id="noupcoming">{{ this.noupcoming }}</div>
+      <div v-if="this.physicalList.length > 0" id="physical">
+        <span>{{ "Date: " + this.physicalList[0][1] + " " + this.physicalList[0][2] }}</span>
+        <span>Consult Type: Physical</span>
+        <span>Add clinic name when it is props into pendingbooking >> patientupcoming</span>
+      </div>
+      <div v-if="this.itemsList.length > 0" id="online">
         <span>{{ "Clinic: " + this.itemsList[0].clinic }}</span>
         <span>{{ "Doctor: " + this.itemsList[0].name }}</span>
-        <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span>
+        <span>{{ "Date: " + this.date}}</span>
+       <!-- <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span> -->
         <span>{{ "Zoom Link: " }} <a v-bind:href="this.itemsList[0].zoom">Link</a> </span>
       </div>
   </div>
@@ -19,6 +26,8 @@ export default {
         return {
         msg: "View Appointment",
         itemsList: [],
+        physicalList:[],
+        noupcoming: null,
         date: "",
         name: "Timothy"
         /* Remember to change this part when login is finished and props can be passed
@@ -47,34 +56,56 @@ export default {
         fetchItems: function () {
             var x = this.name;
             database
-                .collection("consultslots")
-                .where("patient", "==", x)
+                .collection("patients")
+                .where("name", "==", x)
                 .get()
                 .then((querySnapShot) => {
-                    let item = {};
+                    let itemx = {};
                     querySnapShot.forEach((doc) => {
+                        itemx = doc.data();
+                        this.noupcoming = null;
                         var today = new Date()
-                        item = doc.data();
-                        if (item.date.seconds * 1000 >= today.getTime()) {
-                            this.date = new Date(item.date.seconds * 1000)
-                            console.log(item.doctor)
-                            database
-                                .collection("doctors")
-                                .where(firebase.firestore.FieldPath.documentId(), "==", item.doctor)
-                                .get()
-                                .then((querySnapShot) => {
-                                    let item1 = {};
-                                    querySnapShot.forEach((doc) => {
-                                        item1 = doc.data();
-                                        this.itemsList.push(item1);
-                                        console.log(this.itemsList)
-                                        })
-                                        
-                                })
+                        if (Date.parse(itemx.upcoming[1]) > today.getTime() || 
+                        (Date.parse(itemx.upcoming[1]) == today.getTime() && 
+                        itemx.upcoming[2].localeCompare(today.getHours() + "" + today.getMinutes() > 0 ))) {
+                            if (itemx.upcoming[0] == "physical") {
+                                console.log("hello")
+                                this.physicalList.push(itemx.upcoming);
+                            } else if (itemx.upcoming[0] == "online") {
+                                database
+                                    .collection("consultslots")
+                                    .where("patient", "==", x)
+                                    .get()
+                                    .then((querySnapShot) => {
+                                        let item = {};
+                                        querySnapShot.forEach((doc) => {
+                                            var today = new Date()
+                                            item = doc.data();
+                                            if (item.date.seconds * 1000 >= today.getTime()) {
+                                                this.date = itemx.upcoming[1] + " " + itemx.upcoming[2];
+                                                //this.date = new Date(item.date.seconds * 1000)
+                                                database
+                                                    .collection("doctors")
+                                                    .where(firebase.firestore.FieldPath.documentId(), "==", item.doctor)
+                                                    .get()
+                                                    .then((querySnapShot) => {
+                                                        let item1 = {};
+                                                        querySnapShot.forEach((doc) => {
+                                                            item1 = doc.data();
+                                                            this.itemsList.push(item1);
+                                                        })
+                                                            
+                                                    })
+                                            }
+                                        });
+                                    });
+                            }
+                        } else {
+                            this.noupcoming = "You have no upcoming booking."
                         }
-                    });
-                });
-            },
+                    })
+                })
+        }
     },
     created() {
         this.fetchItems();
@@ -97,6 +128,20 @@ h1 {
   color: #000000;
 }
 div#online {
+  position: relative;
+  width: 562px;
+  height: 140px;
+  left: 100px;
+  top: 210px;
+}
+div#physical {
+  position: relative;
+  width: 562px;
+  height: 140px;
+  left: 100px;
+  top: 210px;
+}
+div#noupcoming {
   position: relative;
   width: 562px;
   height: 140px;
