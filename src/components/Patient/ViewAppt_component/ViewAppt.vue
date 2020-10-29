@@ -10,11 +10,14 @@
       <div v-if="this.itemsList.length > 0" id="online">
         <span>{{ "Clinic: " + this.itemsList[0].clinic }}</span>
         <span>{{ "Doctor: " + this.itemsList[0].name }}</span>
+        <span>{{ "Conditions: " + this.consult[0].conditions}}</span>
         <span>{{ "Date: " + this.date}}</span>
        <!-- <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span> -->
         <span>{{ "Zoom Link: " }} <a v-bind:href="this.itemsList[0].zoom">Link</a> </span>
-        <button id="reschedule" v-on:click="reschedule()">Reschedule Appointment</button>
+        
       </div>
+      <button id="cancel" v-if="this.itemsList.length > 0" v-on:click="cancelonline()">Cancel Appointment</button>
+      <button id="reschedule" v-if="this.itemsList.length > 0" v-on:click="reschedule()">Reschedule Appointment</button>
       <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
@@ -44,6 +47,47 @@ export default {
     methods: {
         routeHome: function() {
             this.$router.push('/patienthome')
+        },
+
+        cancelonline: function() {
+          if (confirm("Delete your appointment? This slot will be released to others")) {
+            database
+              .collection("consultslots")
+              .where("doctor", "==", this.consult[0].doctor)
+              .where("date", "==", this.consult[0].date)
+              .get()
+              .then((querySnapShot) => {
+                let item = {};
+                querySnapShot.forEach((doc) => {
+                  item = doc.id;
+                  database.collection("consultslots").doc(item).update({
+                    patient: null,
+                    conditions: null
+                  })
+                })
+              })
+
+            database
+              .collection('patients')
+              .where('name', "==", this.consult[0].patient)
+              .get()
+              .then((querySnapShot) => {
+                      let item = {};
+                      querySnapShot.forEach((doc) => {
+                          item = doc.id;
+                          let itema = doc.data()
+                          console.log(itema.upcoming[1])
+                          database.collection("patients").doc(item).update({
+                            appointment_history: firebase.firestore.FieldValue.arrayRemove(itema.upcoming[1])
+                          })
+                          database.collection("patients").doc(item).update({
+                              upcoming: null
+                          })
+                          console.log("appointment has been cancelled");
+                      })
+              })
+              this.$router.push("/patienthome");
+          }
         },
 
         reschedule: function() {
@@ -169,7 +213,7 @@ span {
   display: block;
   text-align: left;
 }
-button#home{
+button{
   position: relative;
   top: 250px;
 }
