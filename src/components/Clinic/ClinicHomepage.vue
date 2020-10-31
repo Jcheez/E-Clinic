@@ -28,6 +28,16 @@
       <div v-if="isUserAuth" id="monthlyPatient">
         <mp></mp>
       </div>
+      <div v-if="isUserAuth" id="verify">
+        Total Patients to Verify:<br><br>
+        <p>{{ numOfPatientsToVerify() }} </p>
+        As of today
+      </div><br>
+      <div v-if="isUserAuth" id="physical">
+        Total Patients to Arrange Physical Consultations:<br><br>
+        <p>{{ numOfPatientsPhysical() }} </p>
+        As of today
+      </div>
       <div v-if="isUserAuth" id="monthlyRev">
         <linechart></linechart>
       </div>
@@ -43,6 +53,7 @@ import MonthlyRev from "./MonthlyRev.js";
 import ratingchart from "./ratingchart";
 import MonthlyPatient from "./MonthlyPatients.js";
 import { mapGetters, mapActions } from "vuex";
+import database from "../../firebase.js";
 export default {
   name: "clinichome",
   // props: {
@@ -51,7 +62,10 @@ export default {
   components: { 
     linechart: MonthlyRev, ratingchart, mp: MonthlyPatient,},
   data() {
-    return {};
+    return {
+      countVerify: 0,
+      countPhysical: 0
+    };
   },
   computed: {
     ...mapGetters(["getUser", "isUserAuth"]),
@@ -62,8 +76,32 @@ export default {
       this.signOutAction();
       this.$router.push("/cliniclogin");
     },
-  },
-};
+    numOfPatientsToVerify: function() {
+      let x = this.getUser.displayName;
+      database
+      .collection("pendingbooking")
+      .where("clinic","==",x)
+      .where("firstTime","==",true)
+      .get()
+      .then((querySnapshot) => {
+        this.countVerify = querySnapshot.size
+      })
+      return this.countVerify;
+    },
+    numOfPatientsPhysical: function() {
+      let x = this.getUser.displayName;
+      database
+      .collection("pendingbooking")
+      .where("clinic","==",x)
+      .where("physical","==",true)
+      .get()
+      .then((querySnapshot) => {
+        this.countPhysical = querySnapshot.size
+      })
+      return this.countPhysical;
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -83,7 +121,7 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: 2px;
   display: inline-block;
   margin: 60px 0 0 0;
@@ -96,13 +134,66 @@ a:hover {
   cursor: pointer
 }
 
+#verify {
+  transition: box-shadow 0.3s;
+  background-image: linear-gradient(to right, rgb(0, 114, 180) , rgb(0, 153, 180));
+  font-family: Nunito;
+  font-size: 15px;
+  color: white;
+  text-align: left;
+  display: inline-block;
+  width: 220px;
+  height: 120px;
+  margin-left: -180px;
+  margin-top: 58px;
+  padding: 10px 10px 10px 16px;
+  border-radius: 10px;
+}
+
+#verify p {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0;
+}
+
+#verify:hover {
+  box-shadow: 0 0 14px rgba(33, 33, 33, 0.719);
+}
+
+#physical {
+  transition: box-shadow 0.3s;
+  background-image: linear-gradient(to left, rgb(144, 0, 180) , rgb(99, 0, 180));
+  font-family: Nunito;
+  font-size: 15px;
+  color: white;
+  text-align: left;
+  display: inline-block;
+  width: 220px;
+  height: 140px;
+  margin-left: -180px;
+  margin-top: 28px;
+  padding: 12px 10px 10px 16px;
+  border-radius: 10px;
+}
+
+#physical p {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0;
+}
+
+#physical:hover {
+  box-shadow: 0 0 14px rgba(33, 33, 33, 0.719);
+}
+
+
 #monthlyPatient {
   height: 100%;
-  width: 700px;
+  width: 500px;
   /* border-style: solid;
   border-color: rgb(0, 114, 180);
   border-width: 1px; */
-  padding: 0px 80px;
+  padding: 0px 30px;
   margin: 10px;
   float: left;
 }
@@ -153,5 +244,4 @@ h3 {
   margin-left: 160px;
   padding: 0px 60px;
 }
-
 </style>

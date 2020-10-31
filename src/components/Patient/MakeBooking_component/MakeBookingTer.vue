@@ -19,7 +19,7 @@ export default {
   methods: {
     home: function () {
       // change to the route for the patient page after login component is complete
-      this.$router.push('/')
+      this.$router.push('/patienthome')
     }
   }
 };
