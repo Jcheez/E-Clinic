@@ -1,18 +1,15 @@
 <template>
   <div id="app">
-    <HelloWorld v-if="!isUserAuth"></HelloWorld>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
   },
 
   created() {

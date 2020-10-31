@@ -2,25 +2,45 @@
   <div class="hello">
     <h1>E-Clinic</h1>
     <h2>Empowering Medicine <br>Through the Internet</h2>
-    <h4>Choose Your Account Type</h4>
-    <ul v-if="!isUserAuth">
-      <li>
-        <router-link to="/cliniclogin">Clinic</router-link>
-      </li>
-      <li>
-        <router-link to="/patientlogin">Patient</router-link>
-      </li>
-    </ul>
+    <div v-if ="about" style = "margin-left: 650px; margin-top: 100px">
+      <h4>Choose Your Account Type</h4>
+      <ul>
+        <li>
+          <router-link to="/cliniclogin">Clinic</router-link>
+        </li>
+        <li>
+          <router-link to="/patientlogin">Patient</router-link>
+        </li>
+      </ul>
+    </div>
+    <div v-else style = "margin-left: 650px; margin-top: 200px">
+      <h4>About E-clinic</h4>
+      <p> E-clinic enables you to consult your doctor,
+        <br> from the comfort of your own home! </p>
+      <button class = "delete" v-on:click="toggle">Proceed</button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
+  props: {
+    about: {
+      type: Boolean,
+    },
+  },
+  
   name: "HelloWorld",
   computed: {
     ...mapGetters(["getUser", "isUserAuth"])
   },
+  methods: {
+   toggle: function () {
+      this.about = !this.about;
+    }
+  },
+ 
 };
 </script>
 
@@ -29,10 +49,12 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap');
 
 .hello {
-  background-image: url("~@/assets/main2.jpg");
-  background-size: 600px auto;
+  background-image: url("~@/assets/Online Doctor-pana.png");
+  background-size: 700px auto;
   background-repeat: no-repeat;
-  background-position: right;
+  background-position: left;
+  background-position-y: 80px;
+  background-position-x: 50px;
   height: 700px;
 }
 
@@ -76,6 +98,25 @@ a {
 
 .router-link-active {
   text-decoration: underline;
+}
+
+.delete {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  background-color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 80px;
+  height: 36px;
+  color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.delete:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 
 </style>
