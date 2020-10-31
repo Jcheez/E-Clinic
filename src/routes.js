@@ -1,4 +1,5 @@
 // All routes for Patient Notes Component
+import HelloWorld from "./components/HelloWorld"
 import PatientNotes from "./components/Patient/PatientNotes_components/PatientNotes.vue";
 import PatientAppointments from "./components/Patient/PatientNotes_components/PatientAppointments.vue";
 import Documents from "./components/Patient/PatientNotes_components/Documents.vue"
@@ -19,6 +20,7 @@ import ClinicSettings from "./components/Clinic/ClinicSettings"
 import { Role } from './store/role';
 
 export default [
+  { path: "/", name: "main", component: HelloWorld },
   { path: "/cliniclogin/clinicsignup", name: "clinicsignup", component: ClinicSignup },
   { path: "/cliniclogin", name: "cliniclogin", component: ClinicLogin },
   { path: "/patientlogin/patientsignup", name: "patientsignup", component: PatientSignup },
