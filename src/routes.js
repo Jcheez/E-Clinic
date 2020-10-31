@@ -16,6 +16,7 @@ import ViewDocuments from "./components/Patient/ViewDocument_component/ViewDocum
 import ViewDocumentsInner from "./components/Patient/ViewDocument_component/ViewDocumentsInner.vue"
 import ViewAppt from "./components/Patient/ViewAppt_component/ViewAppt.vue"
 import Rebook from "./components/Patient/ViewAppt_component/Rebook.vue"
+import ManagePayments from "./components/Patient/ManagePayments/managePayments.vue"
 
 export default [
   { path: "/patienthome", component: PatientHome },
@@ -36,5 +37,6 @@ export default [
   { path: "/makebooking/makebookingter", component: MakeBookingTer},
   { path: "/makebooking/makebookingpass", name:"makebookingpass", props: true, component: MakeBookingPass},
   { path: "/makebooking/makebookingpass/makebookingconfirmation", props: true, name:"makebookingconfirmation", component: MakeBookingConfirmation},
+  { path: "/managepayments", component: ManagePayments}
 ];
 
