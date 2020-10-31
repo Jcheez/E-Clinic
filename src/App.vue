@@ -1,17 +1,15 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to E-Clinic" />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
   },
 
   created() {
@@ -30,6 +28,15 @@ export default {
             this.$router.push('/makebooking')
           }
       }
+  },
+  mounted() {
+    this.authAction();
+  },
+  computed: {
+    ...mapGetters(["getUser", "isUserAuth"])
+  },
+  methods: {
+    ...mapActions(["authAction"])
   }
 };
 </script>
@@ -41,6 +48,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

@@ -19,14 +19,26 @@
         <router-link to="/managepayments">Go to Manage Payments</router-link>
       </li>
     </ul>
+    <a @click="signOut" class="button is-primary">Logout</a>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "patientHome",
+  name: "patienthome",
   props: {
     msg: String,
+  },
+  computed: {
+    ...mapGetters(["getUser", "isUserAuth"]),
+  },
+  methods: {
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/patientlogin");
+    },
   },
 };
 </script>
