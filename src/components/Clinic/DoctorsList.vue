@@ -91,6 +91,7 @@ a {
 a:hover {
   font-size: 17px;
   color: white;
+  cursor: pointer
 }
 
 #sideNavBar {
