@@ -19,6 +19,14 @@ export default {
           if (confirm('Reload site? You will be redirected back 1 page.')) {
             this.$router.push('/pendingbooking')
         }
+      } else if (performance.navigation.type == 1 && this.$route.path == '/makebooking/makebookingpass') {
+          if (confirm('Reload site? You will be redirected back to the booking page.')) {
+            this.$router.push('/makebooking')
+          }
+      } else if (performance.navigation.type == 1 && this.$route.path == '/makebooking/makebookingpass/makebookingconfirmation') {
+          if (confirm('Reload site? You will be redirected back to the booking page.')) {
+            this.$router.push('/makebooking')
+          }
       }
   },
   mounted() {
