@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HelloWorld msg="E-Clinic" v-if="!isUserAuth"></HelloWorld>
+    <HelloWorld v-if="!isUserAuth"></HelloWorld>
     <router-view></router-view>
   </div>
 </template>

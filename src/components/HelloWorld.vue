@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>E-Clinic</h1>
     <h2>Empowering Medicine <br>Through the Internet</h2>
     <h4>Choose Your Account Type</h4>
     <ul v-if="!isUserAuth">
@@ -18,9 +18,6 @@
 import { mapGetters } from "vuex";
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
-  },
   computed: {
     ...mapGetters(["getUser", "isUserAuth"])
   },
@@ -30,6 +27,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap');
+
+.hello {
+  background-image: url("~@/assets/main2.jpg");
+  background-size: 600px auto;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 700px;
+}
 
 h1 {
   text-align: left;
@@ -68,4 +73,9 @@ a {
   color: rgb(0, 114, 180);
   text-decoration: none;
 }
+
+.router-link-active {
+  text-decoration: underline;
+}
+
 </style>

@@ -19,9 +19,9 @@ import ClinicSettings from "./components/Clinic/ClinicSettings"
 import { Role } from './store/role';
 
 export default [
-  { path: "/clinicsignup", name: "clinicsignup", component: ClinicSignup },
+  { path: "/cliniclogin/clinicsignup", name: "clinicsignup", component: ClinicSignup },
   { path: "/cliniclogin", name: "cliniclogin", component: ClinicLogin },
-  { path: "/patientsignup", name: "patientsignup", component: PatientSignup },
+  { path: "/patientlogin/patientsignup", name: "patientsignup", component: PatientSignup },
   { path: "/patientlogin", name: "patientlogin", component: PatientLogin },
   { path: "/patienthome", name: "patienthome", component: PatientHome, meta: {authorize: Role.Patient}},
   { path: "/clinichome", name: "clinichome", component: ClinicHome, meta: {authorize: Role.Clinic} },
