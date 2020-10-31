@@ -263,8 +263,10 @@ export default {
                   ), //remove toDateString() when we store date as Date obj
                   //time: this.slotStartTime,
                   patient: null,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
                   rating: 0,
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");
@@ -284,7 +286,9 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   rating: 0,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");
@@ -313,7 +317,9 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   rating: 0,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");
@@ -340,7 +346,9 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   rating: 0,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");

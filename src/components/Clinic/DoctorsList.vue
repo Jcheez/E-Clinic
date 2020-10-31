@@ -18,8 +18,13 @@
             :to="{ name: 'doctorAppt', params: { currDoctor: d } }"
           ></router-link>
         </li>
-        <!--p v-for="dNum in doctorLicense" v-bind:key="dNum" v-html="dNum"></p-->
       </ul>
+    </div>
+    <button id="manageD" v-on:click="toggle">
+      {{ text }}
+    </button>
+    <div v-if="status" class="manageDoc">
+      <manageDoctor v-bind:doctors="this.doctors"></manageDoctor>
     </div>
   </div>
 </template>
@@ -27,22 +32,40 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import database from "../../firebase";
-//import firebase from "firebase/app";
+import manageDoctor from "./ManageDoctors";
 
 export default {
   data() {
     return {
       doctors: [],
+      text: "Manage Doctors",
+      status: false,
     };
   },
   computed: {
     ...mapGetters(["getUser"]),
+  },
+  components: {
+    manageDoctor,
+  },
+  watch: {
+    status: function () {
+      if (this.text == "Manage Doctors") {
+        this.text = "Back";
+      } else {
+        this.text = "Manage Doctors";
+      }
+      //this.fetchItems();
+    },
   },
   methods: {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
       this.$router.push("/cliniclogin");
+    },
+    toggle: function () {
+      this.status = !this.status;
     },
     //Must modify clinic to be the one currently logged in not hardcode a clinic
     fetchItems: function () {
@@ -146,5 +169,37 @@ p {
   display: block;
   float: left;
   left: 200px;
+}
+#manageD {
+  transition: 0.3s;
+  position: absolute;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+  left: 1000px;
+}
+button:hover {
+  background-color: white;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+  color: rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
+}
+
+#manageDoc {
+  width: 800px;
+  margin: 10px;
+  display: block;
+  position: absolute;
 }
 </style>
