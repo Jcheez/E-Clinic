@@ -32,7 +32,7 @@ export default {
   background-image: url("~@/assets/main2.jpg");
   background-size: 600px auto;
   background-repeat: no-repeat;
-  background-position: right;
+  background-position: right bottom;
   height: 700px;
 }
 
