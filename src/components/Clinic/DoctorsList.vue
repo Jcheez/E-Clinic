@@ -13,14 +13,12 @@
         <li v-for="d in doctors" v-bind:key="d.dNum">
           {{ d.dName }} <br /><br />
           {{ d.dNum }}
+          <router-link
+            id="apptment"
+            :to="{ name: 'doctorAppt', params: { currDoctor: d } }"
+          ></router-link>
         </li>
         <!--p v-for="dNum in doctorLicense" v-bind:key="dNum" v-html="dNum"></p-->
-
-        <router-link
-          id="apptment"
-          to="/appointment"
-          v-bind:currDoctor="d"
-        ></router-link>
       </ul>
     </div>
   </div>
@@ -91,7 +89,7 @@ a {
 a:hover {
   font-size: 17px;
   color: white;
-  cursor: pointer
+  cursor: pointer;
 }
 
 #sideNavBar {
@@ -128,14 +126,16 @@ li {
   text-align: center;
   display: inline-block;
   float: left;
+  font-family: Nunito;
+  font-size: 18px;
 }
 #apptment {
   display: block;
   width: 100px;
   height: 100px;
   cursor: pointer;
-  left: 210px;
-  top: 10px;
+  left: 0px;
+  top: -120px;
   position: relative;
 }
 

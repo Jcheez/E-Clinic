@@ -6,7 +6,10 @@
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
     <div v-if="status" class="addslot">
-      <addSlot v-bind:selectedDate="date" />
+      <addSlot
+        v-bind:selectedDate="date"
+        v-bind:doctorLicense="this.currDoctor.dNum"
+      />
     </div>
     <div v-else-if="!status" class="inner">
       <div class="placeholder">
@@ -54,6 +57,7 @@ export default {
       console.log("called");
       this.slots = [];
       let date = this.date.toLocaleDateString().split("/").reverse().join("-");
+      console.log(this.currDoctor.dNum);
       database
         .collection("consultslots")
         .where("doctor", "==", this.currDoctor.dNum)
@@ -139,7 +143,7 @@ export default {
 }
 
 .schedule {
-  left: 120px;
+  left: 130px;
   margin: 20px;
   display: flex;
 }

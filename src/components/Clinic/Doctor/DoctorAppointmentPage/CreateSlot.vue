@@ -73,6 +73,7 @@
 <script>
 import database from "../../../../firebase";
 import firebase from "firebase/app";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -91,6 +92,12 @@ export default {
     selectedDate: {
       type: Date,
     },
+    doctorLicense: {
+      type: String,
+    },
+  },
+  computed: {
+    ...mapGetters(["getUser"]),
   },
   methods: {
     checkAddEligible(datesToAddArray) {
@@ -114,12 +121,12 @@ export default {
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
-                console.log("loop")
+                console.log("loop");
                 // doc.data() is never undefined for query doc snapshots
                 results.push(doc.id, " => ", doc.data());
               });
               if (results.length > 0) {
-                console.log("shld break")
+                console.log("shld break");
                 return false;
               }
             })
@@ -194,7 +201,9 @@ export default {
               date: new firebase.firestore.Timestamp.fromDate(datetime),
               patient: null,
               rating: 0,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              conditions: [],
+              doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              clinic: this.getUser.displayName,
             });
             alert("Successfully added slots!");
           } else {

@@ -55,6 +55,8 @@
 <script>
 import database from "../../../../firebase";
 import firebase from "firebase/app";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -74,6 +76,7 @@ export default {
     oldSlot: function () {
       return this.slotData.date.toDate().toDateString();
     },
+    ...mapGetters(["getUser"]),
   },
   methods: {
     checkNewDate: function (rDate) {
@@ -103,18 +106,20 @@ export default {
       var newDate = this.date;
       newDate.setHours(parseInt(this.newStartTime.substr(0, 2)));
       newDate.setMinutes(parseInt(this.newStartTime.substr(3, 2)));
-      newDate.setSeconds(0)
+      newDate.setSeconds(0);
       newDate.setMilliseconds(0);
       var newTimestamp = firebase.firestore.Timestamp.fromDate(newDate);
 
       this.checkNewDate(newTimestamp)[0].then((res) => {
         if (res != false) {
           let item = {
-                date: newTimestamp,
-                patient: d.patient,
-                doctor: d.doctor, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
-                //rating: d.rating
-              }
+            date: newTimestamp,
+            patient: d.patient,
+            doctor: d.doctor, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+            rating: d.rating,
+            conditions: d.conditions,
+            clinic: this.getUser.displayName,
+          };
           //add
           database.collection("consultslots").add(item);
           //remove
@@ -128,28 +133,36 @@ export default {
             //  this.$emit("fetchItems");
             //}
           );
-          database.collection("consultslots").get().then((snapshot) => {
-            try {
-              snapshot.forEach((doc) => {
-                if (item.date.isEqual(doc.data().date)) {
-                  item.id = doc.id
-                  item.hover = false
-                  item.reschedule = false
-                  if (item.date.toDate().getDate() == d.date.toDate().getDate() && 
-                      item.date.toDate().getMonth() == d.date.toDate().getMonth() &&
-                      item.date.toDate().getFullYear() == d.date.toDate().getFullYear()) {
-                    this.$emit('changeTile', d, item, true)
-                  } else {
-                    this.$emit('changeTile', d, item, false)
+          database
+            .collection("consultslots")
+            .get()
+            .then((snapshot) => {
+              try {
+                snapshot.forEach((doc) => {
+                  if (item.date.isEqual(doc.data().date)) {
+                    item.id = doc.id;
+                    item.hover = false;
+                    item.reschedule = false;
+                    if (
+                      item.date.toDate().getDate() ==
+                        d.date.toDate().getDate() &&
+                      item.date.toDate().getMonth() ==
+                        d.date.toDate().getMonth() &&
+                      item.date.toDate().getFullYear() ==
+                        d.date.toDate().getFullYear()
+                    ) {
+                      this.$emit("changeTile", d, item, true);
+                    } else {
+                      this.$emit("changeTile", d, item, false);
+                    }
+                    throw "break";
                   }
-                  throw "break"
-                }
-              })
-            } catch (exception) {
-              console.log("shld break")
-            }
-          })
-          
+                });
+              } catch (exception) {
+                console.log("shld break");
+              }
+            });
+
           var ifASlotExistsQuery = database
             .collection("consultslots")
             .where("date", "==", newDate)
