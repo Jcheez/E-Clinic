@@ -53,7 +53,7 @@
               </p>
             </div>
             <p class="acc">No account yet?
-              <router-link to="/clinicsignup">Sign up!</router-link>
+              <router-link to="/cliniclogin/clinicsignup">Sign up!</router-link>
             </p>
           </form>
         </div>
@@ -132,6 +132,7 @@ export default {
   margin: auto;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  margin-top: -460px;
 }
 
 .label {

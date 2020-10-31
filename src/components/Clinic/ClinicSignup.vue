@@ -182,6 +182,7 @@ export default {
   margin: auto;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  margin-top: -480px;
 }
 
 input[type=text], input[type=password] {
