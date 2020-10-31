@@ -1,22 +1,44 @@
 <template>
-    <div class="docs">
-        <h1>Doctor Profiles</h1>
-        <div id="sideNavBar">
-            <h3>E-Clinic</h3>
-            <router-link to="/clinichome">Dashboard</router-link><br>
-            <router-link to="/doctorslist">Doctors</router-link><br>
-            <router-link to="/clinicsettings">
-            Settings</router-link><br>
-            <a @click="signOut" class="button is-primary">Logout</a>
-        </div>
+  <div class="docs">
+    <h1>Doctor Profiles</h1>
+    <div id="sideNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/clinichome">Dashboard</router-link><br />
+      <router-link to="/doctorslist">Doctors</router-link><br />
+      <router-link to="/clinicsettings"> Settings</router-link><br />
+      <a @click="signOut" class="button is-primary">Logout</a>
     </div>
+    <div>
+      <ul id="indivDoctor" style="list-style-type: none">
+        <li v-for="d in doctors" v-bind:key="d.dNum">
+          {{ d.dName }} <br /><br />
+          {{ d.dNum }}
+        </li>
+        <!--p v-for="dNum in doctorLicense" v-bind:key="dNum" v-html="dNum"></p-->
+
+        <router-link
+          id="apptment"
+          to="/appointment"
+          v-bind:currDoctor="d"
+        ></router-link>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import database from "../../firebase";
+//import firebase from "firebase/app";
+
 export default {
   data() {
-    return {};
+    return {
+      doctors: [],
+    };
+  },
+  computed: {
+    ...mapGetters(["getUser"]),
   },
   methods: {
     ...mapActions(["signOutAction"]),
@@ -24,8 +46,32 @@ export default {
       this.signOutAction();
       this.$router.push("/cliniclogin");
     },
-  }    
-}
+    //Must modify clinic to be the one currently logged in not hardcode a clinic
+    fetchItems: function () {
+      let x = this.getUser.displayName;
+      console.log(x);
+      //let doctorList = [];
+      database
+        .collection("doctors")
+        .where("clinic", "==", x)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            var doctorIndiv = { dNum: doc.id, dName: doc.data().name };
+            this.doctors.push(doctorIndiv);
+            //this.doctorNames.push(doc.data().name);
+            //this.doctorList[doc.id] = doc.data().name;
+            console.log(doc.id);
+            console.log(doc.data().name);
+          });
+        });
+      //console.log(this.doctorList);
+    },
+  },
+  created() {
+    this.fetchItems();
+  },
+};
 </script>
 
 <style scoped>
@@ -69,4 +115,35 @@ h3 {
   padding: 10px 0px 20px 0px;
 }
 
+li {
+  color: black;
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 3px;
+  position: relative;
+  margin: 10px;
+  left: 200px;
+  text-align: center;
+  display: inline-block;
+  float: left;
+}
+#apptment {
+  display: block;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  left: 210px;
+  top: 10px;
+  position: relative;
+}
+
+a[href="/appointment"] {
+  margin: 0 0 0 0;
+}
+p {
+  display: block;
+  float: left;
+  left: 200px;
+}
 </style>

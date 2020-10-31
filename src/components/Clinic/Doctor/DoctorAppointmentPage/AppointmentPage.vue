@@ -13,7 +13,11 @@
         <p v-if="slots.length == 0">
           No slots yet! Add slots by clicking on "Add Slots"
         </p>
-        <tile @fetchItems="fetchItems" v-bind:consultData="slots" class="tile" />
+        <tile
+          @fetchItems="fetchItems"
+          v-bind:consultData="slots"
+          class="tile"
+        />
       </div>
     </div>
     <button v-on:click="toggle" class="button">{{ text }}</button>
@@ -37,16 +41,22 @@ export default {
       zoomString: "",
     };
   },
+  props: {
+    currDoctor: {
+      type: Object,
+    },
+  },
   methods: {
     toggle: function () {
       this.status = !this.status;
     },
     fetchItems: function () {
-      console.log("called")
+      console.log("called");
       this.slots = [];
       let date = this.date.toLocaleDateString().split("/").reverse().join("-");
       database
         .collection("consultslots")
+        .where("doctor", "==", this.currDoctor.dNum)
         .orderBy("date")
         .get()
         .then((querySnapShot) => {
