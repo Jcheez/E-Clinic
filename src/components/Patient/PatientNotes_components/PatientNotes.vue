@@ -41,7 +41,7 @@ export default {
   methods: {
     nameSearch: function() {
       let copied = this.data;
-      copied = copied.filter(x => this.nameQuery.localeCompare(x.name) == 0)
+      copied = copied.filter(x => x.includes(this.nameQuery))
       this.itemsList = copied;
       if (this.nameQuery.localeCompare("") == 0) {
         this.itemsList = this.data;
