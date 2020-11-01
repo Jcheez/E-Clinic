@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <hr />
     <h2>Past Appointments</h2>
-    <p>Patient: {{patientName}}</p>
+    <p id="pat">Patient: {{patientName}}</p>
     <ul id="patients">
       <li v-for="(patient, index) in this.data" :key="index">
         <div id="inner">
@@ -14,10 +14,11 @@
         </button>
       </li>
     </ul>
+    <p v-if="this.data.length == 0" id="empty"> This patient does not have any past appointments!</p>
     <input
       id="searchbox"
       type="text"
-      placeholder="Search patient..."
+      placeholder="Search Date..."
       name="search"
       v-model="nameQuery"
       v-on:keyup.enter="dateSearch()"
@@ -45,7 +46,7 @@ export default {
   methods: {
       dateSearch: function() {
       let copied = this.data;
-      copied = copied.filter(x => this.nameQuery.localeCompare(x) == 0)
+      copied = copied.filter(x => x.includes(this.nameQuery))
       this.data = copied;
       if (this.nameQuery.localeCompare("") == 0) {
         this.data = this.apptDates;
@@ -149,7 +150,7 @@ button#searchbox {
   background-color: aqua;
 }
 
-p {
+p#pat {
     position: absolute;
     top: 310px;
     left: 140px;
@@ -160,5 +161,12 @@ p {
 a {
   color: black;
   text-decoration: none;
+}
+
+p#empty {
+  position: absolute;
+  top:500px;
+  left:140px;
+  font-size: 25px;
 }
 </style>

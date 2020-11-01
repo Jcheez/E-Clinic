@@ -32,7 +32,7 @@ export default {
        * otherwise patients will be able to see pending bookings of all with same name
        */ 
       msg: "Pending Booking",
-      name: "Timothy a",
+      name: "Timothy",
       itemsList: [],
     };
   },

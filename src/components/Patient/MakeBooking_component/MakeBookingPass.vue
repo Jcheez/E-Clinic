@@ -3,15 +3,13 @@
     <p>{{ msg }}</p>
     <v-date-picker v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
     <ul id="slots">
-      <li v-for="(s, index) in this.slot" :key="index">
+      <li v-for="(s, index) in this.docsName" :key="index">
         <div id="inner">
-          <span>Date: {{  formatDate(s.date) }}</span>
-          <span>Time: {{  formatTime(s.date) }}</span>
-          <span>Doctor: {{ s.doctor }}</span>
+          <h3 style="font-size:30px; text-decoration: underline;">{{s}}</h3>
+            <div v-for="(v, index) in slot" :key="index">
+              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); makeBooking(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
+            </div>
         </div>
-        <button id="view" v-on:click="getdoc(s.id); makeBooking(s.id); updateApptHist();">
-          Make Booking
-        </button>
       </li>
     </ul>
   </div>
@@ -20,14 +18,14 @@
 <script>
 import database from "../../../firebase.js"
 import * as firebase from "firebase";
-
 export default {
   data() {
     return {
         msg: "Make Booking",
         date: new Date(),
         slot: [],
-        datadoc: {}
+        datadoc: {},
+        docsName: []
     };
   },
   
@@ -38,6 +36,7 @@ export default {
           .get()
           .then((querySnapShot) => {
               this.slot = []
+              this.docsName = []
               let item = {};
             querySnapShot.forEach((doc) => {
                 item = doc.data();
@@ -54,13 +53,27 @@ export default {
                 .join("-")
 
                 if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
-                item.id = doc.id;
-                this.slot.push(item);
+                  let item2 = item
+                  item2.id = doc.id;
+                  database
+                  .collection("doctors")
+                  .doc(item.doctor)
+                  .get()
+                  .then((doc) => {
+                    let docName = doc.data().name;
+                    console.log(docName)
+                    item2.doctorName = docName
+                    console.log(item)
+                    this.slot.push(item2);
+                    if (this.docsName.includes(docName) == false){
+                      this.docsName.push(docName)
+                    }
+                    });
+
                     }
                 });
             });
         },
-
       formatDate: function(date) {
           let ldate = date.toDate().toLocaleDateString().split("/")
           let i0 = ldate[0]
@@ -68,19 +81,16 @@ export default {
           ldate[1] = i0
           return ldate.join("/")
         },
-
       formatTime: function(time) {
           let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
           ltime.splice(2,1)
           return ltime[0] + ":" + ltime[1] + " " + ltime[2]
         },
-
       formatTime2: function(time) {
         let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
         ltime.splice(2,1)
         return ltime[0] + "" + ltime[1]
       },
-
       getdoc: function(ide) {
           database
           .collection("consultslots")
@@ -93,7 +103,6 @@ export default {
               })
            })
       },
-
       updateApptHist: function() {
         var monthNames = [
         "January", "February", "March",
@@ -101,11 +110,9 @@ export default {
         "August", "September", "October",
         "November", "December"
         ];
-
         var day = this.date.getDate();
         var monthIndex = this.date.getMonth();
         var year = this.date.getFullYear();
-
         database
         .collection('patients')
         .where('name', "==", this.patientName)
@@ -128,7 +135,6 @@ export default {
                 })
         })
       },
-
       makeBooking: function(id) {
           this.getdoc(id)
         database
@@ -156,13 +162,11 @@ export default {
   created() {
       this.fetchitems();
   },
-
   watch: {
     date: function () {
       this.fetchitems();
     },
   },
-
   props: {
       conditions: Array,
       patientName: String,
@@ -172,59 +176,27 @@ export default {
 </script>
 
 <style scoped>
-div#inner {
-  width: 70%;
-  display: inline-block;
-}
-
-ul#slots {
-    position:absolute;
-    left: 500px;
-    top:-100px
-}
-
-li {
-  position: relative;
-  width: 562px;
-  height: 100px;
-  left: 73px;
-  top: 300px;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  list-style-type: none; /* Remove bullets */
-  padding-left: 10px;
-  padding-top: 20px;
-  display: block;
-}
-
-span {
-  position: relative;
-  display: block;
-  text-align: left;
-  font-size: 20px;
-}
-
-button#view {
-  position: relative;
-  bottom: 35px;
-  width: 125px;
-  height: 50px;
-  background: aqua;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 15px;
-  font-size: 20px;
-}
-
-button:hover {
-  cursor: pointer;
-}
-button:focus {
-  outline: none;
-}
 
 #datepicker {
     position: absolute;
     left: 200px;
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  cursor: pointer;
+}
+
+li {
+  list-style-type: none; /* Remove bullets */
 }
 </style>
