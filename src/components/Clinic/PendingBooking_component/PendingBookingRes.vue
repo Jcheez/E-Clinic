@@ -12,7 +12,7 @@
         </li>
     </ul>
     
-    <div id=physicalform>
+    <div v-if="patientDetails.pendingstatus=='Clinic failed to reach patient on mobile'" id=physicalform>
         <p>Input physical appointment details as disucssed with patient:</p>
         <input type="date" v-model="date" placeholder="Appointment Date">
         <input type="time" v-model="time" placeholder="Appointment Time">
@@ -21,7 +21,7 @@
         <input type="submit" value="Confirm" v-on:click="scheduled">
     </div>
 
-    <button id=fail v-if="patientDetails.status=='Awaiting clinic staff to contact'" v-on:click='failcall'>Failed to get to Patient</button>
+    <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable & Failed to get to Patient</button>
     <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default {
         msg: "Pending Booking",
         date: "",
         time: "",
+        notchecked: false
         };
     },
     props: {
@@ -42,22 +43,27 @@ export default {
     },
     methods: {
         failcall: function () {
-            var x = this.patientDetails.name
-            database.collection("pendingbooking").where("name", "==", x)
-            .get()
-            .then((querySnapShot) => {
-                    let item = {};
-                    querySnapShot.forEach((doc) => {
-                        item = doc.id;
-                        database.collection("pendingbooking").doc(item).update({
-                            pendingstatus: "Clinic failed to reach patient on mobile"
-                        
+            if (confirm("Proceed to notify unverified patient that they have a missed call?")){
+                this.notchecked = true;
+                var x = this.patientDetails.name
+                database.collection("pendingbooking").where("name", "==", x)
+                .get()
+                .then((querySnapShot) => {
+                        let item = {};
+                        querySnapShot.forEach((doc) => {
+                            item = doc.id;
+                            database.collection("pendingbooking").doc(item).update({
+                                pendingstatus: "Clinic failed to reach patient on mobile"
+                            
+                            })
+                            /* Add a notifications part to the user */
+                            console.log("pendingbooking document has been updated")
                         })
-                        /* Add a notifications part to the user */
-                        console.log("pendingbooking document has been updated")
-                    })
-            })  
+                })
+                this.$router.push("/pendingbooking"); 
+            }
         },
+
         verify: function () {
             if (confirm("Proceed in verifying?")) {
                 var x = this.patientDetails.name
@@ -101,8 +107,6 @@ export default {
                                 1: this.date,
                                 2: this.time
                             },
-
-                            appointment_history: firebase.firestore.FieldValue.arrayUnion(this.date)
                         })
                         console.log("physical appt has been added")
                     })
@@ -121,7 +125,7 @@ export default {
             /* Add a notifications part to the user */
             this.$router.push("/pendingbooking");  
         }
-    }
+    },
 }
 </script>
 
@@ -164,11 +168,12 @@ li#pending {
 }
 button#fail {
     position: relative;
-    top: 100px;
+    top: 250px;
 }
 button#verify {
     position: relative;
-    top: 100px;
+    top: 250px;
+    background-color: aquamarine;
 }
 
 div#physicalform {

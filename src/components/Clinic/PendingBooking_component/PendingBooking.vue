@@ -8,18 +8,16 @@
           <div id="inner">
             <span>{{ "Patient: " + patient.name }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
-            <span v-if="patient.physical"
-              >Reason: Physical Examination Required</span
-            >
+            <span v-if="patient.physical">Reason: Physical Examination Required</span>
           </div>
           <button id="outofplace" v-if="patient.physical && patient.firstTime">
             <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-            Make A Booking
+            See Details
             </router-link>
           </button>
           <button v-else-if="patient.physical || patient.firstTime">
             <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-            Make A Booking
+            See Details
             </router-link>
           </button>
         </li>
