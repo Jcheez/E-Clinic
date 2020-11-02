@@ -155,32 +155,6 @@ export default {
             console.log("online appt has been added")
         })
       },
-<<<<<<< HEAD
-=======
-      makeBooking: function(id) {
-          this.getdoc(id)
-        database
-        .collection("consultslots")
-        .doc(id)
-        .update({
-            patient: this.patientId,
-            conditions: this.conditions
-        })
-        .then(() => {
-        console.log(this.datadoc)
-        this.$router.push({
-            name: "makebookingconfirmation",
-            params: {
-                appdate: this.datadoc.date,
-                doctor: this.datadoc.doctor,
-            }   
-        })
-        alert("Appointment Slot booked")
-        })
-          
-        },
-        
->>>>>>> 42e23982a4ad5084b1f040222d0d7322ddd46772
   },
   created() {
       this.fetchitems();
