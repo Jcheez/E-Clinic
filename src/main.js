@@ -19,7 +19,7 @@ myRouter.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
   const { authorize } = to.meta;
   const currentUser = firebase.auth().currentUser
-  console.log(currentUser)
+  //console.log(currentUser)
 
   if (authorize) {
       if (!currentUser) {
@@ -44,7 +44,12 @@ myRouter.beforeEach((to, from, next) => {
 })
 
 firebase.auth().onAuthStateChanged(function(user) {
-  console.log(user)
+  //console.log(user)
+  if (user != null && user.photoURL.localeCompare("patient") == 0) {
+    localStorage.setItem("uidPatient", user.uid)
+  } else if (user != null && user.photoURL.localeCompare("clinic") == 0) {
+    localStorage.setItem("uidClinic", user.uid)
+  }
   new Vue({
       router: myRouter,
       render: h => h(App),
