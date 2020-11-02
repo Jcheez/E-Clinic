@@ -25,7 +25,7 @@ export default {
 
     props: {
       apptDate: String,
-      patientName: String
+      patientId: String
     },
 
     methods: {
@@ -33,10 +33,10 @@ export default {
             this.$router.push('/viewdocuments')
         },
         fetchItems: function () {
-            var x = this.patientName;
+            //var x = this.patientName;
             database
                 .collection("patients")
-                .where("name", "==", x)
+                .doc(this.patientId)
                 .get()
                 .then((querySnapShot) => {
                     let item = {};

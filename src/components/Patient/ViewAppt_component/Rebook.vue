@@ -98,7 +98,7 @@ export default {
 
         database
         .collection('patients')
-        .where('name', "==", this.consult[0].patient)
+        .where(firebase.firestore.FieldPath.documentId(), "==", this.consult[0].patient)
         .get()
         .then((querySnapShot) => {
                 let item = {};
@@ -116,7 +116,7 @@ export default {
                             upcoming: {
                                 0: "online",
                                 1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                                2: this.formatTime2(this.datadoc.date)
+                                2: this.formatTime(this.datadoc.date)
                             }
                         })
                     console.log("online appt has been changed")

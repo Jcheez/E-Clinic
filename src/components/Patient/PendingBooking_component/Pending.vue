@@ -6,7 +6,7 @@
       <template v-for="(patient, x) in itemsList">
         <li v-bind:key="x">
           <div id="inner">
-            <span>{{ "Patient: " + patient.name }}</span>
+            <span>{{ "Patient: " + name }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
             <span v-if="patient.physical">Reason: Physical Examination Required</span>
             <span>{{ "Status: " + patient.pendingstatus }}</span>
@@ -32,19 +32,27 @@ export default {
        * otherwise patients will be able to see pending bookings of all with same name
        */ 
       msg: "Pending Booking",
-      name: "Timothy",
+      patientId: localStorage.getItem("uidPatient"),
+      name: "",
       itemsList: [],
     };
   },
   components: {},
   methods: {
     fetchItems: function () {
-        console.log(this.itemsList)
+        database.collection('patients').doc(this.patientId).get().then((querySnapShot) => {
+          let item = {};
+          item = querySnapShot.data();
+          this.name = item.name;
+          console.log(this.name)
+        })
+
         database.collection("pendingbooking").get().then((querySnapShot) => {
             let item = {};
             querySnapShot.forEach((doc) => {
                 item = doc.data();
-                if (item.name.localeCompare(this.name) == 0) {
+                console.log(item)
+                if (item.patientId.localeCompare(this.patientId) == 0) {
                     this.itemsList.push(item);
                 }
             });
@@ -92,7 +100,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 210px;
+  top: 310px;
 
   border: 1px solid #000000;
   box-sizing: border-box;
@@ -116,6 +124,6 @@ span {
 }
 button {
   position: relative;
-  top: 250px;
+  top: 350px;
 }
 </style>

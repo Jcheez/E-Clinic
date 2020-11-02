@@ -115,24 +115,22 @@ export default {
         var year = this.date.getFullYear();
         database
         .collection('patients')
-        .where('name', "==", this.patientName)
+        .doc(this.patientId)
         .get()
         .then((querySnapShot) => {
-                let item = {};
-                querySnapShot.forEach((doc) => {
-                    item = doc.id;
-                    database.collection("patients").doc(item).update({
-                      appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
-                    })
-                    database.collection("patients").doc(item).update({
-                            upcoming: {
-                                0: "online",
-                                1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                                2: this.formatTime2(this.datadoc.date)
-                            }
-                        })
-                    console.log("physical appt has been added")
-                })
+          let item = {};
+            item = querySnapShot.id;
+            database.collection("patients").doc(item).update({
+              appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
+            })
+            database.collection("patients").doc(item).update({
+              upcoming: {
+                0: "online",
+                1: day + ' ' + monthNames[monthIndex] + ' ' + year,
+                2: this.formatTime2(this.datadoc.date)
+              }
+            })
+            console.log("online appt has been added")
         })
       },
       makeBooking: function(id) {
@@ -141,7 +139,7 @@ export default {
         .collection("consultslots")
         .doc(id)
         .update({
-            patient: this.patientName,
+            patient: this.patientId,
             conditions: this.conditions
         })
         .then(() => {
@@ -169,7 +167,7 @@ export default {
   },
   props: {
       conditions: Array,
-      patientName: String,
+      patientId: String,
       clinic: String
   },
 };
