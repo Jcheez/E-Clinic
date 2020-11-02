@@ -28,9 +28,6 @@ import database from "../../../firebase.js";
 export default {
   data() {
     return {
-      /* when patient login is complete, remember to props patient login id / something unique
-       * otherwise patients will be able to see pending bookings of all with same name
-       */ 
       msg: "Pending Booking",
       patientId: localStorage.getItem("uidPatient"),
       name: "",

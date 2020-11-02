@@ -33,7 +33,6 @@ export default {
     
     routeHome: function() {
       this.$router.push('/patienthome')
-      //To update again where to push this button
     }
   },
 

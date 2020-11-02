@@ -24,11 +24,6 @@ export default {
       msg: "Patient's Notes ",
       itemsList: [],
       patientId: localStorage.getItem("uidPatient")
-      /* Remember to change this part when login is finished and props can be passed
-            props: {
-                name: "",
-                phonenum: ""
-            } */
     };
   },
 

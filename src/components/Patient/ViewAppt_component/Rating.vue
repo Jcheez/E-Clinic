@@ -24,11 +24,7 @@ export default {
     data() {
         return {
         doctorscore: 0,
-        name: "Timothy"
-        /* Remember to change this part when login is finished and props can be passed
-                props: {
-                    name: "",
-                } */
+        patientId: localStorage.getItem("uidPatient"),
         };
     },
 
@@ -40,10 +36,9 @@ export default {
     methods: {
         updatedoctorrating: function() {
           console.log("im called")
-          var x = this.name;
           database
             .collection("consultslots")
-            .where("patient", "==", x)
+            .where("patient", "==", this.patientId)
             .get()
             .then((querySnapShot) => {
               let item = {};

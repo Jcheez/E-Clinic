@@ -45,6 +45,7 @@ export default {
         failcall: function () {
             if (confirm("Proceed to notify unverified patient that they have a missed call?")){
                 this.notchecked = true;
+                //remember to change this to patient id
                 var x = this.patientDetails.name
                 database.collection("pendingbooking").where("name", "==", x)
                 .get()
