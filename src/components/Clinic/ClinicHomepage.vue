@@ -20,6 +20,7 @@
       <router-link to="/clinichome">Dashboard</router-link><br>
       <router-link to="/doctorslist">Doctors</router-link><br>
       <router-link to="/clinicsettings">Settings</router-link><br>
+      <router-link to="/patientsnotes">patientsnotes</router-link><br>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
 

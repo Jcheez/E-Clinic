@@ -20,9 +20,6 @@
             </li>
         </ul>
     </div>
-    <p>{{this.qrCode}}</p>
-    <p>{{this.amountPaid}}</p>
-    <p>{{this.outstanding}}</p>
     <ul id="payments">
       <li v-for="(name, value, index) in this.outstanding" :key="index" id="iter">
         <div id="inner">
@@ -69,7 +66,7 @@ export default {
   data() {
     return {
       msg: "Manage Payments",
-      patient: "Timothy", // To get Patient Name from localstorage after login logout done
+      patient: localStorage.getItem("uidPatient"),
       qrCode: [],
       amountPaid: {},
       outstanding: {}
@@ -98,7 +95,7 @@ export default {
     getMoneyInOut: function() {
         database
         .collection("patients")
-        .where("name", "==", this.patient)
+        .doc(this.patient)
         .get()
         .then((querySnapShot) => {
             let item = {};

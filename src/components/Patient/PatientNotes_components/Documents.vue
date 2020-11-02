@@ -39,7 +39,6 @@
             <a id="links" v-bind:href="this.doc[this.appDate][p]">View</a>
             <a id="removers" v-on:click="remove(p)">Remove</a>
         </div>
-        <h3>{{this.doc}}</h3>
     </div>
 </template>
 
@@ -59,7 +58,7 @@ export default {
             i: "Invoice",
             p: "Prescription",
             u: undefined,
-            clinic: "Ruffles", //Remember to localstorage clinic's name for this to work dynamically
+            clinic: "",
             outstandingMap: {},
             amountPaidMap: {}
         }
@@ -147,10 +146,22 @@ export default {
                 console.log('Payment received updated!')
                 })
                 this.$forceUpdate()
+        },
+
+        getClinicName: function() {
+            database
+            .collection('clinics')
+            .doc(localStorage.getItem("uidClinic"))
+            .get()
+            .then((doc) => {
+                this.clinic = doc.data().name
+            });
         }
     },
 
     created() {
+        this.getClinicName()
+
         if (this.pName == null || this.appDate == null) {
             this.pName = localStorage.getItem('pn3name');
             this.appDate = localStorage.getItem('pn3date');
