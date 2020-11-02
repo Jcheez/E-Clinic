@@ -7,7 +7,7 @@
         <div id="inner">
           <h3 style="font-size:30px; text-decoration: underline;">{{s}}</h3>
             <div v-for="(v, index) in slot" :key="index">
-              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
+              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); changeBooking(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
             </div>
         </div>
       </li>
@@ -110,19 +110,10 @@ export default {
                       .doc(ide)
                       .update({
                           patient: this.patientId,
-                          conditions: this.conditions
+                          conditions: this.consult[0].conditions
                       })
                       .then(() => {
-                      database.collection('doctors').doc(this.datadoc.doctor).get().then((doc) => {
-                        this.$router.push({
-                          name: "makebookingconfirmation",
-                          params: {
-                              appdate: this.datadoc.date,
-                              doctor: doc.data().name,
-                          }   
-                          })
-                        })
-                      alert("Appointment Slot booked")
+                        this.$router.push("/viewappt")
                       })
                       
                   }
@@ -142,6 +133,7 @@ export default {
         var monthIndex = this.date.getMonth();
         var year = this.date.getFullYear();
 
+        
         database
         .collection('patients')
         .where(firebase.firestore.FieldPath.documentId(), "==", this.consult[0].patient)
@@ -198,13 +190,13 @@ export default {
             rating: 0
         })
         .then(() => {
-          this.$router.push('/viewappt')
           alert("Appointment Changed")
         })
         },
   },
     created() {
       this.fetchitems();
+      console.log(this.consult)
     },
     
   watch: {
@@ -214,7 +206,7 @@ export default {
   },
 
   props: {
-      conditions: Array,
+      consult: Array,
       patientId: String,
       clinic: String
   },
