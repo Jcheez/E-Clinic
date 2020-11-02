@@ -105,7 +105,7 @@ export default {
                       .collection("consultslots")
                       .doc(ide)
                       .update({
-                          patient: this.patientName,
+                          patient: this.patientId,
                           conditions: this.conditions
                       })
                       .then(() => {
