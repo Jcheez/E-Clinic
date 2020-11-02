@@ -214,7 +214,9 @@ export default {
   },
 
   props: {
-      consult: Array
+      conditions: Array,
+      patientId: String,
+      clinic: String
   },
 }
 </script>

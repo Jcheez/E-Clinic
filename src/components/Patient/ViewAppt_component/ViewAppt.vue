@@ -96,7 +96,9 @@ export default {
             this.$router.push({
                 name: "rebook",
                 params: {
-                    consult: this.consult
+                    consult: this.consult,
+                    patientId: this.patientId,
+                    clinic: this.consult[0].clinic
                 }
             })
         },
