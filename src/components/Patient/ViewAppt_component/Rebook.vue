@@ -136,7 +136,8 @@ export default {
             item = doc.id;
             database.collection("consultslots").doc(item).update({
               patient: null,
-              conditions: null
+              conditions: null,
+              rating: 0,
             })
           })
         })
@@ -147,7 +148,8 @@ export default {
         .doc(id)
         .update({
             patient: this.consult[0].patient,
-            conditions: this.consult[0].conditions
+            conditions: this.consult[0].conditions,
+            rating: 0
         })
         .then(() => {
           this.$router.push('/viewappt')
