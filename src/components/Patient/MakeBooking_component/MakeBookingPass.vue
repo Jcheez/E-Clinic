@@ -7,7 +7,7 @@
         <div id="inner">
           <h3 style="font-size:30px; text-decoration: underline;">{{s}}</h3>
             <div v-for="(v, index) in slot" :key="index">
-              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); makeBooking(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
+              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
             </div>
         </div>
       </li>
@@ -25,7 +25,7 @@ export default {
         date: new Date(),
         slot: [],
         datadoc: {},
-        docsName: []
+        docsName: [],
     };
   },
   
@@ -33,6 +33,7 @@ export default {
       fetchitems: function() {
           database
           .collection("consultslots")
+          .orderBy("date")
           .get()
           .then((querySnapShot) => {
               this.slot = []
@@ -91,6 +92,7 @@ export default {
         ltime.splice(2,1)
         return ltime[0] + "" + ltime[1]
       },
+
       getdoc: function(ide) {
           database
           .collection("consultslots")
@@ -99,6 +101,26 @@ export default {
               querySnapShot.forEach((doc) => {
                   if (ide.localeCompare(doc.id) == 0) {
                       this.datadoc = doc.data()
+                      database
+                      .collection("consultslots")
+                      .doc(ide)
+                      .update({
+                          patient: this.patientName,
+                          conditions: this.conditions
+                      })
+                      .then(() => {
+                      database.collection('doctors').doc(this.datadoc.doctor).get().then((doc) => {
+                        this.$router.push({
+                          name: "makebookingconfirmation",
+                          params: {
+                              appdate: this.datadoc.date,
+                              doctor: doc.data().name,
+                          }   
+                          })
+                        })
+                      alert("Appointment Slot booked")
+                      })
+                      
                   }
               })
            })
@@ -135,29 +157,6 @@ export default {
                 })
         })
       },
-      makeBooking: function(id) {
-          this.getdoc(id)
-        database
-        .collection("consultslots")
-        .doc(id)
-        .update({
-            patient: this.patientName,
-            conditions: this.conditions
-        })
-        .then(() => {
-        console.log(this.datadoc)
-        this.$router.push({
-            name: "makebookingconfirmation",
-            params: {
-                appdate: this.datadoc.date,
-                doctor: this.datadoc.doctor,
-            }   
-        })
-        alert("Appointment Slot booked")
-        })
-          
-        },
-        
   },
   created() {
       this.fetchitems();
