@@ -117,7 +117,9 @@ export default {
                       itemx = querySnapShot.data();
                       this.noupcoming = null;
                       var today = new Date()
-                      if (Date.parse(itemx.upcoming[1]) > today.getTime() || 
+                      if (itemx.upcoming == null) {
+                        this.noupcoming = "You have no upcoming booking."
+                      } else if (Date.parse(itemx.upcoming[1]) > today.getTime() || 
                       (Date.parse(itemx.upcoming[1]) == today.getTime() && 
                       itemx.upcoming[2].localeCompare(today.getHours() + "" + today.getMinutes() > 0 ))) {
                           if (itemx.upcoming[0] == "physical") {

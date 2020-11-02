@@ -125,8 +125,10 @@ export default {
                     let item = {};
                     item = querySnapShot.data();
                     var today = new Date()
-                    console.log(Date.parse(item.upcoming[1]) == today.getTime())
-                    if (Date.parse(item.upcoming[1]) > today.getTime()) {
+                    //console.log(Date.parse(item.upcoming[1]) == today.getTime())
+                    if (item.upcoming == null) {
+                        this.availableToBook = true
+                    } else if (Date.parse(item.upcoming[1]) > today.getTime()) {
                         this.availableToBook = false
                     } else if (Date.parse(item.upcoming[1]) == today.getTime()) {
                         if (item.upcoming[2].localeCompare(today.getHours() + "" + today.getMinutes() > 0)) {
