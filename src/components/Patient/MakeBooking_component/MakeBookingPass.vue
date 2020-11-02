@@ -137,26 +137,50 @@ export default {
         var year = this.date.getFullYear();
         database
         .collection('patients')
-        .where('name', "==", this.patientName)
+        .doc(this.patientId)
         .get()
         .then((querySnapShot) => {
-                let item = {};
-                querySnapShot.forEach((doc) => {
-                    item = doc.id;
-                    database.collection("patients").doc(item).update({
-                      appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
-                    })
-                    database.collection("patients").doc(item).update({
-                            upcoming: {
-                                0: "online",
-                                1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                                2: this.formatTime2(this.datadoc.date)
-                            }
-                        })
-                    console.log("physical appt has been added")
-                })
+          let item = {};
+            item = querySnapShot.id;
+            database.collection("patients").doc(item).update({
+              appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
+            })
+            database.collection("patients").doc(item).update({
+              upcoming: {
+                0: "online",
+                1: day + ' ' + monthNames[monthIndex] + ' ' + year,
+                2: this.formatTime2(this.datadoc.date)
+              }
+            })
+            console.log("online appt has been added")
         })
       },
+<<<<<<< HEAD
+=======
+      makeBooking: function(id) {
+          this.getdoc(id)
+        database
+        .collection("consultslots")
+        .doc(id)
+        .update({
+            patient: this.patientId,
+            conditions: this.conditions
+        })
+        .then(() => {
+        console.log(this.datadoc)
+        this.$router.push({
+            name: "makebookingconfirmation",
+            params: {
+                appdate: this.datadoc.date,
+                doctor: this.datadoc.doctor,
+            }   
+        })
+        alert("Appointment Slot booked")
+        })
+          
+        },
+        
+>>>>>>> 42e23982a4ad5084b1f040222d0d7322ddd46772
   },
   created() {
       this.fetchitems();
@@ -168,7 +192,7 @@ export default {
   },
   props: {
       conditions: Array,
-      patientName: String,
+      patientId: String,
       clinic: String
   },
 };
