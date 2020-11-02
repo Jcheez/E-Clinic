@@ -13,8 +13,8 @@
         <span>{{ "Conditions: " + this.consult[0].conditions}}</span>
         <span>{{ "Date: " + this.date}}</span>
        <!-- <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span> -->
-        <span>{{ "Zoom Link: " }} <a v-bind:href="this.itemsList[0].zoom">Link</a> </span>
-        
+        <span>{{ "Zoom Link: " }} <p id="url" v-on:click="ratings()">Link</p> </span>
+        <rating v-if="this.urlclicked" v-bind:consult="this.consult"></rating>
       </div>
       <button id="cancel" v-if="this.itemsList.length > 0" v-on:click="cancelonline()">Cancel Appointment</button>
       <button id="reschedule" v-if="this.itemsList.length > 0" v-on:click="reschedule()">Reschedule Appointment</button>
@@ -25,6 +25,7 @@
 <script>
 import database from "../../../firebase.js";
 import * as firebase from "firebase";
+import Rating from "./Rating.vue"
 
 export default {
     data() {
@@ -34,6 +35,8 @@ export default {
         consult: [],
         physicalList:[],
         noupcoming: null,
+        urlclicked: false,
+        doctorscore: 0,
         date: "",
         patientId: localStorage.getItem("uidPatient"),
         };
@@ -42,6 +45,12 @@ export default {
     methods: {
         routeHome: function() {
             this.$router.push('/patienthome')
+        },
+
+        ratings: function() {
+          this.urlclicked = true;
+          window.open(this.itemsList[0].zoom, "_blank");
+          console.log("reached here")
         },
 
         cancelonline: function() {
@@ -161,6 +170,15 @@ export default {
                 })
         }
     },
+    components: {
+      rating: Rating,
+    },
+    watch: {
+      itemsList: function() {
+        this.fetchItems();
+      }
+    },
+
     created() {
         this.fetchItems();
     },
@@ -205,6 +223,11 @@ div#noupcoming {
 span {
   display: block;
   text-align: left;
+}
+p#url{
+  display: inline;
+  color: blue;
+  text-decoration: underline;
 }
 button{
   position: relative;
