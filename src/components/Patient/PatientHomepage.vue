@@ -13,15 +13,22 @@
         <router-link to="/managepayments">Go to Manage Payments</router-link>
       </li>
     </ul>
+    <notifications></notifications>
   </div>
 </template>
 
 <script>
+import notifications from "./notification component/notifications.vue"
+
 export default {
   name: "patientHome",
   props: {
     msg: String,
   },
+
+  components: {
+    notifications
+  }
 };
 </script>
 
