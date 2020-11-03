@@ -11,6 +11,7 @@
             </button>
           </li>
         </ul>
+        <p v-if="itemsList.length == 0">There are no documents to view</p>
         <button id="home" v-on:click="routeHome()">Back to home</button>
     </div>  
 </template>

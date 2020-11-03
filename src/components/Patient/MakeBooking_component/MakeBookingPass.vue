@@ -12,6 +12,7 @@
         </div>
       </li>
     </ul>
+    <p v-if="this.docsName.length == 0">There are no available appointment slots today</p>
   </div>
 </template>
 

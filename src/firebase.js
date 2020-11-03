@@ -8,7 +8,7 @@ const firebaseConfig = {
   storageBucket: "e-clinic-e8c00.appspot.com",
   messagingSenderId: "912281579882",
   appId: "1:912281579882:web:915439768cf00edae4b513",
-  measurementId: "G-S36ST5KXWQ",
+  measurementId: "G-S36ST5KXWQ"
 };
 
 firebase.initializeApp(firebaseConfig);
