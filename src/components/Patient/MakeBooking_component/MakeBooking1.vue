@@ -37,6 +37,7 @@
         <br>
         <p id=error>{{this.errorstring}}</p>
         <button @click=next>Next</button>
+        <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
 
@@ -63,6 +64,10 @@ export default {
     },
 
     methods: {
+        routeHome: function() {
+            this.$router.push('/patienthome')
+        },
+        
         next: function () {
             console.log(this.availableToBook)
             if (!this.selected && this.checkedConditions.length == 0) {
