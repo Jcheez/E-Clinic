@@ -13,6 +13,7 @@
       </li>
     </ul>
     <p v-if="this.docsName.length == 0">There are no available appointment slots today</p>
+    <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
 
@@ -156,6 +157,10 @@ export default {
             console.log("online appt has been added")
         })
       },
+
+      routeHome: function() {
+            this.$router.push('/makebooking')
+        },
   },
   created() {
       this.fetchitems();

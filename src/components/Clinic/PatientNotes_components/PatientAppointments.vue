@@ -24,6 +24,7 @@
       v-on:keyup.enter="dateSearch()"
     />
     <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button>
+    <button id="home" v-on:click="routeHome()">Back to Patients</button>  
   </div>
 </template>
 
@@ -54,6 +55,10 @@ export default {
       }
       this.$forceUpdate();
     },
+
+    routeHome: function() {
+        this.$router.push('/patientsnotes')
+    },
   },
 };
 </script>
@@ -72,6 +77,7 @@ h1 {
   line-height: 57px;
   color: #000000;
 }
+
 hr {
   position: absolute;
   width: 1459px;
@@ -99,7 +105,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 300px;
+  top: 450px;
   border: 1px solid #000000;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
@@ -168,5 +174,21 @@ p#empty {
   top:500px;
   left:140px;
   font-size: 25px;
+}
+
+button#home {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  position: absolute;
+  top:510px;
+  left:1250px;
 }
 </style>
