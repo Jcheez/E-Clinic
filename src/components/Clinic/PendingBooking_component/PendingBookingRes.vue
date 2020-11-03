@@ -23,6 +23,7 @@
 
     <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable & Failed to get to Patient</button>
     <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
+    <button id="home" v-on:click="routeBack()">Back</button>
   </div>
 </template>
 
@@ -42,6 +43,10 @@ export default {
         patientDetails: Object,
     },
     methods: {
+        routeHome: function() {
+            this.$router.push('/pendingbooking')
+        },
+
         failcall: function () {
             if (confirm("Proceed to notify unverified patient that they have a missed call?")){
                 this.notchecked = true;
