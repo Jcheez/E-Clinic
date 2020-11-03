@@ -29,6 +29,10 @@ export default {
           }
       } else if (performance.navigation.type == 0 && this.$route.path == '/makebooking/makebookingpass') {
         this.$router.push("/makebooking")
+      } else if (performance.navigation.type == 0 && this.$route.path == '/viewappt/rebook') {
+        this.$router.push("/viewappt")
+      } else if (performance.navigation.type == 0 && this.$route.path == '/viewdocuments/view') {
+        this.$router.push("/viewdocuments")
       }
   },
   mounted() {

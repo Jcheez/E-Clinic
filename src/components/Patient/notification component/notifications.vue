@@ -13,16 +13,41 @@
 </template>
 
 <script>
+import database from "../../../firebase.js"
+//import * as firebase from "firebase"
+
 export default {
   data() {
     return {
       msg: "Notifications ",
-      newMessages: ["Test1", "Test2"],
-      oldMessages: ["Test3", "Test4"]
+      newMessages: [],
+      oldMessages: []
     };
   },
 
   methods: {
+    fetchitems: function() {
+      database
+      .collection("patients")
+      .doc(localStorage.getItem("uidPatient"))
+      .get()
+      .then((doc) => {
+        let item = doc.data()
+        this.newMessages = item.newNotifications
+        this.oldMessages = item.oldNotifications
+
+        let returnArray = this.newMessages.concat(this.oldMessages)
+
+        database
+        .collection("patients")
+        .doc(localStorage.getItem("uidPatient"))
+        .update({
+          newNotifications: [],
+          oldNotifications: returnArray
+        })
+      })
+    },
+
       myFunction: function() {
         document.getElementById("myDropdown").classList.toggle("show");
         },
@@ -31,13 +56,14 @@ export default {
         if (!e.target.matches('.dropbtn')) {
         var myDropdown = document.getElementById("myDropdown");
             if (myDropdown.classList.contains('show')) {
-            myDropdown.classList.remove('show');
+              myDropdown.classList.remove('show');
             }
         }
       }
     },
 
     created() {
+      this.fetchitems()
         window.addEventListener("click", this.windowevent)
     },
 
