@@ -102,7 +102,10 @@ export default [
     component: AppointmentPage,
     props: true,
   },
-  { path: "/doctorsettings", component: DoctorSettings },
+  {
+    path: "/doctorslist/appointment/doctorsettings",
+    component: DoctorSettings,
+  },
   { path: "/makebooking", component: MakeBooking },
   { path: "/makebooking/makebookingter", component: MakeBookingTer },
   {

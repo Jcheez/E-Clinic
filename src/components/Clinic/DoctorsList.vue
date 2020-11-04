@@ -8,7 +8,7 @@
       <router-link to="/clinicsettings"> Settings</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <div>
+    <div v-if="!status">
       <ul id="indivDoctor" style="list-style-type: none">
         <li v-for="d in doctors" v-bind:key="d.dNum">
           {{ d.dName }} <br /><br />
@@ -23,8 +23,12 @@
     <button id="manageD" v-on:click="toggle">
       {{ text }}
     </button>
-    <div v-if="status" class="manageDoc">
-      <manageDoctor v-bind:doctors="this.doctors"></manageDoctor>
+    <div id="manageDoc" v-if="status">
+      <!--class="manageDoc"-->
+      <manageDoctor
+        v-bind:doctors="this.doctors"
+        @fetchItems="fetchItems"
+      ></manageDoctor>
     </div>
   </div>
 </template>
@@ -58,6 +62,7 @@ export default {
       //this.fetchItems();
     },
   },
+
   methods: {
     ...mapActions(["signOutAction"]),
     signOut() {
@@ -195,11 +200,13 @@ button:hover {
   color: rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
 }
-
+#indivDoctor {
+  width: 700px;
+}
 #manageDoc {
   width: 800px;
   margin: 10px;
-  display: block;
-  position: absolute;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

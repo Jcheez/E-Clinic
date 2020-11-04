@@ -116,7 +116,7 @@ export default {
         toMerge.push(
           database
             .collection("consultslots")
-            //.where("doctor", "==", "") //doctor that is logged in
+            .where("doctor", "==", this.doctorLicense) //doctor that is logged in
             .where("date", "in", batch)
             .get()
             .then(function (querySnapshot) {

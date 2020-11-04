@@ -6,29 +6,32 @@
         <div>
           <input
             type="text"
-            v-model="this.doctorAdd.name"
+            v-model="doctorAdd.dName"
             placeholder="Doctor Name"
             required
           /><br />
           <input
             type="text"
-            v-model="this.doctorAdd.id"
+            v-model="doctorAdd.dNum"
             placeholder="Doctor License No."
             required
           />
         </div>
-        <button id="add" v-on:click="addDoctor()">Submit</button>
       </form>
+      <button id="add" v-on:click="addDoctor()">Submit</button>
     </div>
 
     <div id="deleteDoctor">
       <h3>Delete Doctor</h3>
       <div>
-        <ul id="indivDoctor" style="list-style-type: none">
+        <ul
+          id="indivDoctor"
+          style="list-style-type: none; padding-inline-start: 30px"
+        >
           <li v-for="d in doctors" v-bind:key="d.dNum" :id="d.dNum">
             <b>Doctor Name: </b> {{ d.dName }} <br />
             <b>Doctor License Number: </b> {{ d.dNum }}
-            <button id="del" v-on:click="delDoctor(d.dNum)"><b>X</b></button>
+            <button id="del" v-on:click="delDoctor(d)"><b>X</b></button>
           </li>
         </ul>
       </div>
@@ -42,8 +45,8 @@ export default {
   data() {
     return {
       doctorAdd: {
-        id: "",
-        name: "",
+        dNum: "",
+        dName: "",
       },
       validationErrors: [],
     };
@@ -61,19 +64,33 @@ export default {
       // when valid then sign in
       this.validate();
       if (this.validationErrors.length <= 0) {
-        database.collection("doctors").add({
-          id: this.doctorAdd.id,
-          name: this.doctorAdd.name,
+        this.doctors.push({
+          dNum: this.doctorAdd.dNum,
+          dName: this.doctorAdd.dName,
+        });
+        database.collection("doctors").doc(this.doctorAdd.dNum).set({
+          name: this.doctorAdd.dName,
           clinic: this.getUser.displayName,
         });
         alert("Successfully added new doctor!");
+        this.doctorAdd.dName = "";
+        this.doctorAdd.dNum = "";
+      } else {
+        for (var v = 0; v < this.validationErrors.length; v++) {
+          alert(this.validationErrors[v]);
+        }
       }
     },
-    delDoctor: function (doctorNumber) {
-      let li = document.getElementById(doctorNumber);
+    delDoctor: function (doctorObj) {
+      let li = document.getElementById(doctorObj.dNum);
       li.parentNode.removeChild(li);
-      database.collection("doctors").doc(doctorNumber).delete();
+      database.collection("doctors").doc(doctorObj.dNum).delete();
       //need to emit back to parent list to not display box
+      let index = this.doctors.indexOf(doctorObj);
+      console.log(index);
+      this.doctors.splice(index, 1);
+      console.log(this.doctors);
+      //this.$emit("fetchItems");
     },
 
     resetError() {
@@ -83,24 +100,19 @@ export default {
       // Clear the errors before we validate again
       this.resetError();
 
-      if (!this.doctorAdd.name) {
-        this.validationErrors.push(
-          "<strong>Doctor name</strong> cannot be empty."
-        );
+      if (!this.doctorAdd.dName) {
+        this.validationErrors.push("Doctor name cannot be empty.");
       }
-      if (!this.doctorAdd.id) {
-        this.validationErrors.push(
-          "<strong>Doctor license no.</strong> cannot be empty."
-        );
-      } else if (
-        this.doctorAdd.id.length != 7 ||
-        this.doctorAdd.id.substr(0, 1) != "M" ||
-        isNaN(this.doctorAdd.id.substr(1, 5)) ||
-        !isNaN(this.doctorAdd.id.substr(6, 1))
+      if (!this.doctorAdd.dNum) {
+        this.validationErrors.push("Doctor license no. cannot be empty.");
+      }
+      if (
+        this.doctorAdd.dNum.length != 7 ||
+        this.doctorAdd.dNum.substr(0, 1) != "M" ||
+        isNaN(this.doctorAdd.dNum.substr(1, 5)) ||
+        !isNaN(this.doctorAdd.dNum.substr(6, 1))
       ) {
-        this.validationErrors.push(
-          "<strong>Doctor license no.</strong> entered is not valid."
-        );
+        this.validationErrors.push("Doctor license no. entered is not valid.");
       }
     },
   },
@@ -109,7 +121,7 @@ export default {
 <style scoped>
 #addDoctor {
   height: 300px;
-  width: 500px;
+  width: 350px;
   display: inline-block;
 }
 #deleteDoctor {
@@ -117,15 +129,18 @@ export default {
   display: inline-block;
   border-left: 1px solid rgb(0, 114, 180);
   height: 500px;
+  position: absolute;
 }
 input {
   margin: 15px 0px 5px 30px;
+  width: 250px;
+  height: 20px;
 }
 #del {
   color: red;
   cursor: pointer;
   font-family: Nunito;
-  font-size: 20px;
+  font-size: 18px;
   display: inline-block;
   background-color: white;
   border-bottom: 1px solid rgb(0, 114, 180);
@@ -139,10 +154,11 @@ input {
 }
 li {
   text-align: left;
-  height: 60px;
-  margin: 10px;
+  height: 50px;
+  margin-top: 20px;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
+  width: 320px;
 }
 #add {
   background-color: white;

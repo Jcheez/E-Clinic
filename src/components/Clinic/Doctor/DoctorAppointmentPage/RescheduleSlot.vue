@@ -85,7 +85,7 @@ export default {
       promise.push(
         database
           .collection("consultslots")
-          //.where("doctor", "==", "") //doctor that is logged in
+          .where("doctor", "==", this.slotData.doctor) //doctor that is logged in
           .where("date", "==", rDate)
           .where("patient", "!=", null)
           .get()

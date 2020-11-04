@@ -1,8 +1,16 @@
 <template>
   <div class="container">
+    <div id="topNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/doctorslist/appointment/doctorsettings"
+        >Doctor's Settings</router-link
+      >
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+
     <div class="leftColumn">
       <v-date-picker v-model="date" is-inline :min-date="new Date()" />
-      <join-zoom class="zoom" v-bind:href="zoomString"></join-zoom>
+      <join-zoom class="zoom" v-bind:zoomlink="zoomString"></join-zoom>
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
     <div v-if="status" class="addslot">
@@ -23,7 +31,7 @@
         />
       </div>
     </div>
-    <button v-on:click="toggle" class="button">{{ text }}</button>
+    <button v-on:click="toggle" class="addSlotButton">{{ text }}</button>
   </div>
 </template>
 
@@ -33,6 +41,7 @@ import create from "./CreateSlot";
 import scheduled from "./ScheduledAppointments";
 import tile from "./ConsultationTile";
 import joinTeleConsult from "./JoinTeleconsult";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -53,11 +62,16 @@ export default {
     toggle: function () {
       this.status = !this.status;
     },
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/cliniclogin");
+    },
     fetchItems: function () {
       console.log("called");
       this.slots = [];
       let date = this.date.toLocaleDateString().split("/").reverse().join("-");
-      console.log(this.currDoctor.dNum);
+      //console.log(this.currDoctor);
       database
         .collection("consultslots")
         .where("doctor", "==", this.currDoctor.dNum)
@@ -86,6 +100,17 @@ export default {
           });
         });
     },
+    getZoomString: function () {
+      database
+        .collection("doctors")
+        .doc(this.currDoctor.dNum) //.get().data().zoom;
+        /*.where("doctor", "==", this.currDoctor.dNum)*/
+        .get()
+        .then((doc) => {
+          console.log(doc.data().zoom);
+          this.zoomString = doc.data().zoom;
+        });
+    },
   },
   components: {
     addSlot: create,
@@ -108,6 +133,7 @@ export default {
   },
   created() {
     this.fetchItems();
+    this.getZoomString();
   },
 };
 </script>
@@ -139,11 +165,12 @@ export default {
   align-items: center;
   left: 0px;
   width: 500px;
-  height: 500px;
+  height: 450px;
+  margin-top: 30px;
 }
 
 .schedule {
-  left: 130px;
+  left: 120px;
   margin: 20px;
   display: flex;
 }
@@ -156,6 +183,7 @@ export default {
   height: 500px;
   float: left;
   margin: 10px;
+  margin-top: 100px;
 }
 
 .placeholder {
@@ -164,10 +192,9 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.button {
+.addSlotButton {
   transition: 0.3s;
   position: relative;
-  top: -100px;
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
   padding: 10px;
@@ -180,12 +207,12 @@ export default {
   letter-spacing: 3px;
   outline: none;
   display: inline-block;
-  top: -220px;
+  top: -150px;
   width: 80px;
   text-align: center;
 }
 
-button:hover {
+.addSlotButton:hover {
   background-color: white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);
@@ -193,5 +220,45 @@ button:hover {
 }
 .tile {
   margin-top: 50px;
+}
+
+#topNavBar {
+  height: 80px;
+  position: absolute;
+  top: 0;
+  /*left:0*/
+  overflow-x: hidden;
+  width: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+}
+
+a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-right: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}
+
+a:hover {
+  font-size: 17px;
+  color: white;
+  cursor: pointer;
+}
+h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>
