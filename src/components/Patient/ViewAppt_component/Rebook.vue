@@ -12,6 +12,8 @@
         </div>
       </li>
     </ul>
+    <p v-if="this.docsName.length == 0">There are no available appointment slots today</p>
+    <button id="home" v-on:click="routeHome()">Back</button>
   </div>
 </template>
 
@@ -160,6 +162,7 @@ export default {
                     console.log("online appt has been changed")
                 })
         })
+
       },
 
        changeBooking: function(id) {
@@ -192,6 +195,10 @@ export default {
         .then(() => {
           alert("Appointment Changed")
         })
+        },
+
+        routeHome: function() {
+            this.$router.push('/viewappt')
         },
   },
     created() {
@@ -235,5 +242,19 @@ button {
 
 li {
   list-style-type: none; /* Remove bullets */
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  cursor: pointer;
 }
 </style>
