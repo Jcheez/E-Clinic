@@ -4,7 +4,7 @@
 import database from "../../firebase";
 import firebase from "firebase/app";
 import { Line } from "vue-chartjs";
-import { mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   extends: Line,
@@ -50,7 +50,7 @@ export default {
     },
   }),
   computed: {
-    ...mapGetters(["getUser"])
+    ...mapGetters(["getUser"]),
   },
   methods: {
     getPastSixMonthsString: function(monthsNumArray) {
@@ -79,7 +79,7 @@ export default {
 
     getPastSixMonthsNum: function() {
       let pastSixMonthsNum = [];
-      console.log(this.today);
+      //console.log(this.today);
       const currentMonth = this.today.getMonth();
       //console.log(currentMonth);
       for (var i = 5; i >= 0; i--) {
@@ -92,20 +92,20 @@ export default {
 
     fetchData: function() {
       var monthsArray = this.getPastSixMonthsNum();
-      let x = this.getUser.displayName
-      console.log(monthsArray);
+      let x = this.getUser.displayName;
+      //console.log(monthsArray);
       this.chartdata.labels = this.getPastSixMonthsString(monthsArray);
-      console.log(this.getPastSixMonthsString(monthsArray));
-      console.log(this.chartdata.labels);
+      //console.log(this.getPastSixMonthsString(monthsArray));
+      //console.log(this.chartdata.labels);
 
       for (var month of monthsArray) {
-        console.log(month);
+        //console.log(month);
         var startOfMonth = new Date(this.today.getFullYear(), month); //new Date(year, month, day, hours, minutes, seconds, milliseconds)
         var endOfMonth = new Date(this.today.getFullYear(), month + 1);
 
         startOfMonth.setMilliseconds(0);
         endOfMonth.setMilliseconds(0);
-        console.log(startOfMonth, endOfMonth);
+        //console.log(startOfMonth, endOfMonth);
         var clinicMonthTotal = database
           .collection("consultslots")
           .where("clinic", "==", x)

@@ -1,6 +1,6 @@
 <template>
   <div id="zoom">
-    <a v-bind:href="zoomlink">Start Teleconsult</a>
+    <a v-bind:href="zoomlink" target="_blank">Start Teleconsult</a>
   </div>
 </template>
 
@@ -46,5 +46,10 @@ a {
   display: inline-block;
   text-align: center;
   padding: 10px;
+  color: rgb(0, 114, 180);
+}
+
+a:hover {
+  color: white;
 }
 </style>
