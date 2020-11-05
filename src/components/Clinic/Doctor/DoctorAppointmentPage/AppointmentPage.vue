@@ -2,7 +2,11 @@
   <div class="container">
     <div id="topNavBar">
       <h3>E-Clinic</h3>
-      <router-link to="/doctorslist/appointment/doctorsettings"
+      <router-link
+        :to="{
+          name: 'doctorSettings',
+          params: { currDoctorNum: this.currDoctor.dNum },
+        }"
         >Doctor's Settings</router-link
       >
       <a @click="signOut" class="button is-primary">Logout</a>

@@ -6,7 +6,7 @@
       <router-link to="/doctorslist/appointment">Appointments</router-link>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <form v-on:submit.prevent="successfulSubmit">
+    <form v-on:submit.prevent="zoomLinkSubmit()">
       <label>Please create a Zoom link and paste it in the box provided:</label>
       <input
         type="text"
@@ -21,16 +21,37 @@
 </template>
 
 <script>
+import database from "../../../firebase";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       inputZoomLink: "",
     };
   },
+  props: {
+    currDoctorNum: {
+      type: String,
+    },
+  },
   methods: {
-    successfulSubmit() {
-      alert("Successfully submitted Zoom Link");
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/cliniclogin");
+    },
+    zoomLinkSubmit() {
       console.log(this.inputZoomLink);
+      var doctorRef = database.collection("doctors").doc(this.currDoctorNum);
+
+      // Set the "capital" field of the city 'DC'
+      return doctorRef.update({
+        zoom: this.inputZoomLink,
+        /*})
+        .then((doc) => {
+          alert("Successfully submitted Zoom Link", doc);
+          this.inputZoomLink = "";*/
+      });
     },
   },
 };

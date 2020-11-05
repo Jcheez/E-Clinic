@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input-zoom></input-zoom>
+    <input-zoom v-bind:currDoctorNum="this.currDoctorNum"></input-zoom>
   </div>
 </template>
 
@@ -14,6 +14,11 @@ export default {
   },
   components: {
     inputZoom,
+  },
+  props: {
+    currDoctorNum: {
+      type: String,
+    },
   },
 };
 </script>
