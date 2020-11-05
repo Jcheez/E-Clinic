@@ -3,7 +3,13 @@
     <div id="topNavBar">
       <h3>E-Clinic</h3>
       <!--router-link to="/doctorslist/appointment/doctorsettings">Doctor's Settings</router-link-->
-      <!--router-link :to="{ name: 'doctorAppt', params: { currDoctor: this. } }">Appointments</router-link-->
+      <router-link
+        :to="{
+          name: 'doctorAppt',
+          params: { currDoctor: this.currDoctor },
+        }"
+        >Appointments</router-link
+      >
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <form v-on:submit.prevent="zoomLinkSubmit()">
