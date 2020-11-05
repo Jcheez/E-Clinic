@@ -3,7 +3,7 @@
     <div id="topNavBar">
       <h3>E-Clinic</h3>
       <!--router-link to="/doctorslist/appointment/doctorsettings">Doctor's Settings</router-link-->
-      <router-link to="/doctorslist/appointment">Appointments</router-link>
+      <!--router-link :to="{ name: 'doctorAppt', params: { currDoctor: this. } }">Appointments</router-link-->
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <form v-on:submit.prevent="zoomLinkSubmit()">
@@ -30,8 +30,8 @@ export default {
     };
   },
   props: {
-    currDoctorNum: {
-      type: String,
+    currDoctor: {
+      type: Object,
     },
   },
   methods: {
@@ -42,8 +42,13 @@ export default {
     },
     zoomLinkSubmit() {
       console.log(this.inputZoomLink);
-      var doctorRef = database.collection("doctors").doc(this.currDoctorNum);
-
+      console.log(this.currDoctor);
+      var doctorRef = database.collection("doctors").doc(this.currDoctor.dNum);
+      alert("Successfully submitted Zoom Link");
+      this.$router.push({
+        name: "doctorAppt",
+        params: { currDoctor: this.currDoctor },
+      });
       // Set the "capital" field of the city 'DC'
       return doctorRef.update({
         zoom: this.inputZoomLink,
@@ -83,24 +88,23 @@ span {
   margin: 40px;
 }
 #submitButton {
-  background-color: white;
-  border: 1px solid rgb(0, 114, 180);
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  color: rgb(0, 114, 180);
+  color: white;
   letter-spacing: 3px;
   font-weight: bold;
   outline: none;
 }
 
 #submitButton:hover {
-  background-color: rgb(0, 114, 180);
-  border: 1px solid white;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);
-  color: white;
 }
 
 #topNavBar {

@@ -8,33 +8,34 @@
       <router-link to="/clinicsettings"> Settings</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
+    <div id="instructions">
+      <label>Update Email Address:</label><br />
+
+      <label>Change Password:</label><br />
+      <label>Repeat New Password:</label>
+    </div>
     <div id="inputFields">
-      <h3>Update Email Address:</h3>
       <input
         type="text"
-        placeholder="Enter New Password"
+        placeholder="Enter New Email"
         id="changeEmail"
         v-model="newEmail"
-      />
-
-      <button v-on:click="changeEmail">Update</button>
-      <h3>Change Password:</h3>
-      <input
+      /><input
         type="text"
         placeholder="Enter New Password"
         id="changePW"
         v-model="newPassword"
-      />
-
-      <h3>Repeat New Password:</h3>
-      <input
+      /><input
         type="text"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
         v-model="repeatPassword"
       />
-      <button v-on:click="changePassword">Update</button>
     </div>
+    <!--div id="buttons"-->
+    <button id="submitEmail" v-on:click="changeEmail">Update Email</button
+    ><button id="submitPW" v-on:click="changePassword">Update Password</button>
+    <!--/div-->
   </div>
 </template>
 
@@ -112,7 +113,7 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 2px;
   margin: 60px 0 0 0;
   text-decoration: none;
@@ -121,7 +122,7 @@ a {
 }
 
 a:hover {
-  font-size: 17px;
+  font-size: 18px;
   color: white;
   cursor: pointer;
 }
@@ -138,8 +139,14 @@ a:hover {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
 }
-
-h3#sideNavBar {
+label {
+  color: black;
+  font-weight: bolder;
+  padding: 10px 0px 20px 0px;
+  float: left;
+  margin-bottom: 30px;
+}
+h3 {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;
@@ -150,15 +157,27 @@ h3#sideNavBar {
 input {
   width: 300px;
   height: 20px;
-}
-
-#inputFields {
-  align-items: left;
+  display: block;
   margin: 10px;
-  margin-left: 50px;
-  margin-top: 100px;
+  margin-bottom: 50px;
 }
-button {
+#inputFields {
+  width: 350px;
+  display: inline-block;
+  margin-top: 100px;
+  position: relative;
+  left: -200px;
+}
+#instructions {
+  width: 300px;
+  margin: 10px;
+  margin-left: 400px;
+  margin-top: 100px;
+  display: inline-block;
+  height: 300px;
+  float: left;
+}
+#submitEmail {
   transition: 0.3s;
   position: absolute;
   background-color: rgb(0, 114, 180);
@@ -172,15 +191,48 @@ button {
   color: white;
   letter-spacing: 3px;
   outline: none;
-  display: inline-block;
-  width: 80px;
+  display: block;
+  width: 150px;
   text-align: center;
-  margin-left: 50px;
+  margin-left: 20px;
+  left: 950px;
+  margin-bottom: 70px;
+  height: 50px;
+  top: 180px;
+}
+#submitPW {
+  transition: 0.3s;
+  position: absolute;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: block;
+  width: 150px;
+  text-align: center;
+  margin-left: 20px;
+  height: 60px;
+  left: 950px;
+  top: 330px;
 }
 button:hover {
   background-color: white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
+}
+
+#buttons {
+  width: 80px;
+  display: inline-block;
+  top: 300px;
+  margin-top: 100px;
 }
 </style>

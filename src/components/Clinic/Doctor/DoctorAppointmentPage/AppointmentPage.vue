@@ -5,7 +5,7 @@
       <router-link
         :to="{
           name: 'doctorSettings',
-          params: { currDoctorNum: this.currDoctor.dNum },
+          params: { currDoctor: this.currDoctor },
         }"
         >Doctor's Settings</router-link
       >
