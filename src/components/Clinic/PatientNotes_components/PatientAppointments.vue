@@ -2,69 +2,63 @@
   <div>
     <h1>{{ msg }}</h1>
     <hr />
-    <h2>Patients</h2>
+    <h2>Past Appointments</h2>
+    <p id="pat">Patient: {{patientName}}</p>
     <ul id="patients">
-      <li v-for="(patient, index) in this.itemsList" :key="index">
+      <li v-for="(patient, index) in this.data" :key="index">
         <div id="inner">
-          <span>{{ "Patient: " + patient.name }}</span>
+          <span>{{ patient }}</span>
         </div>
         <button id="view">
-          <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
+          <router-link :to="{ name:'uploaddocuments', params: {patientName: patientName, appointmentDate: patient}}">View</router-link>
         </button>
       </li>
     </ul>
+    <p v-if="this.data.length == 0" id="empty"> This patient does not have any past appointments!</p>
     <input
       id="searchbox"
       type="text"
-      placeholder="Search patient..."
+      placeholder="Search Date..."
       name="search"
       v-model="nameQuery"
-      v-on:keyup.enter="nameSearch()"
+      v-on:keyup.enter="dateSearch()"
     />
-    <button id="searchbox" type="submit" v-on:click="nameSearch()">Search</button>
+    <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button>
+    <button id="home" v-on:click="routeHome()">Back to Patients</button>  
   </div>
 </template>
- 
+
 <script>
-import database from "../../../firebase.js";
 
 export default {
   data() {
     return {
-      msg: "Patient's Notes ",
-      itemsList: [],
-      nameQuery: "",
-      data: [],
+        msg: "Patient's Notes ",
+        data: [...this.apptDates],
+        nameQuery: ""   
     };
   },
 
+  props: {
+      apptDates: Array,
+      patientName: String
+  },
+
   methods: {
-    nameSearch: function() {
+      dateSearch: function() {
       let copied = this.data;
-      copied = copied.filter(x => this.nameQuery.localeCompare(x.name) == 0)
-      this.itemsList = copied;
+      copied = copied.filter(x => x.includes(this.nameQuery))
+      this.data = copied;
       if (this.nameQuery.localeCompare("") == 0) {
-        this.itemsList = this.data;
+        this.data = this.apptDates;
+        
       }
-      this.$forceUpdate();      
+      this.$forceUpdate();
     },
 
-    fetchItems: function () {
-      database
-        .collection("patients")
-        .get()
-        .then((querySnapShot) => {
-          let item = {};
-          querySnapShot.forEach((doc) => {
-            item = doc.data();
-            this.itemsList.push(item);
-            this.data.push(item);
-          });
-        });
+    routeHome: function() {
+        this.$router.push('/patientsnotes')
     },
-  },
-  created() {
-    this.fetchItems();
   },
 };
 </script>
@@ -83,6 +77,7 @@ h1 {
   line-height: 57px;
   color: #000000;
 }
+
 hr {
   position: absolute;
   width: 1459px;
@@ -94,8 +89,8 @@ hr {
 
 h2 {
   position: absolute;
-  top: 310px;
-  left: 330px;
+  top: 380px;
+  left: 280px;
   text-decoration: underline;
   font-size: 30px;
 }
@@ -110,7 +105,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 230px;
+  top: 450px;
   border: 1px solid #000000;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
@@ -161,8 +156,39 @@ button#searchbox {
   background-color: aqua;
 }
 
+p#pat {
+    position: absolute;
+    top: 310px;
+    left: 140px;
+    font-size:30px;
+    color:brown
+}
+
 a {
   color: black;
   text-decoration: none;
+}
+
+p#empty {
+  position: absolute;
+  top:500px;
+  left:140px;
+  font-size: 25px;
+}
+
+button#home {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  position: absolute;
+  top:510px;
+  left:1250px;
 }
 </style>

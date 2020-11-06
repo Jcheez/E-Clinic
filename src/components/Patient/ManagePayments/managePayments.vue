@@ -20,9 +20,6 @@
             </li>
         </ul>
     </div>
-    <p>{{this.qrCode}}</p>
-    <p>{{this.amountPaid}}</p>
-    <p>{{this.outstanding}}</p>
     <ul id="payments">
       <li v-for="(name, value, index) in this.outstanding" :key="index" id="iter">
         <div id="inner">
@@ -55,10 +52,11 @@
               </div>
             </div>
           </div>
-          
+
         </div>
       </li>
     </ul>
+    <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
 
@@ -69,7 +67,7 @@ export default {
   data() {
     return {
       msg: "Manage Payments",
-      patient: "Timothy", // To get Patient Name from localstorage after login logout done
+      patient: localStorage.getItem("uidPatient"),
       qrCode: [],
       amountPaid: {},
       outstanding: {}
@@ -98,7 +96,7 @@ export default {
     getMoneyInOut: function() {
         database
         .collection("patients")
-        .where("name", "==", this.patient)
+        .doc(this.patient)
         .get()
         .then((querySnapShot) => {
             let item = {};
@@ -122,7 +120,11 @@ export default {
                 console.log(this.outstanding)
             }
         }
-    }
+    },
+
+    routeHome: function() {
+        this.$router.push('/patienthome')
+    },
   },
 
   created() {
@@ -204,5 +206,22 @@ span {
 div#paydetails {
     position: relative;
     left: -162px
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  cursor: pointer;
+  position: absolute;
+  top:450px;
+  left:800px;
 }
 </style>

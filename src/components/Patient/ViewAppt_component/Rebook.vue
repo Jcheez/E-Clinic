@@ -1,19 +1,19 @@
 <template>
   <div>
-      <h1>{{ msg }}</h1>
-      <v-date-picker v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
-      <ul id="slots">
-      <li v-for="(s, index) in this.slot" :key="index">
+    <p>{{ msg }}</p>
+    <v-date-picker v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
+    <ul id="slots">
+      <li v-for="(s, index) in this.docsName" :key="index">
         <div id="inner">
-          <span>Date: {{  formatDate(s.date) }}</span>
-          <span>Time: {{  formatTime(s.date) }}</span>
-          <span>Doctor: {{ s.doctor }}</span>
+          <h3 style="font-size:30px; text-decoration: underline;">{{s}}</h3>
+            <div v-for="(v, index) in slot" :key="index">
+              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); changeBooking(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
+            </div>
         </div>
-        <button id="view" v-on:click="getdoc(s.id); changeBooking(s.id); updateApptHist();">
-          Make Booking
-        </button>
       </li>
     </ul>
+    <p v-if="this.docsName.length == 0">There are no available appointment slots today</p>
+    <button id="home" v-on:click="routeHome()">Back</button>
   </div>
 </template>
 
@@ -27,7 +27,8 @@ export default {
         msg: "Reschedule Appointment",
         date: new Date(),
         slot: [],
-        datadoc: {}
+        datadoc: {},
+        docsName: [],
     };
   },
 
@@ -35,21 +36,48 @@ export default {
       fetchitems: function() {
           database
           .collection("consultslots")
+          .orderBy("date")
           .get()
           .then((querySnapShot) => {
               this.slot = []
+              this.docsName = []
               let item = {};
             querySnapShot.forEach((doc) => {
                 item = doc.data();
-                let item_date = item.date.toDate().toLocaleDateString().split("/").reverse().join("-");
-                let filtered_date = this.date.toLocaleDateString().split("/").reverse().join("-")
-                if (item_date.localeCompare(filtered_date) == 0 && item.patient == null) {
-                    item.id = doc.id;
-                    this.slot.push(item);
-                }
+                let item_date = item.date
+                .toDate()
+                .toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-");
+                
+                let filtered_date = this.date.toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-")
+
+                if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
+                  let item2 = item
+                  item2.id = doc.id;
+                  database
+                  .collection("doctors")
+                  .doc(item.doctor)
+                  .get()
+                  .then((doc) => {
+                    let docName = doc.data().name;
+                    console.log(docName)
+                    item2.doctorName = docName
+                    console.log(item)
+                    this.slot.push(item2);
+                    if (this.docsName.includes(docName) == false){
+                      this.docsName.push(docName)
+                    }
+                    });
+
+                    }
+                });
             });
-          });
-      },
+        },
 
       formatDate: function(date) {
           let ldate = date.toDate().toLocaleDateString().split("/")
@@ -79,6 +107,17 @@ export default {
               querySnapShot.forEach((doc) => {
                   if (ide.localeCompare(doc.id) == 0) {
                       this.datadoc = doc.data()
+                      database
+                      .collection("consultslots")
+                      .doc(ide)
+                      .update({
+                          patient: this.patientId,
+                          conditions: this.consult[0].conditions
+                      })
+                      .then(() => {
+                        this.$router.push("/viewappt")
+                      })
+                      
                   }
               })
            })
@@ -96,9 +135,10 @@ export default {
         var monthIndex = this.date.getMonth();
         var year = this.date.getFullYear();
 
+        
         database
         .collection('patients')
-        .where('name', "==", this.consult[0].patient)
+        .where(firebase.firestore.FieldPath.documentId(), "==", this.consult[0].patient)
         .get()
         .then((querySnapShot) => {
                 let item = {};
@@ -116,12 +156,13 @@ export default {
                             upcoming: {
                                 0: "online",
                                 1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                                2: this.formatTime2(this.datadoc.date)
+                                2: this.formatTime(this.datadoc.date)
                             }
                         })
                     console.log("online appt has been changed")
                 })
         })
+
       },
 
        changeBooking: function(id) {
@@ -136,7 +177,8 @@ export default {
             item = doc.id;
             database.collection("consultslots").doc(item).update({
               patient: null,
-              conditions: null
+              conditions: null,
+              rating: 0,
             })
           })
         })
@@ -147,16 +189,21 @@ export default {
         .doc(id)
         .update({
             patient: this.consult[0].patient,
-            conditions: this.consult[0].conditions
+            conditions: this.consult[0].conditions,
+            rating: 0
         })
         .then(() => {
-          this.$router.push('/viewappt')
           alert("Appointment Changed")
         })
+        },
+
+        routeHome: function() {
+            this.$router.push('/viewappt')
         },
   },
     created() {
       this.fetchitems();
+      console.log(this.consult)
     },
     
   watch: {
@@ -166,65 +213,48 @@ export default {
   },
 
   props: {
-      consult: Array
+      consult: Array,
+      patientId: String,
+      clinic: String
   },
 }
 </script>
 
 <style scoped>
-div#inner {
-  width: 70%;
-  display: inline-block;
-}
-
-ul#slots {
-    position:absolute;
-    left: 500px;
-    top:-100px
-}
-
-li {
-  position: relative;
-  width: 562px;
-  height: 100px;
-  left: 73px;
-  top: 300px;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  list-style-type: none; /* Remove bullets */
-  padding-left: 10px;
-  padding-top: 20px;
-  display: block;
-}
-
-span {
-  position: relative;
-  display: block;
-  text-align: left;
-  font-size: 20px;
-}
-
-button#view {
-  position: relative;
-  bottom: 35px;
-  width: 125px;
-  height: 50px;
-  background: aqua;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 15px;
-  font-size: 20px;
-}
-
-button:hover {
-  cursor: pointer;
-}
-button:focus {
-  outline: none;
-}
-
 #datepicker {
     position: absolute;
     left: 200px;
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  cursor: pointer;
+}
+
+li {
+  list-style-type: none; /* Remove bullets */
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  cursor: pointer;
 }
 </style>

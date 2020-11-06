@@ -20,11 +20,14 @@
       </li>
     </ul>
     <a @click="signOut" class="button is-primary">Logout</a>
+    <notifications></notifications>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import notifications from "./notification component/notifications.vue"
+
 export default {
   name: "patienthome",
   props: {
@@ -40,6 +43,10 @@ export default {
       this.$router.push("/patientlogin");
     },
   },
+
+  components: {
+    notifications
+  }
 };
 </script>
 

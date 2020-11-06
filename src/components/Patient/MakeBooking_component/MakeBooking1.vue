@@ -37,6 +37,7 @@
         <br>
         <p id=error>{{this.errorstring}}</p>
         <button @click=next>Next</button>
+        <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
 
@@ -51,8 +52,8 @@ export default {
                 name: "",
                 phonenum: ""
             } */
-        name: "Timothy",
-        phonenum: "98712345",
+        patientId: localStorage.getItem("uidPatient"),
+        //phonenum: "98712345",
         clinics: [],
         selected: "",
         checkedConditions: [],
@@ -63,6 +64,10 @@ export default {
     },
 
     methods: {
+        routeHome: function() {
+            this.$router.push('/patienthome')
+        },
+        
         next: function () {
             console.log(this.availableToBook)
             if (!this.selected && this.checkedConditions.length == 0) {
@@ -78,71 +83,78 @@ export default {
                 this.errorstring = "";
                 var a = this.checkedConditions;
                 var physicalbool = (a.includes('Fever') || a.includes('Cough') || a.includes('Sore Throat') || a.includes('Runny Nose') || a.includes('Chest Pain')) 
-                database.collection('patients').where("name", "==", this.name)
+                database.collection('patients')
+                .doc(this.patientId)
                 .get()
                 .then((querySnapShot) => {
                     let item = {};
-                    querySnapShot.forEach((doc) => {
-                        item = doc.data();
-                        console.log(item.verifiedclinics)
-                        var firstbool = !item.verifiedclinics.includes(this.selected)
+                    item = querySnapShot.data();
+                    console.log(item.verifiedclinics)
+                    var firstbool = !item.verifiedclinics.includes(this.selected)
                         
-                        console.log(physicalbool)
+                    console.log(physicalbool)
 
-                        if (physicalbool || firstbool) {
-                            this.$router.push('/makebooking/makebookingter')
-                            database.collection("pendingbooking").add(
-                            {
-                            name: this.name,
-                            phonenum: this.phonenum,
-                            clinic: this.selected,
-                            physical: physicalbool,
-                            firstTime: firstbool,
-                            conditions: a,
-                            pendingstatus: "Awaiting clinic staff to contact"
+                    if (physicalbool || firstbool) {
+                        this.$router.push('/makebooking/makebookingter')
+                        database.collection("pendingbooking").add(
+                        {
+                        patientId: this.patientId,
+                        //phonenum: this.phonenum,
+                        clinic: this.selected,
+                        physical: physicalbool,
+                        firstTime: firstbool,
+                        conditions: a,
+                        pendingstatus: "Awaiting clinic staff to contact"
+                        }
+                        )
+                    } else {
+                        console.log("you have reached here")
+                        this.$router.push({
+                            name: "makebookingpass",
+                            params: {
+                                conditions: this.checkedConditions,
+                                patientId: this.patientId,
+                                clinic: this.selected
                             }
-                            )
-                        } else {
-                            console.log("you have reached here")
-                            this.$router.push({
-                                name: "makebookingpass",
-                                params: {
-                                    conditions: this.checkedConditions,
-                                    patientName: this.name,
-                                    clinic: this.selected
-                                }
-                            })
-                        }           
-                    });
+                        })
+                    }           
                 })
             }
         },
 
         checkAbleToBook: function() {
-            database.collection('patients').where("name", "==", this.name)
+            database.collection('patients')
+                .doc(this.patientId)
                 .get()
                 .then((querySnapShot) => {
                     let item = {};
-                    querySnapShot.forEach((doc) => {
-                        item = doc.data();
-                        var today = new Date()
-                        console.log(Date.parse(item.upcoming[1]) == today.getTime())
-                        if (Date.parse(item.upcoming[1]) > today.getTime()) {
+                    item = querySnapShot.data();
+                    var today = new Date()
+                    //console.log(Date.parse(item.upcoming[1]) == today.getTime())
+                    if (item.upcoming == null) {
+                        this.availableToBook = true
+                    } else if (Date.parse(item.upcoming[1]) > today.getTime()) {
+                        this.availableToBook = false
+                    } else if (Date.parse(item.upcoming[1]) == today.getTime()) {
+                        if (item.upcoming[2].localeCompare(today.getHours() + "" + today.getMinutes() > 0)) {
                             this.availableToBook = false
-                        } else if (Date.parse(item.upcoming[1]) == today.getTime()) {
-                            if (item.upcoming[2].localeCompare(today.getHours() + "" + today.getMinutes() > 0)) {
-                                this.availableToBook = false
-                            }
-                        } else {
-                            console.log('asdasd')
-                            this.availableToBook = true
-                            console.log(this.availableToBook)
                         }
-                    });
+                    } else {
+                        console.log('asdasd')
+                        this.availableToBook = true
+                        console.log(this.availableToBook)
+                    }
                 })
         },
 
         fetchItems: function () {
+            /*
+            database.collection('patients').doc(this.patientId).get().then((querySnapShot) => {
+                let item = {};
+                item = querySnapShot.data();
+                this.phonenum = item.phonenum;
+            })*/
+
             database.collection("clinics").get().then((querySnapShot) => {
                 let item = {};
                 querySnapShot.forEach((doc) => {

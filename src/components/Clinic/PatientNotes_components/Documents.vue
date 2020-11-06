@@ -7,7 +7,7 @@
         <h2 id="mc1">Medical Certificate</h2>
         <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc1">
-            <a id="links" v-bind:href="this.doc[this.appDate][mc]">View</a>
+            <a id="links" v-bind:href="this.doc[this.appDate][mc]" target="_blank">View</a>
             <a id="removers" v-on:click="remove(mc)">Remove</a>
         </div>
         <h2 id="mc2">Invoice</h2>
@@ -30,16 +30,16 @@
         </div>
         <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc2">
-            <a id="links" v-bind:href="this.doc[this.appDate][i]">View</a>
+            <a id="links" v-bind:href="this.doc[this.appDate][i]" target="_blank">View</a>
             <a id="removers" v-on:click="remove(i)">Remove</a>
         </div>
         <h2 id="mc3">Prescription</h2>
         <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc3">
-            <a id="links" v-bind:href="this.doc[this.appDate][p]">View</a>
+            <a id="links" v-bind:href="this.doc[this.appDate][p]" target="_blank">View</a>
             <a id="removers" v-on:click="remove(p)">Remove</a>
         </div>
-        <h3>{{this.doc}}</h3>
+        <button id="home" v-on:click="routeHome()">Back to Patients</button> 
     </div>
 </template>
 
@@ -59,7 +59,7 @@ export default {
             i: "Invoice",
             p: "Prescription",
             u: undefined,
-            clinic: "Ruffles", //Remember to localstorage clinic's name for this to work dynamically
+            clinic: "",
             outstandingMap: {},
             amountPaidMap: {}
         }
@@ -147,10 +147,26 @@ export default {
                 console.log('Payment received updated!')
                 })
                 this.$forceUpdate()
-        }
+        },
+
+        getClinicName: function() {
+            database
+            .collection('clinics')
+            .doc(localStorage.getItem("uidClinic"))
+            .get()
+            .then((doc) => {
+                this.clinic = doc.data().name
+            });
+        },
+
+        routeHome: function() {
+            this.$router.push('/patientsnotes')
+        },
     },
 
     created() {
+        this.getClinicName()
+
         if (this.pName == null || this.appDate == null) {
             this.pName = localStorage.getItem('pn3name');
             this.appDate = localStorage.getItem('pn3date');
@@ -337,5 +353,22 @@ div#receivetext{
     width:150px;
     font-size: 20px;
     white-space: nowrap;
+}
+
+button#home {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  position: absolute;
+  top:600px;
+  left:1380px;
+  cursor: pointer;
 }
 </style>
