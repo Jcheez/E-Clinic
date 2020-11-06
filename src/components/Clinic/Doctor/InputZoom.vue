@@ -1,65 +1,33 @@
 <template>
   <div>
-    <div id="topNavBar">
-      <h3>E-Clinic</h3>
-      <!--router-link to="/doctorslist/appointment/doctorsettings">Doctor's Settings</router-link-->
-      <router-link to="/doctorslist/appointment">Appointments</router-link>
-      <a @click="signOut" class="button is-primary">Logout</a>
-    </div>
-    <form v-on:submit.prevent="successfulSubmit">
-      <label>Please create a Zoom link and paste it in the box provided:</label>
-      <input
-        type="text"
-        placeholder="Zoom Link for this new Consulation Slot"
-        v-model="inputZoomLink"
-        v-bind:zoomlink="inputZoomLink"
-        id="zoomLinkInput"
-      />
-      <span> <input id="submitButton" type="submit" value="Submit" /></span>
-    </form>
+    <input-zoom></input-zoom>
   </div>
 </template>
 
 <script>
+import inputZoom from "./InputZoom";
 export default {
   data() {
     return {
-      inputZoomLink: "",
+      zoomLink: "",
     };
   },
-  methods: {
-    successfulSubmit() {
-      alert("Successfully submitted Zoom Link");
-      console.log(this.inputZoomLink);
-    },
+  components: {
+    inputZoom,
   },
 };
 </script>
-
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-form {
-  align-items: center;
-  display: inline-block;
-  margin-top: 100px;
-}
 #zoomLinkInput {
   display: block;
   width: 550px;
   font-family: Roboto;
   float: left;
   margin-left: 10px;
-  height: 20px;
 }
 label {
   float: left;
   font-family: Roboto;
-}
-
-span {
-  display: block;
-  margin: 40px;
 }
 #submitButton {
   background-color: white;
@@ -81,45 +49,8 @@ span {
   color: rgb(0, 114, 180);
   color: white;
 }
-
-#topNavBar {
-  height: 80px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  width: 100%;
-  /* border: 1px solid white; */
-  /* border-radius: 5px; */
-  background-color: rgb(0, 114, 180);
-  color: rgb(238, 249, 255);
-}
-
-a {
-  color: rgb(238, 249, 255);
-  transition: 0.3s;
-  font-family: Nunito;
-  font-size: 16px;
-  letter-spacing: 2px;
-  margin-right: 50px;
-  text-decoration: none;
-  font-weight: bold;
-  display: inline-block;
-}
-
-a:hover {
-  font-size: 17px;
-  color: white;
-  cursor: pointer;
-}
-
-h3 {
-  font-family: Nunito;
-  font-size: 24px;
-  letter-spacing: 4px;
-  color: white;
-  font-weight: bolder;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 </style>
+
+
+
+  

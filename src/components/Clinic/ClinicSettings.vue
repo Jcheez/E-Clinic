@@ -12,7 +12,7 @@
       <h3>Update Email Address:</h3>
       <input
         type="text"
-        placeholder="Enter New Password"
+        placeholder="Enter New Email"
         id="changeEmail"
         v-model="newEmail"
       />
@@ -20,7 +20,7 @@
       <button v-on:click="changeEmail">Update</button>
       <h3>Change Password:</h3>
       <input
-        type="text"
+        type="password"
         placeholder="Enter New Password"
         id="changePW"
         v-model="newPassword"
@@ -28,7 +28,7 @@
 
       <h3>Repeat New Password:</h3>
       <input
-        type="text"
+        type="password"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
         v-model="repeatPassword"
