@@ -19,6 +19,7 @@
     </div>
     <div v-if="status" class="addslot">
       <addSlot
+        @fetchItems="fetchItems"
         v-bind:selectedDate="date"
         v-bind:doctorLicense="this.currDoctor.dNum"
       />
@@ -132,12 +133,12 @@ export default {
       } else {
         this.text = "Add Slots";
       }
-      this.fetchItems();
     },
   },
   created() {
     this.fetchItems();
     this.getZoomString();
+    console.log(this.currDoctor);
   },
 };
 </script>
