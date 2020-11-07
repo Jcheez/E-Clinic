@@ -229,7 +229,7 @@ h2#mc1 {
 
 #uploadermc1 {
     position: absolute;
-    top: 610px;
+    top: 630px;
     left: 140px;
 }
 
@@ -243,7 +243,7 @@ h2#mc2 {
 
 #uploadermc2 {
     position: absolute;
-    top: 840px;
+    top: 860px;
     left: 140px;
 }
 
@@ -257,7 +257,7 @@ h2#mc3 {
 
 #uploadermc3 {
     position: absolute;
-    top: 1070px;
+    top: 1090px;
     left: 140px;
 }
 

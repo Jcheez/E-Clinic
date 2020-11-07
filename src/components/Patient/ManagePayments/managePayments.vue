@@ -31,7 +31,7 @@
             <div v-for="(clinic, index) in qrCode" :key="index">
               <div v-if="clinic[0] == name[1]" id='paydetails'>
                   <p style="font-size:20px; position:relative; left:65px;">Interbank transfer: {{clinic[2]}}</p>
-                  <img v-bind:src="clinic[1]">
+                  <img v-bind:src="clinic[1]" width="175" height="175">
               </div>
             </div> 
           </div>
@@ -48,7 +48,7 @@
             <div v-for="(clinic, index) in qrCode" :key="index">
               <div v-if="clinic[0] == name[1]" id='paydetails'>
                   <p style="font-size:20px; position:relative; left:65px;">Interbank transfer: {{clinic[2]}}</p>
-                  <img v-bind:src="clinic[1]">
+                  <img v-bind:src="clinic[1]" width="175" height="175">
               </div>
             </div>
           </div>
@@ -98,13 +98,12 @@ export default {
         .collection("patients")
         .doc(this.patient)
         .get()
-        .then((querySnapShot) => {
+        .then((doc) => {
             let item = {};
-            querySnapShot.forEach((doc) => {
-                item = doc.data();
-                this.amountPaid = item.amountPaid
-                this.outstanding = item.outstandingAmount
-            });
+            item = doc.data();
+            this.amountPaid = item.amountPaid
+            this.outstanding = item.outstandingAmount
+
         });
     },
 
@@ -112,7 +111,7 @@ export default {
         for(let x in {...this.outstanding}) {
             let details = this.outstanding[x]
             if (this.amountPaid[x] == undefined) {
-                return
+                console.log("empty")
             } else if (this.amountPaid[x][0] == details[0]) {
                 console.log(2)
                 delete this.outstanding[x]
@@ -120,6 +119,7 @@ export default {
                 console.log(this.outstanding)
             }
         }
+        this.$forceUpdate()
     },
 
     routeHome: function() {
@@ -135,6 +135,7 @@ export default {
   beforeUpdate() {
     console.log(this.outstanding)
     this.formatter()
+    console.log("Done")
   },
 
   props: {
@@ -218,10 +219,10 @@ button {
   background-color: white;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
-  z-index: -1;
+  z-index: 1;
   cursor: pointer;
   position: absolute;
   top:450px;
-  left:800px;
+  left:1000px;
 }
 </style>

@@ -14,7 +14,9 @@
       <label>Update Email Address:</label><br />
 
       <label>Change Password:</label><br />
-      <label>Repeat New Password:</label>
+      <label>Repeat New Password:</label><br />
+      <label>Update Interbank Account:</label>
+      <label>Update Qr Code: </label>
     </div>
     <div id="inputFields">
       <input
@@ -32,23 +34,33 @@
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
         v-model="repeatPassword"
-      />
+      /><input
+        type="text"
+        placeholder="Enter New Interbank Account"
+        id="interbank"
+        v-model="interbank"
+      /><uploadQr></uploadQr>
     </div>
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
     ><button id="submitPW" v-on:click="changePassword">Update Password</button>
+    <button id="submitInterBank" v-on:click="changeInterBank">Update Interbank</button>
     <!--/div-->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import database from "../../firebase.js"
+import uploadQr from "./uploadQr.vue"
+
 export default {
   data() {
     return {
       newEmail: "",
       newPassword: "",
       repeatPassword: "",
+      interbank: "",
       validationErrors: [],
     };
   },
@@ -105,7 +117,20 @@ export default {
         }
       }
     },
+
+    changeInterBank() {
+      database
+      .collection("clinics")
+      .doc(localStorage.getItem("uidClinic"))
+      .update({
+        interBank: this.interbank
+      })
+    },
   },
+
+  components: {
+    uploadQr:uploadQr
+  }
 };
 </script>
 
@@ -223,6 +248,29 @@ input {
   height: 60px;
   left: 950px;
   top: 330px;
+}
+
+#submitInterBank {
+  transition: 0.3s;
+  position: absolute;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: block;
+  width: 150px;
+  text-align: center;
+  margin-left: 20px;
+  height: 60px;
+  left: 950px;
+  top: 400px;
 }
 button:hover {
   background-color: white;

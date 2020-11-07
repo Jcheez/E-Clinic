@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <input type="file" @change="previewFile" accept="application/pdf" class="up"/>
+      <input type="file" @change="previewFile" accept="image/*" class="up"/>
     </div>
     <div>
       <p class="up">
@@ -18,7 +18,7 @@
 
 <script>
 import firebase from "firebase";
-import database from "../../../firebase.js";
+import database from "../../firebase.js";
 
 export default {
   name: "Upload",
@@ -27,16 +27,7 @@ export default {
       fileData: null,
       pdf: null,
       uploadValue: 0,
-      doc: {},
-      clinic: localStorage.getItem("clinicName") // To change this dynamically
     };
-  },
-
-  props: {
-    type: String,
-    doc_id: String,
-    date: String,
-    name: String,
   },
 
   methods: {
@@ -45,19 +36,6 @@ export default {
       this.pdf = null;
       this.fileData = event.target.files[0];      
     },
-
-    fetchItems: function () {
-        database
-        .collection("patients")
-        .where('name', '==', this.name)
-        .get()
-        .then((querySnapShot) => {
-          querySnapShot.forEach((doc) => {
-            this.doc = doc.data().notes;
-            console.log("Fetched")
-          }); 
-        });
-        },
 
     onUpload() {
       this.pdf = null;
@@ -80,24 +58,10 @@ export default {
             this.pdf = url;
             console.log(this.pdf)
 
-            console.log(this.doc)
-            
-            if (this.doc[this.clinic] == undefined) {
-              console.log(1)
-              this.doc[this.clinic] = {}
-              this.doc[this.clinic][this.date] = {}
-              this.doc[this.clinic][this.date][this.type] = url
-            } else if (this.doc[this.clinic][this.date] == undefined) {
-              this.doc[this.clinic][this.date] = {}
-              this.doc[this.clinic][this.date][this.type] = url
-            } else {
-              this.doc[this.clinic][this.date][this.type] = url
-            }
-
             database
-            .collection('patients')
-            .doc(this.doc_id)
-            .update({notes: this.doc})
+            .collection('clinics')
+            .doc(localStorage.getItem("uidClinic"))
+            .update({qrCode: this.pdf})
             .then(() => {
             console.log('user updated!')
             
@@ -106,12 +70,7 @@ export default {
         },
       );
     },
-  },
-  
-  updated() {
-    this.fetchItems()
-  }
-  
+  },  
 };
 </script>
 

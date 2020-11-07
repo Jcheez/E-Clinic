@@ -57,7 +57,6 @@ const actions = {
                 appointment_history: {},
                 phoneNumber: payload.phoneNumber,
                 dob: payload.birthday,
-                appointment_history: [],
                 verifiedclinics: [],
                 notes: {},
                 upcoming: {},
