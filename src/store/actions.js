@@ -24,7 +24,7 @@ const actions = {
             return firebase.firestore().collection('clinics').doc(data.user.uid).set({
                 name: payload.name,
                 doctors: payload.doctors.map(a => a.license),
-                interBank: "",
+                interBank: payload.bankAccount,
                 qrCode: ""
             })
         }).then(res => {
@@ -54,6 +54,8 @@ const actions = {
             })
             return firebase.firestore().collection('patients').doc(data.user.uid).set({
                 name: payload.name,
+                phoneNumber: payload.phoneNumber,
+                dob: payload.birthday,
                 appointment_history: [],
                 verifiedclinics: [],
                 notes: {},
