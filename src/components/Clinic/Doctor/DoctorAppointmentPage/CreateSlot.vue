@@ -73,6 +73,7 @@
 <script>
 import database from "../../../../firebase";
 import firebase from "firebase/app";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -91,6 +92,12 @@ export default {
     selectedDate: {
       type: Date,
     },
+    doctorLicense: {
+      type: String,
+    },
+  },
+  computed: {
+    ...mapGetters(["getUser"]),
   },
   methods: {
     checkAddEligible(datesToAddArray) {
@@ -109,17 +116,17 @@ export default {
         toMerge.push(
           database
             .collection("consultslots")
-            //.where("doctor", "==", "") //doctor that is logged in
+            .where("doctor", "==", this.doctorLicense) //doctor that is logged in
             .where("date", "in", batch)
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
-                console.log("loop")
+                console.log("loop");
                 // doc.data() is never undefined for query doc snapshots
                 results.push(doc.id, " => ", doc.data());
               });
               if (results.length > 0) {
-                console.log("shld break")
+                console.log("shld break");
                 return false;
               }
             })
@@ -194,9 +201,12 @@ export default {
               date: new firebase.firestore.Timestamp.fromDate(datetime),
               patient: null,
               rating: 0,
-              doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              conditions: [],
+              doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+              clinic: this.getUser.displayName,
             });
             alert("Successfully added slots!");
+            this.$emit('fetchItems')
           } else {
             alert("Slot you are trying to add already exists!");
           }
@@ -254,8 +264,10 @@ export default {
                   ), //remove toDateString() when we store date as Date obj
                   //time: this.slotStartTime,
                   patient: null,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
                   rating: 0,
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");
@@ -275,7 +287,9 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   rating: 0,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");
@@ -304,7 +318,9 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   rating: 0,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");
@@ -331,7 +347,9 @@ export default {
                   //time: this.slotStartTime,
                   patient: null,
                   rating: 0,
-                  doctor: "", //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  conditions: [],
+                  doctor: this.doctorLicense, //get name of the doctor who is currently logged in -> should be a global variable across the entire AppointmentPage component
+                  clinic: this.getUser.displayName,
                 });
               }
               alert("Successfully added slots!");

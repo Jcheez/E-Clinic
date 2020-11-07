@@ -1,40 +1,23 @@
 <template>
-  <form v-on:submit.prevent="successfulSubmit">
-    <label>Please create a Zoom link and paste it in the box provided:</label>
-    <input
-      type="text"
-      placeholder="Zoom Link for this new Consulation Slot"
-      v-model="inputZoomLink"
-      v-bind:zoomlink="inputZoomLink"
-      id="zoomLinkInput"
-    />
-    <span> <input id="submitButton" type="submit" value="Submit" /></span>
-  </form>
+  <div>
+    <input-zoom></input-zoom>
+  </div>
 </template>
 
 <script>
+import inputZoom from "./InputZoom";
 export default {
   data() {
     return {
-      inputZoomLink: "",
+      zoomLink: "",
     };
   },
-  methods: {
-    successfulSubmit() {
-      alert("Successfully submitted Zoom Link");
-      console.log(this.inputZoomLink);
-    },
+  components: {
+    inputZoom,
   },
 };
 </script>
-
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-form {
-  align-items: center;
-  display: inline-block;
-}
 #zoomLinkInput {
   display: block;
   width: 550px;
@@ -45,11 +28,6 @@ form {
 label {
   float: left;
   font-family: Roboto;
-}
-
-span {
-  display: block;
-  margin: 40px;
 }
 #submitButton {
   background-color: white;
@@ -72,3 +50,7 @@ span {
   color: white;
 }
 </style>
+
+
+
+  
