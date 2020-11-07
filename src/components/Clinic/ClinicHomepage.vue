@@ -29,16 +29,18 @@
       <div v-if="isUserAuth" id="monthlyPatient">
         <mp></mp>
       </div>
-      <div v-if="isUserAuth" id="verify">
-        Total Patients to Verify:<br /><br />
-        <p>{{ numOfPatientsToVerify() }}</p>
-        As of today
-      </div>
-      <br />
-      <div v-if="isUserAuth" id="physical">
-        Total Patients to Arrange Physical Consultations:<br /><br />
-        <p>{{ numOfPatientsPhysical() }}</p>
-        As of today
+      <div id="rhs">
+        <div v-if="isUserAuth" id="verify">
+          Total Patients to Verify:<br /><br />
+          <p>{{ numOfPatientsToVerify() }}</p>
+          As of today
+        </div>
+        <br />
+        <div v-if="isUserAuth" id="physical">
+          Total Patients to Arrange Physical Consultations:<br /><br />
+          <p>{{ numOfPatientsPhysical() }}</p>
+          As of today
+        </div>
       </div>
       <div v-if="isUserAuth" id="monthlyRev">
         <linechart></linechart>
@@ -157,8 +159,12 @@ a:hover {
   margin-top: 58px;
   padding: 10px 10px 10px 16px;
   border-radius: 10px;
+  /*position: absolute;*/
 }
-
+#rhs {
+  position: absolute;
+  left: 1000px;
+}
 #verify p {
   font-size: 38px;
   font-weight: bold;
@@ -183,6 +189,7 @@ a:hover {
   margin-top: 28px;
   padding: 12px 10px 10px 16px;
   border-radius: 10px;
+  /*position: absolute;*/
 }
 
 #physical p {

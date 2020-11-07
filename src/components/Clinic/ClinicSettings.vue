@@ -145,6 +145,9 @@ label {
   padding: 10px 0px 20px 0px;
   float: left;
   margin-bottom: 30px;
+  position: relative;
+  display: block;
+  width: 200px;
 }
 h3 {
   font-family: Nunito;
@@ -160,26 +163,29 @@ input {
   display: block;
   margin: 10px;
   margin-bottom: 50px;
+  position: relative;
 }
 #inputFields {
   width: 350px;
-  display: inline-block;
+  display: block;
   margin-top: 100px;
-  position: relative;
-  left: -200px;
+  /*bottom: 300px;*/
+  position: absolute;
+  left: 500px;
 }
 #instructions {
   width: 300px;
   margin: 10px;
-  margin-left: 400px;
+  left: 300px;
   margin-top: 100px;
   display: inline-block;
   height: 300px;
   float: left;
+  position: absolute;
 }
 #submitEmail {
   transition: 0.3s;
-  position: absolute;
+  position: absolute; /*need change to relative?? */
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
   padding: 10px;
@@ -195,7 +201,7 @@ input {
   width: 150px;
   text-align: center;
   margin-left: 20px;
-  left: 950px;
+  left: 850px;
   margin-bottom: 70px;
   height: 50px;
   top: 180px;
@@ -219,7 +225,7 @@ input {
   text-align: center;
   margin-left: 20px;
   height: 60px;
-  left: 950px;
+  left: 850px;
   top: 330px;
 }
 button:hover {
