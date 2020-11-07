@@ -19,7 +19,7 @@
 
 <script>
 import database from "../../../firebase.js"
-import * as firebase from "firebase";
+//import * as firebase from "firebase";
 export default {
   data() {
     return {
@@ -28,6 +28,7 @@ export default {
         slot: [],
         datadoc: {},
         docsName: [],
+        apptHist :{},
     };
   },
   
@@ -137,6 +138,15 @@ export default {
         var day = this.date.getDate();
         var monthIndex = this.date.getMonth();
         var year = this.date.getFullYear();
+
+        var apptDate = day + ' ' + monthNames[monthIndex] + ' ' + year
+
+        if (this.apptHist[this.clinic] == undefined) {
+          this.apptHist[this.clinic] = [apptDate]
+        } else {
+          this.apptHist[this.clinic].push(apptDate)
+        }
+
         database
         .collection('patients')
         .doc(this.patientId)
@@ -145,7 +155,7 @@ export default {
           let item = {};
             item = querySnapShot.id;
             database.collection("patients").doc(item).update({
-              appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
+              appointment_history: this.apptHist
             })
             database.collection("patients").doc(item).update({
               upcoming: {
@@ -161,9 +171,21 @@ export default {
       routeHome: function() {
             this.$router.push('/makebooking')
         },
+
+      getApptHist: function() {
+        database
+        .collection('patients')
+        .doc(this.patientId)
+        .get()
+        .then((querySnapShot) => {
+          this.apptHist = querySnapShot.data().appointment_history
+          console.log("Done")
+        })
+      }
   },
   created() {
       this.fetchitems();
+      this.getApptHist();
   },
   watch: {
     date: function () {

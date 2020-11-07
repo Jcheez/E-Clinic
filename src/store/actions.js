@@ -54,7 +54,7 @@ const actions = {
             })
             return firebase.firestore().collection('patients').doc(data.user.uid).set({
                 name: payload.name,
-                appointment_history: [],
+                appointment_history: {},
                 verifiedclinics: [],
                 notes: {},
                 upcoming: {},

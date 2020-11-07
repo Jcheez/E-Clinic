@@ -110,7 +110,21 @@ export default {
         });
       return this.countPhysical;
     },
+
+    getclinicName: function() {
+      database
+      .collection("clinics")
+      .doc(localStorage.getItem("uidClinic"))
+      .get()
+      .then((doc) => {
+        localStorage.setItem("clinicName", doc.data().name)
+      });
+    },
   },
+
+  created() {
+    this.getclinicName();
+  }
 };
 </script>
 

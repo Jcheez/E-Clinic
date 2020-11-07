@@ -29,6 +29,7 @@ export default {
       pdf: null,
       uploadValue: 0,
       doc: {},
+      clinic: localStorage.getItem("clinicName") // To change this dynamically
     };
   },
 
@@ -82,12 +83,16 @@ export default {
 
             console.log(this.doc)
             
-            if (this.doc[this.date] == undefined) {
+            if (this.doc[this.clinic] == undefined) {
               console.log(1)
-              this.doc[this.date] = {}
-              this.doc[this.date][this.type] = url
+              this.doc[this.clinic] = {}
+              this.doc[this.clinic][this.date] = {}
+              this.doc[this.clinic][this.date][this.type] = url
+            } else if (this.doc[this.clinic][this.date] == undefined) {
+              this.doc[this.clinic][this.date] = {}
+              this.doc[this.clinic][this.date][this.type] = url
             } else {
-              this.doc[this.date][this.type] = url
+              this.doc[this.clinic][this.date][this.type] = url
             }
 
             database

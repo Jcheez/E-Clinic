@@ -9,9 +9,10 @@
           <span>{{ "Patient: " + patient.name }}</span>
         </div>
         <button id="view">
-          <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
+          <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history[clinic], patientName: patient.name}}">View</router-link>
         </button>
       </li>
+      <p id="display" v-if="this.itemsList.length == 0">There are no records of patients</p>
     </ul>
     <input
       id="searchbox"
@@ -36,6 +37,7 @@ export default {
       itemsList: [],
       nameQuery: "",
       data: [],
+      clinic: localStorage.getItem("clinicName")
     };
   },
 
@@ -58,8 +60,11 @@ export default {
           let item = {};
           querySnapShot.forEach((doc) => {
             item = doc.data();
-            this.itemsList.push(item);
-            this.data.push(item);
+            if (item.appointment_history[this.clinic] != undefined) {
+              this.itemsList.push(item);
+              this.data.push(item);
+            }
+            
           });
         });
     },
@@ -185,5 +190,12 @@ button#home {
 a {
   color: black;
   text-decoration: none;
+}
+
+p#display {
+  font-size: 30px;
+  position:absolute;
+  top:500px;
+  left: 200px;
 }
 </style>
