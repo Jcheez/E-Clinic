@@ -106,7 +106,7 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 2px;
   margin: 60px 0 0 0;
   text-decoration: none;
@@ -115,7 +115,7 @@ a {
 }
 
 a:hover {
-  font-size: 17px;
+  font-size: 18px;
   color: white;
   cursor: pointer;
 }
