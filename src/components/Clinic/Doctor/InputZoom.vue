@@ -8,7 +8,7 @@
           name: 'doctorAppt',
           params: { currDoctor: this.currDoctor },
         }"
-        >Appointments</router-link
+        >Back to Doctor's Appointments</router-link
       >
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
