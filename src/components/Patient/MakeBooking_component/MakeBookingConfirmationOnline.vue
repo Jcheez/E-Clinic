@@ -32,8 +32,7 @@ export default {
     },
     
     routeHome: function() {
-      this.$router.push('/')
-      //To update again where to push this button
+      this.$router.push('/patienthome')
     }
   },
 

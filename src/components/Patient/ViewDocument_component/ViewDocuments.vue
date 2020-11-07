@@ -7,10 +7,11 @@
               <span>{{ "Date: " + appt }}</span>
             </div>
             <button id="view">
-              <router-link :to="{ name:'view', params: {apptDate: appt, patientName: name}}">View</router-link>
+              <router-link :to="{ name:'view', params: {apptDate: appt, patientId: patientid}}">View</router-link>
             </button>
           </li>
         </ul>
+        <p v-if="itemsList.length == 0">There are no documents to view</p>
         <button id="home" v-on:click="routeHome()">Back to home</button>
     </div>  
 </template>
@@ -23,12 +24,7 @@ export default {
     return {
       msg: "Patient's Notes ",
       itemsList: [],
-      name: "Timothy"
-      /* Remember to change this part when login is finished and props can be passed
-            props: {
-                name: "",
-                phonenum: ""
-            } */
+      patientId: localStorage.getItem("uidPatient")
     };
   },
 
@@ -38,18 +34,16 @@ export default {
     },
         
     fetchItems: function () {
-        var x = this.name;
+        //var x = this.name;
         database
             .collection("patients")
-            .where("name", "==", x)
+            .doc(this.patientId)
             .get()
             .then((querySnapShot) => {
                 let item = {};
-                querySnapShot.forEach((doc) => {
-                    item = doc.data();
-                    this.itemsList.push(item.appointment_history);
-                    console.log(this.itemsList)
-                });
+                  item = querySnapShot.data();
+                  this.itemsList.push(item.appointment_history);
+                  console.log(this.itemsList)
             });
         },
   },

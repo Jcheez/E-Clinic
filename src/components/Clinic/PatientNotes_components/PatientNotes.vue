@@ -22,6 +22,7 @@
       v-on:keyup.enter="nameSearch()"
     />
     <button id="searchbox" type="submit" v-on:click="nameSearch()">Search</button>
+    <button id="home" v-on:click="routeHome()">Back to Home</button>
   </div>
 </template>
  
@@ -41,7 +42,7 @@ export default {
   methods: {
     nameSearch: function() {
       let copied = this.data;
-      copied = copied.filter(x => this.nameQuery.localeCompare(x.name) == 0)
+      copied = copied.filter(x => x.name.includes(this.nameQuery))
       this.itemsList = copied;
       if (this.nameQuery.localeCompare("") == 0) {
         this.itemsList = this.data;
@@ -61,6 +62,10 @@ export default {
             this.data.push(item);
           });
         });
+    },
+
+    routeHome: function() {
+        this.$router.push('/clinichome')
     },
   },
   created() {
@@ -110,7 +115,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 230px;
+  top: 370px;
   border: 1px solid #000000;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
@@ -159,6 +164,22 @@ button#searchbox {
   left: 1473px;
   font-size: 30px;
   background-color: aqua;
+}
+
+button#home {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  position: absolute;
+  top:510px;
+  left:1250px;
 }
 
 a {

@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <hr />
     <h2>Past Appointments</h2>
-    <p>Patient: {{patientName}}</p>
+    <p id="pat">Patient: {{patientName}}</p>
     <ul id="patients">
       <li v-for="(patient, index) in this.data" :key="index">
         <div id="inner">
@@ -14,15 +14,17 @@
         </button>
       </li>
     </ul>
+    <p v-if="this.data.length == 0" id="empty"> This patient does not have any past appointments!</p>
     <input
       id="searchbox"
       type="text"
-      placeholder="Search patient..."
+      placeholder="Search Date..."
       name="search"
       v-model="nameQuery"
       v-on:keyup.enter="dateSearch()"
     />
     <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button>
+    <button id="home" v-on:click="routeHome()">Back to Patients</button>  
   </div>
 </template>
 
@@ -45,13 +47,17 @@ export default {
   methods: {
       dateSearch: function() {
       let copied = this.data;
-      copied = copied.filter(x => this.nameQuery.localeCompare(x) == 0)
+      copied = copied.filter(x => x.includes(this.nameQuery))
       this.data = copied;
       if (this.nameQuery.localeCompare("") == 0) {
         this.data = this.apptDates;
         
       }
       this.$forceUpdate();
+    },
+
+    routeHome: function() {
+        this.$router.push('/patientsnotes')
     },
   },
 };
@@ -71,6 +77,7 @@ h1 {
   line-height: 57px;
   color: #000000;
 }
+
 hr {
   position: absolute;
   width: 1459px;
@@ -98,7 +105,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 300px;
+  top: 450px;
   border: 1px solid #000000;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
@@ -149,7 +156,7 @@ button#searchbox {
   background-color: aqua;
 }
 
-p {
+p#pat {
     position: absolute;
     top: 310px;
     left: 140px;
@@ -160,5 +167,28 @@ p {
 a {
   color: black;
   text-decoration: none;
+}
+
+p#empty {
+  position: absolute;
+  top:500px;
+  left:140px;
+  font-size: 25px;
+}
+
+button#home {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  width: 125px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  z-index: -1;
+  position: absolute;
+  top:510px;
+  left:1250px;
 }
 </style>

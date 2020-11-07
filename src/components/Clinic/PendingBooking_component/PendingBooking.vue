@@ -6,20 +6,18 @@
       <template v-for="(patient, x) in itemsList">
         <li v-bind:key="x">
           <div id="inner">
-            <span>{{ "Patient: " + patient.name }}</span>
+            <span>{{ "Patient: " + name }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
-            <span v-if="patient.physical"
-              >Reason: Physical Examination Required</span
-            >
+            <span v-if="patient.physical">Reason: Physical Examination Required</span>
           </div>
           <button id="outofplace" v-if="patient.physical && patient.firstTime">
             <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-            Make A Booking
+            See Details
             </router-link>
           </button>
           <button v-else-if="patient.physical || patient.firstTime">
             <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-            Make A Booking
+            See Details
             </router-link>
           </button>
         </li>
@@ -30,6 +28,8 @@
 
 <script>
 import database from "../../../firebase.js";
+//import * as firebase from "firebase";
+
 export default {
   data() {
     return {
@@ -38,6 +38,7 @@ export default {
        */ 
       msg: "Pending Booking",
       itemsList: [],
+      name: "",
     };
   },
   components: {},
@@ -61,7 +62,20 @@ export default {
           }
         });
       });
-    },
+
+      database.collection("pendingbooking").get().then((querySnapShot) => {
+        let item = {};
+        querySnapShot.forEach((doc) => {
+          item = doc.data().patientId;
+          console.log(item)
+          database.collection("patients").doc(item).get().then((doc2) => {
+            console.log(doc2.data())
+            let itema = doc2.data();
+            this.name = itema.name;
+          })
+        });
+      })
+    }
   },
   created() {
     this.fetchItems();
@@ -98,7 +112,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 210px;
+  top: 350px;
 
   border: 1px solid #000000;
   box-sizing: border-box;

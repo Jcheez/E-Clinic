@@ -1,11 +1,11 @@
 <template>
   <div>
       <h1>{{ msg }}</h1>
-      <p id="nodoc" v-if="!this.itemsList[0]">Clinic has not uploaded documents, please check back later</p>
-      <ul id="patients">
+      <p id="nodoc" v-if="!docschecker()">Clinic has not uploaded documents, please check back later</p>
+      <ul v-if="docschecker()" id="patients">
           <li v-for="(doc, name, index) in this.itemsList[0]" :key="index">
             <div id="inner">
-              <span>{{ name + ": " }} <a v-bind:href="doc">Retreive</a></span>
+              <span>{{ name + ": " }} <p id="url" v-on:click="opendoc(doc)">Retreive</p></span>
             </div>
           </li>
         </ul>
@@ -25,29 +25,47 @@ export default {
 
     props: {
       apptDate: String,
-      patientName: String
+      patientId: String
     },
 
     methods: {
-        routeBack: function() {
-            this.$router.push('/viewdocuments')
-        },
         fetchItems: function () {
-            var x = this.patientName;
+            //var x = this.patientName;
             database
                 .collection("patients")
-                .where("name", "==", x)
+                .doc(this.patientId)
                 .get()
                 .then((querySnapShot) => {
                     let item = {};
                     querySnapShot.forEach((doc) => {
                         item = doc.data().notes;
-                        if (item[this.apptDate]) {
+                        console.log(this.apptDate)
+                        console.log(item[this.apptDate]["invoice"] == undefined)
+                        console.log(Object.keys(item[this.apptDate]))
+                        if (Object.keys(item[this.apptDate]).length > 0) {
                             this.itemsList.push(item[this.apptDate]);
                         }
                     });
                 });
-            },
+        },
+
+        docschecker: function() {
+          console.log(this.itemsList[0])
+          if (this.itemsList.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+
+        opendoc: function(url) {
+          window.open(url, "_blank");
+          console.log("reached here")
+        },
+
+        routeBack: function() {
+            this.$router.push('/viewdocuments')
+        },
     },
 
     created() {
@@ -94,6 +112,11 @@ p#nodoc{
   height: 100px;
   left: 70px;
   top: 230px;
+}
+p#url{
+  display: inline;
+  color: blue;
+  text-decoration: underline;
 }
 button#back{
   position: relative;
