@@ -5,7 +5,9 @@
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
       <router-link to="/doctorslist">Doctors</router-link><br />
-      <router-link to="/clinicsettings"> Settings</router-link><br />
+      <router-link to="/patientsnotes">Patient Notes</router-link><br />
+      <router-link to="/pendingbooking">Pending</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div v-if="!status">
