@@ -1,16 +1,25 @@
 <template>
   <div>
+    <!--input-zoom v-bind:currDoctor="this.currDoctor"></input-zoom!-->
     <div id="topNavBar">
       <h3>E-Clinic</h3>
       <!--router-link to="/doctorslist/appointment/doctorsettings">Doctor's Settings</router-link-->
-      <router-link :to="{ name: 'doctorAppt', params: { currDoctor: currDoctor }}">Appointments</router-link>
+      <router-link to="/clinichome">Home</router-link>
+      <router-link to="/doctorslist">Back to Doctors</router-link>
+      <router-link
+        :to="{
+          name: 'doctorAppt',
+          params: { currDoctor: this.currDoctor },
+        }"
+        >Back to Doctor's Appointments</router-link
+      >
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <form v-on:submit.prevent="successfulSubmit">
+    <form v-on:submit.prevent="zoomLinkSubmit()">
       <label>Please create a Zoom link and paste it in the box provided:</label>
       <input
         type="text"
-        placeholder="Zoom Link for this new Consultation Slot"
+        placeholder="Zoom Link for this new Consulation Slot"
         v-model="inputZoomLink"
         v-bind:zoomlink="inputZoomLink"
         id="zoomLinkInput"
@@ -21,6 +30,7 @@
 </template>
 
 <script>
+import database from "../../../firebase";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -34,9 +44,23 @@ export default {
     },
   },
   methods: {
-    successfulSubmit() {
-      alert("Successfully submitted Zoom Link");
+    zoomLinkSubmit() {
       console.log(this.inputZoomLink);
+      console.log(this.currDoctor);
+      var doctorRef = database.collection("doctors").doc(this.currDoctor.dNum);
+      alert("Successfully submitted Zoom Link");
+      this.$router.push({
+        name: "doctorAppt",
+        params: { currDoctor: this.currDoctor },
+      });
+      // Set the "capital" field of the city 'DC'
+      return doctorRef.update({
+        zoom: this.inputZoomLink,
+        /*})
+        .then((doc) => {
+          alert("Successfully submitted Zoom Link", doc);
+          this.inputZoomLink = "";*/
+      });
     },
     ...mapActions(["signOutAction"]),
     signOut() {
@@ -45,8 +69,8 @@ export default {
     },
   },
   mounted() {
-    console.log("Doctor: " + this.currDoctor)
-  }
+    console.log("Doctor: " + this.currDoctor);
+  },
 };
 </script>
 
@@ -66,6 +90,13 @@ form {
   margin-left: 10px;
   height: 20px;
 }
+
+/*button {
+  transition: 0.3s;
+  position: absolute;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
+}*/
 label {
   float: left;
   font-family: Roboto;
@@ -76,26 +107,24 @@ span {
   margin: 40px;
 }
 #submitButton {
-  background-color: white;
-  border: 1px solid rgb(0, 114, 180);
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  color: rgb(0, 114, 180);
+  color: white;
   letter-spacing: 3px;
   font-weight: bold;
   outline: none;
 }
 
 #submitButton:hover {
-  background-color: rgb(0, 114, 180);
-  border: 1px solid white;
+  background-color: white;
+  border: 1px solid rgb(0, 114, 180);
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);
-  color: white;
 }
-
 #topNavBar {
   height: 80px;
   position: absolute;

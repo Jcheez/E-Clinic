@@ -1,7 +1,7 @@
 <template>
 <div>
   <HelloWorld v-bind:about="true"></HelloWorld>
-  <div class="columns" v-if="!isUserAuth">
+  <div class="columns">
     <div class="column is-half is-offset-one-quarter">
       <div class="card">
         <div class="card-content">
@@ -46,6 +46,27 @@
               </div>
             </div>
             <div class="field">
+              <!-- <label class="label">E-mail</label> -->
+              <div class="control">
+                <input
+                  v-model="phoneNumber"
+                  class="input"
+                  type="text"
+                  placeholder="Enter Phone No."
+                />
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input
+                  v-model="birthday"
+                  class="input"
+                  type="date"
+                  placeholder="Date of Birth"
+                />
+              </div>
+            </div>
+            <div class="field">
               <!-- <label class="label">Password</label> -->
               <div class="control">
                 <input
@@ -81,12 +102,6 @@
       </div>
     </div>
   </div>
-  <div v-else style = "position: absolute; margin-left: 825px; margin-top: -300px">
-    You are already logged in! <br>
-    To access login page, please 
-    <router-link v-if = "getUser.photoURL == 'clinic'" to="/clinichome"> logout </router-link>
-    <router-link v-else to="/patienthome"> logout </router-link> first.
-  </div>
   </div>
 </template>
 
@@ -101,6 +116,8 @@ export default {
     return {
       name: null,
       email: null,
+      phoneNumber: null,
+      birthday: null,
       password: null,
       passwordRepeat: null,
       validationErrors: []
@@ -117,7 +134,15 @@ export default {
     validate() {
       // Clear the errors before we validate again
       this.resetError();
-
+      if (!this.name) {
+        this.validationErrors.push("<strong>Name</strong> cannot be empty.");
+      }
+      if (!this.birthday) {
+        this.validationErrors.push("<strong>DOB</strong> cannot be empty.");
+      }
+      if (!this.phoneNumber) {
+        this.validationErrors.push("<strong>Phone no.</strong> cannot be empty.");
+      }
       // email validation
       if (!this.email) {
         this.validationErrors.push("<strong>E-mail</strong> cannot be empty.");
@@ -144,10 +169,13 @@ export default {
       }
     },
     signUp() {
-      this.signUpAction({ email: this.email, password: this.password, clinic: false, name: this.name }).then(() => {
+      this.signUpAction({ email: this.email, password: this.password, 
+      clinic: false, name: this.name,
+      birthday: this.birthday, phoneNumber: this.phoneNumber }).then(() => {
         if (this.isUserAuth) {
           this.signOutAction()
           this.$router.replace({ name: "patientlogin" });
+          alert("Signed up successfully!")
         }
       })
     }
@@ -159,7 +187,7 @@ export default {
 .signup {
   background-color: white;
   width: 380px;
-  height: 300px;
+  height: 400px;
   margin: auto;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
@@ -167,7 +195,7 @@ export default {
   margin-left: 775px;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=date] {
   position: relative;
   top: 20px;
   display:block;

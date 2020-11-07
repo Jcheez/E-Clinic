@@ -17,10 +17,11 @@
 
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
-      <router-link to="/clinichome">Dashboard</router-link><br>
-      <router-link to="/doctorslist">Doctors</router-link><br>
-      <router-link to="/clinicsettings">Settings</router-link><br>
-      <router-link to="/patientsnotes">patientsnotes</router-link><br>
+      <router-link to="/clinichome">Dashboard</router-link><br />
+      <router-link to="/doctorslist">Doctors</router-link><br />
+      <router-link to="/patientsnotes">Patient Notes</router-link><br />
+      <router-link to="/pendingbooking">Pending</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
 
@@ -29,16 +30,21 @@
       <div v-if="isUserAuth" id="monthlyPatient">
         <mp></mp>
       </div>
+      <router-link to="/pendingbooking">
       <div v-if="isUserAuth" id="verify">
-        Total Patients to Verify:<br><br>
-        <p>{{ numOfPatientsToVerify() }} </p>
-        As of today
-      </div><br>
-      <div v-if="isUserAuth" id="physical">
-        Total Patients to Arrange Physical Consultations:<br><br>
-        <p>{{ numOfPatientsPhysical() }} </p>
+        Total Patients to Verify:<br /><br />
+        <p>{{ numOfPatientsToVerify() }}</p>
         As of today
       </div>
+      </router-link>
+      <br />
+      <router-link to="/pendingbooking">
+      <div v-if="isUserAuth" id="physical">
+        Total Patients to Arrange Physical Consultations:<br /><br />
+        <p>{{ numOfPatientsPhysical() }}</p>
+        As of today
+      </div>
+      </router-link>
       <div v-if="isUserAuth" id="monthlyRev">
         <linechart></linechart>
       </div>
@@ -60,12 +66,15 @@ export default {
   // props: {
   //   msg: String,
   // },
-  components: { 
-    linechart: MonthlyRev, ratingchart, mp: MonthlyPatient,},
+  components: {
+    linechart: MonthlyRev,
+    ratingchart,
+    mp: MonthlyPatient,
+  },
   data() {
     return {
       countVerify: 0,
-      countPhysical: 0
+      countPhysical: 0,
     };
   },
   computed: {
@@ -77,32 +86,32 @@ export default {
       this.signOutAction();
       this.$router.push("/cliniclogin");
     },
-    numOfPatientsToVerify: function() {
+    numOfPatientsToVerify: function () {
       let x = this.getUser.displayName;
       database
-      .collection("pendingbooking")
-      .where("clinic","==",x)
-      .where("firstTime","==",true)
-      .get()
-      .then((querySnapshot) => {
-        this.countVerify = querySnapshot.size
-      })
+        .collection("pendingbooking")
+        .where("clinic", "==", x)
+        .where("firstTime", "==", true)
+        .get()
+        .then((querySnapshot) => {
+          this.countVerify = querySnapshot.size;
+        });
       return this.countVerify;
     },
-    numOfPatientsPhysical: function() {
+    numOfPatientsPhysical: function () {
       let x = this.getUser.displayName;
       database
-      .collection("pendingbooking")
-      .where("clinic","==",x)
-      .where("physical","==",true)
-      .get()
-      .then((querySnapshot) => {
-        this.countPhysical = querySnapshot.size
-      })
+        .collection("pendingbooking")
+        .where("clinic", "==", x)
+        .where("physical", "==", true)
+        .get()
+        .then((querySnapshot) => {
+          this.countPhysical = querySnapshot.size;
+        });
       return this.countPhysical;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -132,12 +141,16 @@ a {
 
 a:hover {
   font-size: 18px;
-  cursor: pointer
+  cursor: pointer;
 }
 
 #verify {
   transition: box-shadow 0.3s;
-  background-image: linear-gradient(to right, rgb(0, 114, 180) , rgb(0, 153, 180));
+  background-image: linear-gradient(
+    to right,
+    rgb(0, 114, 180),
+    rgb(0, 153, 180)
+  );
   font-family: Nunito;
   font-size: 15px;
   color: white;
@@ -163,7 +176,7 @@ a:hover {
 
 #physical {
   transition: box-shadow 0.3s;
-  background-image: linear-gradient(to left, rgb(144, 0, 180) , rgb(99, 0, 180));
+  background-image: linear-gradient(to left, rgb(144, 0, 180), rgb(99, 0, 180));
   font-family: Nunito;
   font-size: 15px;
   color: white;
@@ -187,7 +200,6 @@ a:hover {
   box-shadow: 0 0 14px rgba(33, 33, 33, 0.719);
 }
 
-
 #monthlyPatient {
   height: 100%;
   width: 500px;
@@ -199,7 +211,8 @@ a:hover {
   float: left;
 }
 
-#monthlyRev, #rating {
+#monthlyRev,
+#rating {
   height: 100%;
   width: 360px;
   /* border-style: solid;

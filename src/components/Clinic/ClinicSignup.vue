@@ -1,7 +1,7 @@
 <template>
 <div>
   <HelloWorld v-bind:about="true"></HelloWorld>
-  <div class="columns" v-if="!isUserAuth">
+  <div class="columns">
     <div class="column is-half is-offset-one-quarter">
       <div class="card">
         <div class="card-content">
@@ -69,6 +69,17 @@
                 />
               </div>
             </div>
+            <div class="field">
+              <!-- <label class="label">Repeat password</label> -->
+              <div class="control">
+                <input
+                  v-model="bankAccount"
+                  class="input"
+                  type="text"
+                  placeholder="Bank Account No. (to accept payments)"
+                />
+              </div>
+            </div>
             <div class="field" v-for="(doctor, counter) in doctors" v-bind:key="counter">
               <br>
               <span @click="deleteDoctor(counter)">x</span>
@@ -86,12 +97,6 @@
       </div>
     </div>
   </div>
-  <div v-else style = "position: absolute; margin-left: 825px; margin-top: -300px">
-    You are already logged in! <br>
-    To access login page, please 
-    <router-link v-if = "getUser.photoURL == 'clinic'" to="/clinichome"> logout </router-link>
-    <router-link v-else to="/patienthome"> logout </router-link>first.
-  </div>
   </div>
 </template>
 
@@ -108,6 +113,7 @@ export default {
       email: null,
       password: null,
       passwordRepeat: null,
+      bankAccount: null,
       validationErrors: [],
       doctors: [{
         name: '',
@@ -138,6 +144,10 @@ export default {
 
       if(!this.name) {
           this.validationErrors.push("<strong>Clinic name</strong> cannot be empty.");
+      }
+
+      if(!this.bankAccount) {
+          this.validationErrors.push("<strong>Bank account no.</strong> cannot be empty.")
       }
 
       // email validation
@@ -176,10 +186,13 @@ export default {
       }
     },
     signUp() {
-      this.signUpAction({ email: this.email, password: this.password, doctors: this.doctors, clinic: true, name: this.name }).then(() => {
+      this.signUpAction({ email: this.email, password: this.password, 
+      doctors: this.doctors, clinic: true, 
+      name: this.name, bankAccount: this.bankAccount }).then(() => {
         if (this.isUserAuth) {
           this.signOutAction()
           this.$router.replace({ name: "cliniclogin" });
+          alert("Signed up successfully!")
         }
       })
     }

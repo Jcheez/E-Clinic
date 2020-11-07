@@ -2,7 +2,13 @@
   <div class="container">
     <div id="topNavBar">
       <h3>E-Clinic</h3>
-      <router-link :to="{ name: 'doctorSettings', params: { currDoctor: currDoctor } }"
+      <router-link to="/clinichome">Home</router-link>
+      <router-link to="/doctorslist">Back to Doctors</router-link>
+      <router-link
+        :to="{
+          name: 'doctorSettings',
+          params: { currDoctor: this.currDoctor },
+        }"
         >Doctor's Settings</router-link
       >
       <a @click="signOut" class="button is-primary">Logout</a>
@@ -14,7 +20,8 @@
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
     <div v-if="status" class="addslot">
-      <addSlot @fetchItems = "fetchItems"
+      <addSlot
+        @fetchItems="fetchItems"
         v-bind:selectedDate="date"
         v-bind:doctorLicense="this.currDoctor.dNum"
       />
@@ -133,7 +140,7 @@ export default {
   created() {
     this.fetchItems();
     this.getZoomString();
-    console.log(this.currDoctor)
+    console.log(this.currDoctor);
   },
 };
 </script>

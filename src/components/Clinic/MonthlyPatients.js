@@ -1,9 +1,12 @@
+//import { Bar, mixins } from "vue-chartjs";
+//const { reactiveProp } = mixins;
 import { Bar } from "vue-chartjs";
 import database from "../../firebase.js";
 import { mapGetters } from "vuex";
 
 export default {
   extends: Bar,
+  //mixins: [reactiveProp],
   data: function() {
     return {
       datacollection: {
@@ -36,7 +39,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getUser"])
+    ...mapGetters(["getUser"]),
   },
   methods: {
     getRandomColor: function() {
@@ -120,6 +123,7 @@ export default {
             }
             this.datacollection.datasets[index].data[i] = totalPatients;
           }
+          this.$emit("fetchItems");
           this.renderChart(this.datacollection, this.options);
         });
     },
