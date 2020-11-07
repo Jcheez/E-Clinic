@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
   <HelloWorld v-bind:about="true"></HelloWorld>
   <div class="columns" v-if="!isUserAuth">
     <div class="column is-half is-offset-one-quarter">
