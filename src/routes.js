@@ -2,9 +2,9 @@ import HelloWorld from "./components/HelloWorld";
 import { Role } from "./store/role";
 
 // All routes for Patient Notes Component
-import PatientNotes from "./components/Patient/PatientNotes_components/PatientNotes.vue";
-import PatientAppointments from "./components/Patient/PatientNotes_components/PatientAppointments.vue";
-import Documents from "./components/Patient/PatientNotes_components/Documents.vue";
+import PatientNotes from "./components/Clinic/PatientNotes_components/PatientNotes.vue";
+import PatientAppointments from "./components/Clinic/PatientNotes_components/PatientAppointments.vue";
+import Documents from "./components/Clinic/PatientNotes_components/Documents.vue";
 import PendingPatient from "./components/Patient/PendingBooking_component/Pending.vue";
 import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue";
 import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue";
@@ -105,8 +105,6 @@ export default [
   {
     path: "/doctorslist/appointment/doctorsettings",
     component: DoctorSettings,
-    name: "doctorSettings",
-    props: true,
   },
   { path: "/makebooking", component: MakeBooking },
   { path: "/makebooking/makebookingter", component: MakeBookingTer },

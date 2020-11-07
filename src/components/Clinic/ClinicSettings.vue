@@ -5,7 +5,8 @@
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
       <router-link to="/doctorslist">Doctors</router-link><br />
-      <router-link to="/clinicsettings"> Settings</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
+      <router-link to="/patientsnotes">patientsnotes</router-link><br>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="inputFields">
@@ -139,7 +140,7 @@ a:hover {
   color: rgb(238, 249, 255);
 }
 
-h3#sideNavBar {
+#sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;

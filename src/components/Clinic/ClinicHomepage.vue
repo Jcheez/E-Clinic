@@ -122,7 +122,7 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 2px;
   display: inline-block;
   margin: 60px 0 0 0;
