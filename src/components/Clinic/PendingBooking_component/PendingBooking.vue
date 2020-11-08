@@ -6,7 +6,7 @@
       <template v-for="(patient, x) in itemsList">
         <li v-bind:key="x">
           <div id="inner">
-            <span>{{ "Patient: " + name }}</span>
+            <span>{{ "Patient ID: " + patient.patientId }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
             <span v-if="patient.physical">Reason: Physical Examination Required</span>
           </div>

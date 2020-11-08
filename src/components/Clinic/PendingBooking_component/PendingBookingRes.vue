@@ -4,7 +4,7 @@
     <hr />
     <ul>
         <li id=pending>
-            <span>{{"Patient: " + patientName}}</span>
+            <span>{{"Patient Name: " + patientName}}</span>
             <span v-if="patientDetails.firstTime">{{"First Time Online / First Time at Clinic"}}</span>
             <span v-if="patientDetails.physical">{{"Conditions: " + patientDetails.conditions}}</span>
             <span>{{"Registered Phone Number: " + patientDetails.phoneNumber}}</span>
