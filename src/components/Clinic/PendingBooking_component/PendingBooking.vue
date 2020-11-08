@@ -2,6 +2,7 @@
   <div>
     <h1>{{ msg }}</h1>
     <hr />
+    <p v-if="itemsList.length == 0">There are no pending bookings by patients.</p>
     <ul>
       <template v-for="(patient, x) in itemsList">
         <li v-bind:key="x">

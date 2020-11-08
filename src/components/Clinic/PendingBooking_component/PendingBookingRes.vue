@@ -62,6 +62,14 @@ export default {
             })
         },
 
+        formatDate: function(date) {
+          let ldate = date.toLocaleDateString().split("/")
+          let i0 = ldate[0]
+          ldate[0] = ldate[1]
+          ldate[1] = i0
+          return ldate.join("/")
+        },
+
         failcall: function () {
             if (confirm("Proceed to notify unverified patient that they have a missed call?")){
                 this.notchecked = true;
@@ -77,7 +85,16 @@ export default {
                             
                             })
                             /* Add a notifications part to the user */
+                            database.collection("patients").doc(x).get().then((doc) => {
+                                let item = doc.data()
+                                let newMessages = item.newNotifications
+                                newMessages.splice(0, 0, this.formatDate(new Date()) + ": Clinic has attempted to contact you")
+
+                            database.collection("patients").doc(x).update({
+                            newNotifications: newMessages,
+                            })
                             console.log("pendingbooking document has been updated")
+                            })
                         })
                 })
                 this.$router.push("/pendingbooking"); 
@@ -103,6 +120,15 @@ export default {
                     })
             })
             /* Add a notifications part to the user */
+            database.collection("patients").doc(x).get().then((doc) => {
+                let item = doc.data()
+                let newMessages = item.newNotifications
+                newMessages.splice(0, 0, this.formatDate(new Date()) + ": You have been verified by " + this.clinicName + ", you can now proceed to book consult with them.")
+
+                database.collection("patients").doc(x).update({
+                    newNotifications: newMessages,
+                })
+            })
             this.$router.push("/pendingbooking");   
         },
 
@@ -129,6 +155,15 @@ export default {
                     })
             })
             /* Add a notifications part to the user */
+            database.collection("patients").doc(x).get().then((doc) => {
+                let item = doc.data()
+                let newMessages = item.newNotifications
+                newMessages.splice(0, 0, this.formatDate(new Date()) + ": Clinic has scheduled a physical appointment for you, check it in view appointment tab")
+
+                database.collection("patients").doc(x).update({
+                    newNotifications: newMessages,
+                })
+            })
             this.$router.push("/pendingbooking");  
         }
     },
