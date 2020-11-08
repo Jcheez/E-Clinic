@@ -5,6 +5,7 @@
         <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content" id="myDropdown">
+        <p v-if="this.newMessages.length == 0 && this.oldMessages.length == 0">You do not have any notifications</p>
         <p id=new v-for="(m, index) in this.newMessages" :key="index" style="background-color: rgb(185, 250, 250); margin-bottom:0px; margin-top:0px;">{{m}}</p>
         <p id=old v-for="(m2, index) in this.oldMessages" :key="index + newMessages.length" style="margin-bottom:0px; margin-top:0px;">{{m2}}</p>
     </div>

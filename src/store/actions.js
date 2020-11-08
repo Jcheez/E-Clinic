@@ -61,7 +61,9 @@ const actions = {
                 notes: {},
                 upcoming: {},
                 outstandingAmount: {},
-                amountPaid: {}
+                amountPaid: {},
+                oldNotifications: [],
+                newNotifications: [],
             })
         })
         .catch(error => {
