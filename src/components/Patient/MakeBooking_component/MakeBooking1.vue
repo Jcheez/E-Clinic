@@ -59,7 +59,8 @@ export default {
         checkedConditions: [],
         errorstring: "",
         firstbool: [],
-        availableToBook:""
+        availableToBook:"",
+        consultslots: []
         }
     },
 
@@ -79,6 +80,8 @@ export default {
             } else if (this.availableToBook == false) {
                 alert("You have an upcoming appointment. Unable to make a new Booking")
                 this.$router.push('/viewappt')
+            } else if (this.checkpending(this.selected, this.consultslots)) {
+                alert("You have a pending booking with this particular clinic.")
             } else {
                 this.errorstring = "";
                 var a = this.checkedConditions;
@@ -166,10 +169,36 @@ export default {
             });
         },
 
+        getConsults: function() {
+            database
+            .collection("pendingbooking")
+            .where("patientId", "==", this.patientId)
+            .get()
+            .then((querySnapShot) => {
+                let item = {};
+                querySnapShot.forEach((doc) => {
+                    item = doc.data();
+                    console.log(item)
+                    this.consultslots.push(item);
+                });
+            });
+        },
+
+        checkpending: function(clinicName, slots) {
+            let consultslotsarray = slots;
+            let result = consultslotsarray.map(x => x.clinic).filter(x => x.localeCompare(clinicName) == 0)
+            if (result.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
     },
     created() {
         this.fetchItems();
         this.checkAbleToBook()
+        this.getConsults()
     }
     
 }

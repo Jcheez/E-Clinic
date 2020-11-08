@@ -93,7 +93,7 @@ export default {
       formatTime2: function(time) {
         let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
         ltime.splice(2,1)
-        return ltime[0] + "" + ltime[1]
+        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
       },
 
       getdoc: function(ide) {
@@ -146,6 +146,7 @@ export default {
         } else {
           this.apptHist[this.clinic].push(apptDate)
         }
+        console.log(this.apptHist)
 
         database
         .collection('patients')
