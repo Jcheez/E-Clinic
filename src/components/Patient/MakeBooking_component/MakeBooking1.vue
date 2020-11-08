@@ -70,7 +70,6 @@ export default {
         },
         
         next: function () {
-            console.log(this.availableToBook)
             if (!this.selected && this.checkedConditions.length == 0) {
                 this.errorstring = "Please choose a clinic and at least 1 condition"
             } else if (!this.selected) {
@@ -82,6 +81,7 @@ export default {
                 this.$router.push('/viewappt')
             } else if (this.checkpending(this.selected, this.consultslots)) {
                 alert("You have a pending booking with this particular clinic.")
+                this.$router.push('/pending')
             } else {
                 this.errorstring = "";
                 var a = this.checkedConditions;
@@ -182,7 +182,6 @@ export default {
                 let item = {};
                 querySnapShot.forEach((doc) => {
                     item = doc.data();
-                    console.log(item)
                     this.consultslots.push(item);
                 });
             });
