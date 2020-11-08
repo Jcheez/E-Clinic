@@ -5,7 +5,7 @@
       <div v-if="this.physicalList.length > 0" id="physical">
         <span>{{ "Date: " + this.physicalList[0][1] + " " + this.physicalList[0][2] }}</span>
         <span>Consult Type: Physical</span>
-        <span>Add clinic name when it is props into pendingbooking >> patientupcoming</span>
+        <span>{{ "Clinic: " + this.physicalList[0][3]}}</span>
       </div>
       <div v-if="this.itemsList.length > 0" id="online">
         <span>{{ "Clinic: " + this.itemsList[0].clinic }}</span>
@@ -136,6 +136,7 @@ export default {
                           if (itemx.upcoming[0] == "physical") {
                               console.log("hello")
                               this.physicalList.push(itemx.upcoming);
+                              console.log(this.physicalList)
                           } else if (itemx.upcoming[0] == "online") {
                               database
                                 .collection("consultslots")

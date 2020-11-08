@@ -4,10 +4,11 @@
     <hr />
     <ul>
         <li id=pending>
-            <span>{{"Patient: " + patientDetails.name}}</span>
+            <span>{{"Patient: " + patientName}}</span>
             <span v-if="patientDetails.firstTime">{{"First Time Online / First Time at Clinic"}}</span>
             <span v-if="patientDetails.physical">{{"Conditions: " + patientDetails.conditions}}</span>
-            <span>{{"Registered Phone Number: " + patientDetails.phonenum}}</span>
+            <span>{{"Registered Phone Number: " + patientDetails.phoneNumber}}</span>
+            <span>{{"Date of Birth: " + patientDetails.dob}}</span>
             <span>{{"Status: " + patientDetails.pendingstatus}}</span>
         </li>
     </ul>
@@ -21,7 +22,7 @@
         <input type="submit" value="Confirm" v-on:click="scheduled">
     </div>
 
-    <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable & Failed to get to Patient</button>
+    <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable and/or Failed to get to Patient</button>
     <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
     <button id="home" v-on:click="routeBack()">Back</button>
   </div>
@@ -34,25 +35,38 @@ export default {
     data() {
         return {
         msg: "Pending Booking",
+        patientName: "",
         date: "",
         time: "",
-        notchecked: false
+        notchecked: false,
+        clinicId: localStorage.getItem("uidClinic"),
+        clinicName: "",
         };
     },
     props: {
         patientDetails: Object,
     },
     methods: {
-        routeHome: function() {
+        routeBack: function() {
             this.$router.push('/pendingbooking')
+        },
+
+        fetchName: function() {
+            database.collection("patients").doc(this.patientDetails.patientId).get().then((doc2) => {
+                let itema = doc2.data();
+                this.patientName = itema.name;
+            })
+            database.collection("clinics").doc(this.clinicId).get().then((querySnapShot) => {
+            let item = querySnapShot.data();
+            this.clinicName = item.name;
+            })
         },
 
         failcall: function () {
             if (confirm("Proceed to notify unverified patient that they have a missed call?")){
                 this.notchecked = true;
-                //remember to change this to patient id
-                var x = this.patientDetails.name
-                database.collection("pendingbooking").where("name", "==", x)
+                var x = this.patientDetails.patientId
+                database.collection("pendingbooking").where("patientId", "==", x)
                 .get()
                 .then((querySnapShot) => {
                         let item = {};
@@ -72,20 +86,13 @@ export default {
 
         verify: function () {
             if (confirm("Proceed in verifying?")) {
-                var x = this.patientDetails.name
-                database.collection("patients").where("name", "==", x)
-                .get()
-                .then((querySnapShot) => {
-                        let item = {};
-                        querySnapShot.forEach((doc) => {
-                            item = doc.id;
-                            database.collection("patients").doc(item).update({
-                                verifiedclinics: firebase.firestore.FieldValue.arrayUnion(this.patientDetails.clinic)
-                            })
-                            console.log("patients has been verified")
-                        })
-            })}
-            database.collection("pendingbooking").where("name", "==", x)
+                var x = this.patientDetails.patientId
+                database.collection("patients").doc(x).update({
+                    verifiedclinics: firebase.firestore.FieldValue.arrayUnion(this.patientDetails.clinic)
+                })
+                console.log("patients has been verified")
+            }
+            database.collection("pendingbooking").where("patientId", "==", x)
             .get()
             .then((querySnapShot) => {
                     let item = {};
@@ -100,25 +107,18 @@ export default {
         },
 
         scheduled: function () {
-            var x = this.patientDetails.name
-            database.collection("patients").where("name", "==", x)
-            .get()
-            .then((querySnapShot) => {
-                    let item = {};
-                    querySnapShot.forEach((doc) => {
-                        item = doc.id;
-                        database.collection("patients").doc(item).update({
-                            upcoming: {
-                                0: "physical",
-                                1: this.date,
-                                2: this.time
-                            },
-                        })
-                        console.log("physical appt has been added")
-                    })
+            var x = this.patientDetails.patientId
+            database.collection("patients").doc(x).update({
+                upcoming: {
+                    0: "physical",
+                    1: this.date,
+                    2: this.time,
+                    3: this.clinicName
+                    },
             })
-            
-            database.collection("pendingbooking").where("name", "==", x)
+            console.log("physical appt has been added")
+
+            database.collection("pendingbooking").where("patientId", "==", x)
             .get()
             .then((querySnapShot) => {
                     let item = {};
@@ -132,6 +132,10 @@ export default {
             this.$router.push("/pendingbooking");  
         }
     },
+
+    created() {
+        this.fetchName();
+    }
 }
 </script>
 
@@ -162,7 +166,7 @@ li#pending {
   width: 562px;
   height: 140px;
   left: 73px;
-  top: 210px;
+  top: 310px;
 
   border: 1px solid #000000;
   box-sizing: border-box;
@@ -174,11 +178,11 @@ li#pending {
 }
 button#fail {
     position: relative;
-    top: 250px;
+    top: 350px;
 }
 button#verify {
     position: relative;
-    top: 250px;
+    top: 350px;
     background-color: aquamarine;
 }
 
@@ -187,7 +191,7 @@ div#physicalform {
     width: 562px;
     height: 140px;
     left: 700px;
-    top: 54px;
+    top: 154px;
 
     border: 1px solid #000000;
     box-sizing: border-box;
