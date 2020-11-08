@@ -46,6 +46,7 @@
 <script>
 import uploader from "./uploadDocs.vue";
 import database from "../../../firebase.js";
+import firebase from "firebase";
 
 export default {
     data() {
@@ -89,11 +90,17 @@ export default {
 
         remove: function (field) {
 
+            let today = this.formatDate(new Date())
+            let result = today + ": " + field + " has been removed"
+
             delete this.doc[this.clinic][this.appDate][field]
             database
             .collection('patients')
             .doc(this.docid[0])
-            .update({notes: this.doc})
+            .update({
+                notes: this.doc,
+                newNotifications: firebase.firestore.FieldValue.arrayUnion(result)
+                })
             .then(() => {
             console.log('user updated!')
             alert("Medical Certificate" + " deleted")
@@ -151,6 +158,14 @@ export default {
 
         routeHome: function() {
             this.$router.push('/patientsnotes')
+        },
+
+        formatDate: function(date) {
+          let ldate = date.toLocaleDateString().split("/")
+          let i0 = ldate[0]
+          ldate[0] = ldate[1]
+          ldate[1] = i0
+          return ldate.join("/")
         },
     },
 
