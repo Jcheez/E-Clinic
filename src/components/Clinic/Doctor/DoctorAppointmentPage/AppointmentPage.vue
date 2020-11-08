@@ -2,6 +2,8 @@
   <div class="container">
     <div id="topNavBar">
       <h3>E-Clinic</h3>
+      <router-link to="/clinichome">Home</router-link>
+      <router-link to="/doctorslist">Back to Doctors</router-link>
       <router-link
         :to="{
           name: 'doctorSettings',

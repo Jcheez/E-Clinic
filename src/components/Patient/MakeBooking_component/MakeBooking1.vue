@@ -11,9 +11,20 @@
       </option>
     </select>
     <br />
-    <span v-if="selected">You have selected: {{ selected }}</span>
+    <span v-if="selected"
+      >You have selected:
+      <div
+        style="
+          font-family: Nunito;
+          color: rgb(0, 114, 180);
+          display: inline-block;
+        "
+      >
+        {{ selected }}
+      </div></span
+    >
     <br />
-    <br />
+    <h3>Please Select the Conditions You Are Experiencing:</h3>
     <div id="conditionSet">
       <input
         type="checkbox"
@@ -60,7 +71,6 @@
       <label for="Chest Pain">Chest Pain</label>
     </div>
     <div id="conditionSet">
-      <br />
       <input
         type="checkbox"
         id="Diarrhoea"
@@ -110,9 +120,11 @@
     <span>Checked Conditions: {{ checkedConditions }}</span>
     <br />
     <br />
-    <p id="error">{{ this.errorstring }}</p>
-    <button @click="next">Next</button>
-    <button id="home" v-on:click="routeHome()">Back to Home</button>
+    <div id="buttons">
+      <p id="error">{{ this.errorstring }}</p>
+      <button @click="next">Next</button>
+      <button id="home" v-on:click="routeHome()">Back to Home</button>
+    </div>
   </div>
 </template>
 
@@ -263,28 +275,46 @@ export default {
 <style scoped>
 p#error {
   color: red;
+  font-family: Nunito;
 }
+
 #conditionSet {
   display: block;
-  /*left: 300px;*/
-  width: 100%;
+  width: 250px;
+  margin: 20px;
+  margin-left: 500px;
+  font-family: Nunito;
 }
-input {
-  display: block;
-  color: rgb(0, 114, 180);
+input[type="checkbox"] {
+  display: inline-block;
   height: 20px;
   width: 20px;
-  margin-right: 100px;
+  /*margin-right: 10px;*/
   float: left;
+  position: relative;
 }
 label {
-  /*margin-left: 30px;*/
-  float: left;
+  display: inline-block;
+  position: relative;
+  font-family: Nunito;
+  width: 170px;
+  text-align: left;
 }
 select {
   margin: 20px;
   width: 200px;
   height: 30px;
+  font-family: Nunito;
+}
+
+#home {
+  width: 150px;
+}
+
+#buttons {
+  width: 600px;
+  left: 300px;
+  position: absolute;
 }
 button {
   transition: 0.3s;
@@ -301,7 +331,6 @@ button {
   letter-spacing: 3px;
   outline: none;
   display: inline-block;
-  top: 100px;
   width: 100px;
   text-align: center;
   margin: 20px;
@@ -312,5 +341,8 @@ button:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
+}
+span {
+  font-family: Nunito;
 }
 </style>

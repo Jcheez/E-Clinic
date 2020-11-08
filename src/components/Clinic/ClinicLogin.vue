@@ -1,7 +1,7 @@
 <template>
   <div>
   <HelloWorld v-bind:about="true"></HelloWorld>
-  <div class="columns" v-if="!isUserAuth">
+  <div class="columns">
     <div class="column is-half is-offset-one-quarter">
       <div class="card">
         <div class="card-content">
@@ -61,12 +61,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div v-else style = "position: absolute; margin-left: 825px; margin-top: -300px">
-    You are already logged in! <br>
-    To access login page, please 
-    <router-link v-if = "getUser.photoURL == 'clinic'" to="/clinichome"> logout </router-link>
-    <router-link v-else to="/patienthome"> logout </router-link> first.
   </div>
   </div>
 </template>

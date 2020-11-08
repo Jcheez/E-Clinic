@@ -19,8 +19,9 @@
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
       <router-link to="/doctorslist">Doctors</router-link><br />
+      <router-link to="/patientsnotes">Patient Notes</router-link><br />
+      <router-link to="/pendingbooking">Pending</router-link><br />
       <router-link to="/clinicsettings">Settings</router-link><br />
-      <router-link to="/patientsnotes">patientsnotes</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
 
@@ -29,24 +30,34 @@
       <div v-if="isUserAuth" id="monthlyPatient">
         <mp></mp>
       </div>
+
       <div id="rhs">
         <div v-if="isUserAuth" id="verify">
-          Total Patients to Verify:<br /><br />
-          <p>{{ numOfPatientsToVerify() }}</p>
-          As of today
+          <router-link to="/pendingbooking" id="numberBoxToPending">
+            Total Patients to Verify:<br /><br />
+            <p>{{ numOfPatientsToVerify() }}</p>
+            As of today
+          </router-link>
         </div>
+
         <br />
+
         <div v-if="isUserAuth" id="physical">
-          Total Patients to Arrange Physical Consultations:<br /><br />
-          <p>{{ numOfPatientsPhysical() }}</p>
-          As of today
+          <router-link to="/pendingbooking" id="numberBoxToPending">
+            Total Patients to Arrange Physical Consultations:<br /><br />
+            <p>{{ numOfPatientsPhysical() }}</p>
+            As of today
+          </router-link>
         </div>
       </div>
-      <div v-if="isUserAuth" id="monthlyRev">
-        <linechart></linechart>
-      </div>
-      <div v-if="isUserAuth" id="rating">
-        <ratingchart></ratingchart>
+
+      <div id="bottom-half">
+        <div v-if="isUserAuth" id="monthlyRev">
+          <linechart></linechart>
+        </div>
+        <div v-if="isUserAuth" id="rating">
+          <ratingchart></ratingchart>
+        </div>
       </div>
     </div>
   </div>
@@ -129,11 +140,9 @@ a {
   transition: 0.3s;
   font-family: Nunito;
   font-size: 18px;
-  letter-spacing: 2px;
   display: inline-block;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
-  font-weight: bold;
 }
 
 a:hover {
@@ -159,11 +168,20 @@ a:hover {
   margin-top: 58px;
   padding: 10px 10px 10px 16px;
   border-radius: 10px;
-  /*position: absolute;*/
 }
 #rhs {
   position: absolute;
-  left: 1000px;
+  left: 900px;
+  top: 0px;
+  width: 250px;
+}
+#numberBoxToPending {
+  margin: 0px;
+  width: 220px;
+  height: 150px;
+  left: 830px;
+  font-size: 15px;
+  display: block;
 }
 #verify p {
   font-size: 38px;
@@ -186,10 +204,9 @@ a:hover {
   width: 220px;
   height: 140px;
   margin-left: -180px;
-  margin-top: 28px;
+  margin-top: 45px;
   padding: 12px 10px 10px 16px;
   border-radius: 10px;
-  /*position: absolute;*/
 }
 
 #physical p {
@@ -213,17 +230,28 @@ a:hover {
   float: left;
 }
 
-#monthlyRev,
-#rating {
+#monthlyRev {
   height: 100%;
   width: 360px;
-  /* border-style: solid;
-  border-color: rgb(0, 114, 180);
-  border-width: 1px; */
-  padding: 0px 30px;
+  padding: 0px 20px;
   margin: 10px;
   display: inline-block;
   float: left;
+}
+#rating {
+  height: 100%;
+  width: 370px;
+  padding: 0px 20px;
+  margin: 10px;
+  display: inline-block;
+  float: left;
+}
+#bottom-half {
+  position: absolute;
+  height: 400px;
+  top: 450px;
+  left: 250px;
+  display: block;
 }
 /*#rating {
   height: 240px;
@@ -244,6 +272,8 @@ a:hover {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 h3 {
@@ -252,7 +282,7 @@ h3 {
   letter-spacing: 4px;
   color: white;
   font-weight: bold;
-  padding: 10px 0px 20px 0px;
+  padding: 10px 0px 0px 0px;
 }
 
 .main {

@@ -5,7 +5,9 @@
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
       <router-link to="/doctorslist">Doctors</router-link><br />
-      <router-link to="/clinicsettings"> Settings</router-link><br />
+      <router-link to="/patientsnotes">Patient Notes</router-link><br />
+      <router-link to="/pendingbooking">Pending</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="instructions">
@@ -115,7 +117,7 @@ a {
   font-family: Nunito;
   font-size: 18px;
   letter-spacing: 2px;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -155,7 +157,7 @@ h3 {
   letter-spacing: 4px;
   color: white;
   font-weight: bolder;
-  padding: 10px 0px 20px 0px;
+  padding: 10px 0px 0px 0px;
 }
 input {
   width: 300px;
