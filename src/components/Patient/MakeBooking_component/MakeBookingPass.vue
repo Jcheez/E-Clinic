@@ -161,7 +161,8 @@ export default {
               upcoming: {
                 0: "online",
                 1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                2: this.formatTime2(this.datadoc.date)
+                2: this.formatTime2(this.datadoc.date),
+                3: this.clinic
               }
             })
             console.log("online appt has been added")
@@ -179,6 +180,7 @@ export default {
         .get()
         .then((querySnapShot) => {
           this.apptHist = querySnapShot.data().appointment_history
+          console.log(this.apptHist)
           console.log("Done")
         })
       }
