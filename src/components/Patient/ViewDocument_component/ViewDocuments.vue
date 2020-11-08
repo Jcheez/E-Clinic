@@ -1,17 +1,23 @@
 <template>
     <div>
         <h1>{{ msg }}</h1>
+        <select v-model="selected">
+          <option v-for="(clinic, x) in clinic" v-bind:value="clinic" v-bind:key="x">
+          {{clinic}}
+          </option>
+        </select>
+        <br>
         <ul id="patients">
-          <li v-for="(appt, index) in this.itemsList[0]" :key="index">
+          <li v-for="(appt, index) in this.itemsList" :key="index">
             <div id="inner">
               <span>{{ "Date: " + appt }}</span>
             </div>
             <button id="view">
-              <router-link :to="{ name:'view', params: {apptDate: appt, patientId: patientid}}">View</router-link>
+              <router-link :to="{ name:'view', params: {apptDate: appt, clinic: selected}}">View</router-link>
             </button>
           </li>
         </ul>
-        <p v-if="itemsList.length == 0">There are no documents to view</p>
+        <p v-if="itemsList.length == 0 && selected == ''">There are no documents to view</p>
         <button id="home" v-on:click="routeHome()">Back to home</button>
     </div>  
 </template>
@@ -24,6 +30,8 @@ export default {
     return {
       msg: "Patient's Notes ",
       itemsList: [],
+      clinic: [],
+      selected: '',
       patientId: localStorage.getItem("uidPatient")
     };
   },
@@ -34,6 +42,7 @@ export default {
     },
         
     fetchItems: function () {
+      console.log(this.patientId)
         //var x = this.name;
         database
             .collection("patients")
@@ -41,12 +50,39 @@ export default {
             .get()
             .then((querySnapShot) => {
                 let item = {};
-                  item = querySnapShot.data();
-                  this.itemsList.push(item.appointment_history);
+                  item = querySnapShot.data().appointment_history;
+                  console.log(item)
+                  for (var clinic in item) {
+                    this.clinic.push(clinic);
+                  }
+            });
+        },
+
+    fetchItems2: function () {
+      this.itemsList = [];
+        //var x = this.name;
+        database
+            .collection("patients")
+            .doc(this.patientId)
+            .get()
+            .then((querySnapShot) => {
+                let item = {};
+                  item = querySnapShot.data().appointment_history;
+                  console.log(item)
+                  let arrayOfApptDates = item[this.selected];
+                  for (var date in arrayOfApptDates) {
+                    this.itemsList.push(arrayOfApptDates[date]);
+                  }
                   console.log(this.itemsList)
             });
         },
   },
+  watch: {
+    selected: function() {
+      this.fetchItems2();
+    }
+  },
+
   created() {
     this.fetchItems();
   },
@@ -76,7 +112,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 230px;
+  top: 330px;
   border: 1px solid #000000;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
@@ -110,6 +146,6 @@ button:focus {
 }
 button#home{
   position: relative;
-  top: 250px;
+  top: 450px;
 }
 </style>

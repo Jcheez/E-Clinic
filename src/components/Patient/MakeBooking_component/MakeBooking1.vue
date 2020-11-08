@@ -92,6 +92,8 @@ export default {
                 .then((querySnapShot) => {
                     let item = {};
                     item = querySnapShot.data();
+                    let aa = item.phoneNumber;
+                    let bb = item.dob;
                     console.log(item.verifiedclinics)
                     var firstbool = !item.verifiedclinics.includes(this.selected)
                         
@@ -102,12 +104,14 @@ export default {
                         database.collection("pendingbooking").add(
                         {
                         patientId: this.patientId,
-                        //phonenum: this.phonenum,
+                        phoneNumber: aa,
+                        dob: bb,
                         clinic: this.selected,
                         physical: physicalbool,
                         firstTime: firstbool,
                         conditions: a,
-                        pendingstatus: "Awaiting clinic staff to contact"
+                        pendingstatus: "Awaiting clinic staff to contact",
+                        
                         }
                         )
                     } else {

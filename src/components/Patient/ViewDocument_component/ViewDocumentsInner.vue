@@ -19,38 +19,33 @@ export default {
     data() {
         return {
             msg: "Patient's Notes ",
-            itemsList: []
+            itemsList: [],
+            patientId: localStorage.getItem("uidPatient")
         }
     },
 
     props: {
       apptDate: String,
-      patientId: String
+      clinic: String
     },
 
     methods: {
         fetchItems: function () {
-            //var x = this.patientName;
+          console.log(this.clinic)
+          console.log(this.patientId)
             database
                 .collection("patients")
                 .doc(this.patientId)
                 .get()
                 .then((querySnapShot) => {
                     let item = {};
-                    querySnapShot.forEach((doc) => {
-                        item = doc.data().notes;
-                        console.log(this.apptDate)
-                        console.log(item[this.apptDate]["invoice"] == undefined)
-                        console.log(Object.keys(item[this.apptDate]))
-                        if (Object.keys(item[this.apptDate]).length > 0) {
-                            this.itemsList.push(item[this.apptDate]);
-                        }
-                    });
+                    item = querySnapShot.data().notes[this.clinic];
+                    this.itemsList.push(item[this.apptDate]);
                 });
         },
 
         docschecker: function() {
-          console.log(this.itemsList[0])
+          //console.log(this.itemsList)
           if (this.itemsList.length > 0) {
             return true;
           } else {
@@ -94,7 +89,7 @@ li {
   width: 562px;
   height: 100px;
   left: 73px;
-  top: 230px;
+  top: 330px;
   list-style-type: none; /* Remove bullets */
   padding-left: 10px;
   padding-top: 20px;
@@ -120,6 +115,6 @@ p#url{
 }
 button#back{
   position: relative;
-  top: 250px;
+  top: 350px;
 }
 </style>
