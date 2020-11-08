@@ -115,7 +115,7 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: 2px;
   margin: 50px 0 0 0;
   text-decoration: none;
