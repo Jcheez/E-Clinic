@@ -18,7 +18,6 @@ import Rebook from "./components/Patient/ViewAppt_component/Rebook.vue";
 import ManagePayments from "./components/Patient/ManagePayments/managePayments.vue";
 import PatientLogin from "./components/Patient/PatientLogin";
 import PatientSignup from "./components/Patient/PatientSignup";
-import PatientSettings from "./components/Patient/PatientSettings";
 
 //routes for clinics
 import AppointmentPage from "./components/Clinic/Doctor/DoctorAppointmentPage/AppointmentPage";
@@ -124,5 +123,4 @@ export default [
     component: MakeBookingConfirmation,
   },
   { path: "/managepayments", component: ManagePayments },
-  { path: "/patientsettings", component: PatientSettings },
 ];
