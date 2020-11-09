@@ -44,15 +44,17 @@
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
     ><button id="submitPW" v-on:click="changePassword">Update Password</button>
-    <button id="submitInterBank" v-on:click="changeInterBank">Update Interbank</button>
+    <button id="submitInterBank" v-on:click="changeInterBank">
+      Update Interbank
+    </button>
     <!--/div-->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import database from "../../firebase.js"
-import uploadQr from "./uploadQr.vue"
+import database from "../../firebase.js";
+import uploadQr from "./uploadQr.vue";
 
 export default {
   data() {
@@ -120,17 +122,17 @@ export default {
 
     changeInterBank() {
       database
-      .collection("clinics")
-      .doc(localStorage.getItem("uidClinic"))
-      .update({
-        interBank: this.interbank
-      })
+        .collection("clinics")
+        .doc(localStorage.getItem("uidClinic"))
+        .update({
+          interBank: this.interbank,
+        });
     },
   },
 
   components: {
-    uploadQr:uploadQr
-  }
+    uploadQr: uploadQr,
+  },
 };
 </script>
 
@@ -169,12 +171,12 @@ a:hover {
 label {
   color: black;
   font-weight: bolder;
-  padding: 10px 0px 20px 0px;
-  float: left;
+  padding: 10px 0px 0px 0px;
   margin-bottom: 30px;
   position: relative;
   display: block;
-  width: 200px;
+  width: 250px;
+  text-align: left;
 }
 h3 {
   font-family: Nunito;
@@ -203,7 +205,7 @@ input {
 #instructions {
   width: 300px;
   margin: 10px;
-  left: 300px;
+  left: 260px;
   margin-top: 100px;
   display: inline-block;
   height: 300px;
@@ -275,7 +277,7 @@ input {
   text-align: center;
   margin-left: 20px;
   height: 60px;
-  left: 950px;
+  left: 850px;
   top: 400px;
 }
 button:hover {

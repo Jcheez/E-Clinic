@@ -1,20 +1,5 @@
 <template>
   <div class="hello">
-    <!-- <ul>
-      <li>
-        <router-link to="/pendingbooking">Go to Pending Booking</router-link>
-      </li>
-      <li>
-        <router-link to="/patientsnotes">Go to Patient Notes</router-link>
-      </li>
-      <li>
-        <router-link to="/appointment">Appointment Page</router-link>
-      </li>
-      <li>
-        <router-link to="/doctorsettings">Doctor's Settings</router-link>
-      </li>
-    </ul> -->
-
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -186,7 +171,7 @@ a:hover {
 }
 #rhs {
   position: absolute;
-  left: 900px;
+  left: 970px;
   top: 0px;
   width: 250px;
 }
@@ -236,26 +221,26 @@ a:hover {
 
 #monthlyPatient {
   height: 100%;
-  width: 500px;
+  width: 550px;
   /* border-style: solid;
   border-color: rgb(0, 114, 180);
   border-width: 1px; */
-  padding: 0px 30px;
+  padding: 0px 30px 30px;
   margin: 10px;
   float: left;
 }
 
 #monthlyRev {
   height: 100%;
-  width: 360px;
-  padding: 0px 20px;
+  width: 380px;
+  padding: 0px 20px 30px;
   margin: 10px;
   display: inline-block;
   float: left;
 }
 #rating {
   height: 100%;
-  width: 370px;
+  width: 400px;
   padding: 0px 20px;
   margin: 10px;
   display: inline-block;
@@ -265,7 +250,7 @@ a:hover {
   position: absolute;
   height: 400px;
   top: 450px;
-  left: 250px;
+  left: 260px;
   display: block;
 }
 /*#rating {

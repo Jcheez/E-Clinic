@@ -21,7 +21,16 @@
               <span>{{ "Name: " + patient.name }}</span>
             </div>
             <button id="view">
-              <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
+              <router-link
+                :to="{
+                  name: 'appointments',
+                  params: {
+                    apptDates: patient.appointment_history,
+                    patientName: patient.name,
+                  },
+                }"
+                >View</router-link
+              >
             </button>
           </li>
         </ul>
@@ -36,7 +45,9 @@
         v-model="nameQuery"
         v-on:keyup.enter="nameSearch()"
       />
-      <button id="searchbox" type="submit" v-on:click="nameSearch()">Search</button>
+      <button id="searchbox" type="submit" v-on:click="nameSearch()">
+        Search
+      </button>
       <!-- <button id="home" v-on:click="routeHome()">Back to Home</button> -->
     </div>
   </div>
@@ -51,7 +62,7 @@ export default {
       itemsList: [],
       nameQuery: "",
       data: [],
-      clinic: localStorage.getItem("clinicName")
+      clinic: localStorage.getItem("clinicName"),
     };
   },
   computed: {
@@ -64,15 +75,15 @@ export default {
       this.signOutAction();
       this.$router.push("/cliniclogin");
     },
-    nameSearch: function() {
+    nameSearch: function () {
       let copied = this.data;
-      console.log(copied)
-      copied = copied.filter(x => x.name.includes(this.nameQuery))
+      console.log(copied);
+      copied = copied.filter((x) => x.name.includes(this.nameQuery));
       this.itemsList = copied;
       if (this.nameQuery.localeCompare("") == 0) {
         this.itemsList = this.data;
       }
-      this.$forceUpdate();      
+      this.$forceUpdate();
     },
 
     fetchItems: function () {
@@ -87,13 +98,12 @@ export default {
               this.itemsList.push(item);
               this.data.push(item);
             }
-            
           });
         });
     },
 
-    routeHome: function() {
-        this.$router.push('/clinichome')
+    routeHome: function () {
+      this.$router.push("/clinichome");
     },
   },
   created() {
@@ -125,16 +135,16 @@ h4 {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing: 2px;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
 }
 
 #sideNavBar a:hover {
-  font-size: 17px;
+  font-size: 18px;
   color: white;
   cursor: pointer;
 }
@@ -157,8 +167,8 @@ h4 {
   font-size: 24px;
   letter-spacing: 4px;
   color: white;
-  font-weight: bolder;
-  padding: 10px 0px 20px 0px;
+  font-weight: bold;
+  padding: 10px 0px 0px 0px;
 }
 
 div #inner {
@@ -176,7 +186,7 @@ li {
   width: 400px;
   height: 76px;
   border-radius: 4px;
-  box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
   padding: 10px 0 0 0;
@@ -236,7 +246,7 @@ button#searchbox {
   font-family: Nunito;
   margin-top: 50px;
   font-size: 16px;
-  background-color:rgb(0, 114, 180);
+  background-color: rgb(0, 114, 180);
   color: white;
   border-color: rgb(0, 114, 180);
 }
@@ -248,22 +258,22 @@ li a {
 
 p#display {
   font-size: 30px;
-  position:absolute;
-  top:500px;
+  position: absolute;
+  top: 500px;
   left: 200px;
 }
 
-div#emptyDiv{
-    position:absolute;
-    top:150px;
-    left: 250px;
-    height: 40px;
-    width: 400px;
-    font-size: 18px;
-    font-family: Nunito;
-    white-space: nowrap;
-    padding: 20px 10px 0px 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+div#emptyDiv {
+  position: absolute;
+  top: 150px;
+  left: 250px;
+  height: 40px;
+  width: 400px;
+  font-size: 18px;
+  font-family: Nunito;
+  white-space: nowrap;
+  padding: 20px 10px 0px 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
 }
 </style>
