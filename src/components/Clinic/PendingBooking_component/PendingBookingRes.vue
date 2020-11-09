@@ -89,7 +89,7 @@ export default {
                             database.collection("patients").doc(x).get().then((doc) => {
                                 let item = doc.data()
                                 let newMessages = item.newNotifications
-                                newMessages.splice(0, 0, this.formatDate(new Date()) + ": Clinic has attempted to contact you")
+                                newMessages.splice(0, 0, this.formatDate(new Date()) ": " + this.clinicName + " has attempted to contact you")
 
                             database.collection("patients").doc(x).update({
                             newNotifications: newMessages,
