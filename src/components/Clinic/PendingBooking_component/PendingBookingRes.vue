@@ -23,6 +23,7 @@
     </div>
 
     <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable and/or Failed to get to Patient</button>
+    <button id=reject v-if="patientDetails.pendingstatus=='Clinic failed to reach patient on mobile'" v-on:click='reject'>Delete Pending Booking</button>
     <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
     <button id="home" v-on:click="routeBack()">Back</button>
   </div>
@@ -88,12 +89,40 @@ export default {
                             database.collection("patients").doc(x).get().then((doc) => {
                                 let item = doc.data()
                                 let newMessages = item.newNotifications
-                                newMessages.splice(0, 0, this.formatDate(new Date()) + ": Clinic has attempted to contact you")
+                                newMessages.splice(0, 0, this.formatDate(new Date()) + ": " + this.clinicName + " has attempted to contact you")
 
                             database.collection("patients").doc(x).update({
                             newNotifications: newMessages,
                             })
                             console.log("pendingbooking document has been updated")
+                            })
+                        })
+                })
+                this.$router.push("/pendingbooking"); 
+            }
+        },
+
+        reject: function () {
+            if (confirm("Proceed to delete patient's pendingbooking")){
+                var x = this.patientDetails.patientId
+                database.collection("pendingbooking").where("patientId", "==", x)
+                .get()
+                .then((querySnapShot) => {
+                        let item = {};
+                        querySnapShot.forEach((doc) => {
+                            item = doc.id;
+                            console.log(item)
+                            database.collection("pendingbooking").doc(item).delete()
+                            /* Add a notifications part to the user */
+                            database.collection("patients").doc(x).get().then((doc) => {
+                                let item = doc.data()
+                                let newMessages = item.newNotifications
+                                newMessages.splice(0, 0, this.formatDate(new Date()) + ": " + this.clinicName + " has deleted your pending booking")
+
+                            database.collection("patients").doc(x).update({
+                            newNotifications: newMessages,
+                            })
+                            console.log("pendingbooking document has been deleted")
                             })
                         })
                 })
