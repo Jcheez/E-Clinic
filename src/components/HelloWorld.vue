@@ -17,7 +17,9 @@
       <h4>About E-clinic</h4>
       <p> E-clinic enables you to consult your doctor,
         <br> from the comfort of your own home! </p>
-      <button class = "delete" v-on:click="toggle">Proceed</button>
+      <router-link to="/cliniclogin">
+        <button class = "delete" v-on:click="toggle">Proceed</button>
+      </router-link>
     </div>
   </div>
 </template>

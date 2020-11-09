@@ -207,9 +207,16 @@ export default {
   margin: auto;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
-  margin-top: -400px;
-  margin-left: 775px;
   margin-bottom: 50px;
+}
+
+.card-content {
+  width: 380px;
+  height: 300px;
+  margin: auto;
+  border-radius: 20px;
+  margin-top: -380px;
+  margin-left: 775px;
 }
 
 input[type=text], input[type=password] {
