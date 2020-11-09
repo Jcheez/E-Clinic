@@ -51,7 +51,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-a {
+#sideNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
@@ -61,16 +61,17 @@ a {
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
+  width: 90%;
 }
 
-a:hover {
+#sideNavBar a:hover {
   font-size: 18px;
   color: white;
   cursor: pointer;
 }
 
 #sideNavBar {
-  width: 230px;
+  width: 250px;
   position: fixed;
   top: 0;
   left: 0;
@@ -80,6 +81,7 @@ a:hover {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  height: 100%;
 }
 
 h3 {
