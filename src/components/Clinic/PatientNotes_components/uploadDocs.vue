@@ -141,4 +141,21 @@ img.preview {
   font-family: Nunito;
   text-align: left;
 }
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  position: absolute;
+  top: 96px;
+  right: 0px;
+  font-family: Nunito;
+  background-color:  rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
+  color: white;
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
 </style>
