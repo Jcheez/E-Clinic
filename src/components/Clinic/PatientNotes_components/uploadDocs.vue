@@ -29,6 +29,7 @@ export default {
       pdf: null,
       uploadValue: 0,
       doc: {},
+      clinic: localStorage.getItem("clinicName") // To change this dynamically
     };
   },
 
@@ -45,6 +46,14 @@ export default {
       this.pdf = null;
       this.fileData = event.target.files[0];      
     },
+
+    formatDate: function(date) {
+          let ldate = date.toLocaleDateString().split("/")
+          let i0 = ldate[0]
+          ldate[0] = ldate[1]
+          ldate[1] = i0
+          return ldate.join("/")
+        },
 
     fetchItems: function () {
         database
@@ -82,18 +91,28 @@ export default {
 
             console.log(this.doc)
             
-            if (this.doc[this.date] == undefined) {
+            if (this.doc[this.clinic] == undefined) {
               console.log(1)
-              this.doc[this.date] = {}
-              this.doc[this.date][this.type] = url
+              this.doc[this.clinic] = {}
+              this.doc[this.clinic][this.date] = {}
+              this.doc[this.clinic][this.date][this.type] = url
+            } else if (this.doc[this.clinic][this.date] == undefined) {
+              this.doc[this.clinic][this.date] = {}
+              this.doc[this.clinic][this.date][this.type] = url
             } else {
-              this.doc[this.date][this.type] = url
+              this.doc[this.clinic][this.date][this.type] = url
             }
+            
+            let today = this.formatDate(new Date())
+            let result = today + ": " + this.type + " has been updated"
 
             database
             .collection('patients')
             .doc(this.doc_id)
-            .update({notes: this.doc})
+            .update({
+              notes: this.doc,
+              newNotifications: firebase.firestore.FieldValue.arrayUnion(result)
+              })
             .then(() => {
             console.log('user updated!')
             

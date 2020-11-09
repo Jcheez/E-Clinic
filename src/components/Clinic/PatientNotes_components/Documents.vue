@@ -13,20 +13,20 @@
         <p id="date">Appointment Date: {{appDate}}</p>
         <div id="mc">
             <h2>Medical Certificate</h2>
-            <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+            <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
             <div v-else id="uploadermc1">
-                <a id="links" v-bind:href="this.doc[this.appDate][mc]" target="_blank">View</a>
+                <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][mc]" target="_blank">View</a>
                 <a id="removers" v-on:click="remove(mc)">Remove</a>
             </div>
         </div>
         <div id="invoice">
             <h2>Invoice</h2>
-            <div v-if="this.outstandingMap[this.appDate] == undefined">
+                <div v-if="this.outstandingMap[this.appDate] == undefined">
                 <label id="outpayment" for="paybox">Amount Paid:</label>
                 <input type="text" id="paybox" name="paybox" >
                 <input type="submit" id="submitpay" v-on:click="paybutton()">
             </div>
-            <div v-else id=paybox>
+            <div v-else-if="this.outstandingMap[this.appDate][1].localeCompare(this.clinic) == 0" id=paybox>
                 <label>Amount Outstanding:</label>
                 <span>${{this.outstandingMap[this.appDate][0].toFixed(2)}}</span>
             </div>
@@ -36,24 +36,62 @@
             <div id="receivetext" v-if="this.amountPaidMap[this.appDate] == undefined">
                 Patient has not paid.
             </div>
-            <div id="receivetext" v-else>
+            <div id="receivetext" v-else-if="this.amountPaidMap[this.appDate][1].localeCompare(this.clinic) == 0">
                 Patient has paid ${{this.amountPaidMap[this.appDate][0].toFixed(2)}}.
             </div>
-            <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+            <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
             <div v-else id="uploadermc2">
-                <a id="links" v-bind:href="this.doc[this.appDate][i]" target="_blank">View</a>
+                <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][i]" target="_blank">View</a>
                 <a id="removers" v-on:click="remove(i)">Remove</a>
             </div>
         </div>
         <div id="prescription">
             <h2>Prescription</h2>
-            <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+            <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
             <div v-else id="uploadermc3">
-                <a id="links" v-bind:href="this.doc[this.appDate][p]" target="_blank">View</a>
+                <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][p]" target="_blank">View</a>
                 <a id="removers" v-on:click="remove(p)">Remove</a>
             </div>
-            <button id="home" v-on:click="routeHome()">Back to Patients</button>
+            <button id="home" v-on:click="routeHome()">Back to Patients</button> 
         </div>
+
+        <!-- #####JJ's -->
+        <!-- <h2 id="mc1">Medical Certificate</h2>
+        <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <div v-else id="uploadermc1">
+            <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][mc]" target="_blank">View</a>
+            <a id="removers" v-on:click="remove(mc)">Remove</a>
+        </div> -->
+        <!-- <h2 id="mc2">Invoice</h2>
+        <label id="outpayment" for="paybox">Amount Paid:</label>
+        <div v-if="this.outstandingMap[this.appDate] == undefined">
+            <input type="text" id="paybox" name="paybox" >
+            <input type="submit" id="submitpay" v-on:click="paybutton()">
+        </div>
+        <div v-else-if="this.outstandingMap[this.appDate][1].localeCompare(this.clinic) == 0" id=paybox>
+            The Patient has been asked to pay ${{this.outstandingMap[this.appDate][0].toFixed(2)}}
+        </div>
+        <label id="inpayment" for="receivebox">Amount received:</label>
+        <input type="text" id="receivebox" name="receivebox">
+        <input type="submit" id="submitreceive" v-on:click="receivebutton()">
+        <div id="receivetext" v-if="this.amountPaidMap[this.appDate] == undefined">
+            Patient has paid $0
+        </div> -->
+        <!-- <div id="receivetext" v-else-if="this.amountPaidMap[this.appDate][1].localeCompare(this.clinic) == 0">
+            Patient has paid ${{this.amountPaidMap[this.appDate][0].toFixed(2)}}
+        </div> -->
+        <!-- <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <div v-else id="uploadermc2">
+            <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][i]" target="_blank">View</a>
+            <a id="removers" v-on:click="remove(i)">Remove</a>
+        </div> -->
+        <!-- <h2 id="mc3">Prescription</h2>
+        <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <div v-else id="uploadermc3"> -->
+            <!-- <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][p]" target="_blank">View</a>
+            <a id="removers" v-on:click="remove(p)">Remove</a>
+        </div>
+        <button id="home" v-on:click="routeHome()">Back to Patients</button>  -->
     </div>
 </template>
 
@@ -61,6 +99,7 @@
 import { mapActions, mapGetters } from "vuex";
 import uploader from "./uploadDocs.vue";
 import database from "../../../firebase.js";
+import firebase from "firebase";
 
 export default {
     data() {
@@ -74,9 +113,9 @@ export default {
             i: "Invoice",
             p: "Prescription",
             u: undefined,
-            clinic: "",
             outstandingMap: {},
-            amountPaidMap: {}
+            amountPaidMap: {},
+            clinic: localStorage.getItem("clinicName")
         }
     },
 
@@ -111,11 +150,17 @@ export default {
 
         remove: function (field) {
 
-            delete this.doc[this.appDate][field]
+            let today = this.formatDate(new Date())
+            let result = today + ": " + field + " has been removed"
+
+            delete this.doc[this.clinic][this.appDate][field]
             database
             .collection('patients')
             .doc(this.docid[0])
-            .update({notes: this.doc})
+            .update({
+                notes: this.doc,
+                newNotifications: firebase.firestore.FieldValue.arrayUnion(result)
+                })
             .then(() => {
             console.log('user updated!')
             alert("Medical Certificate" + " deleted")
@@ -171,23 +216,20 @@ export default {
                 this.$forceUpdate()
         },
 
-        getClinicName: function() {
-            database
-            .collection('clinics')
-            .doc(localStorage.getItem("uidClinic"))
-            .get()
-            .then((doc) => {
-                this.clinic = doc.data().name
-            });
-        },
-
         routeHome: function() {
             this.$router.push('/patientsnotes')
+        },
+
+        formatDate: function(date) {
+          let ldate = date.toLocaleDateString().split("/")
+          let i0 = ldate[0]
+          ldate[0] = ldate[1]
+          ldate[1] = i0
+          return ldate.join("/")
         },
     },
 
     created() {
-        this.getClinicName()
 
         if (this.pName == null || this.appDate == null) {
             this.pName = localStorage.getItem('pn3name');

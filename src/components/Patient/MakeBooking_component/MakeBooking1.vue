@@ -59,7 +59,8 @@ export default {
         checkedConditions: [],
         errorstring: "",
         firstbool: [],
-        availableToBook:""
+        availableToBook:"",
+        consultslots: []
         }
     },
 
@@ -69,7 +70,6 @@ export default {
         },
         
         next: function () {
-            console.log(this.availableToBook)
             if (!this.selected && this.checkedConditions.length == 0) {
                 this.errorstring = "Please choose a clinic and at least 1 condition"
             } else if (!this.selected) {
@@ -79,6 +79,9 @@ export default {
             } else if (this.availableToBook == false) {
                 alert("You have an upcoming appointment. Unable to make a new Booking")
                 this.$router.push('/viewappt')
+            } else if (this.checkpending(this.selected, this.consultslots)) {
+                alert("You have a pending booking with this particular clinic.")
+                this.$router.push('/pending')
             } else {
                 this.errorstring = "";
                 var a = this.checkedConditions;
@@ -89,6 +92,8 @@ export default {
                 .then((querySnapShot) => {
                     let item = {};
                     item = querySnapShot.data();
+                    let aa = item.phoneNumber;
+                    let bb = item.dob;
                     console.log(item.verifiedclinics)
                     var firstbool = !item.verifiedclinics.includes(this.selected)
                         
@@ -99,12 +104,14 @@ export default {
                         database.collection("pendingbooking").add(
                         {
                         patientId: this.patientId,
-                        //phonenum: this.phonenum,
+                        phoneNumber: aa,
+                        dob: bb,
                         clinic: this.selected,
                         physical: physicalbool,
                         firstTime: firstbool,
                         conditions: a,
-                        pendingstatus: "Awaiting clinic staff to contact"
+                        pendingstatus: "Awaiting clinic staff to contact",
+                        
                         }
                         )
                     } else {
@@ -166,10 +173,35 @@ export default {
             });
         },
 
+        getConsults: function() {
+            database
+            .collection("pendingbooking")
+            .where("patientId", "==", this.patientId)
+            .get()
+            .then((querySnapShot) => {
+                let item = {};
+                querySnapShot.forEach((doc) => {
+                    item = doc.data();
+                    this.consultslots.push(item);
+                });
+            });
+        },
+
+        checkpending: function(clinicName, slots) {
+            let consultslotsarray = slots;
+            let result = consultslotsarray.map(x => x.clinic).filter(x => x.localeCompare(clinicName) == 0)
+            if (result.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
     },
     created() {
         this.fetchItems();
         this.checkAbleToBook()
+        this.getConsults()
     }
     
 }

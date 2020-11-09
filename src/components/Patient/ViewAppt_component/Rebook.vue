@@ -146,17 +146,28 @@ export default {
                     item = doc.id;
                     let itema = doc.data()
                     console.log(itema.upcoming[1])
+                    let newmap = itema.appointment_history
+                    var index = newmap[this.clinic].indexOf(itema.upcoming[1])
+                    if (index != -1) {
+                      newmap[this.clinic].splice(index, 1, day + ' ' + monthNames[monthIndex] + ' ' + year)
+                    }
+                    database.collection("patients").doc(item).update({
+                      appointment_history: newmap
+                    })
+                    /*
                     database.collection("patients").doc(item).update({
                       appointment_history: firebase.firestore.FieldValue.arrayRemove(itema.upcoming[1])
                     })
                     database.collection("patients").doc(item).update({
                       appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
                     })
+                    */
                     database.collection("patients").doc(item).update({
                             upcoming: {
                                 0: "online",
                                 1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                                2: this.formatTime(this.datadoc.date)
+                                2: this.formatTime(this.datadoc.date),
+                                3: itema.upcoming[3]
                             }
                         })
                     console.log("online appt has been changed")

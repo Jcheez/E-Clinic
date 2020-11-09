@@ -2,11 +2,12 @@
   <div>
     <h1>{{ msg }}</h1>
     <hr />
+    <p v-if="itemsList.length == 0">There are no pending bookings by patients.</p>
     <ul>
       <template v-for="(patient, x) in itemsList">
         <li v-bind:key="x">
           <div id="inner">
-            <span>{{ "Patient: " + name }}</span>
+            <span>{{ "Patient ID: " + patient.patientId }}</span>
             <span v-if="patient.firstTime">Reason: First Time Patient</span>
             <span v-if="patient.physical">Reason: Physical Examination Required</span>
           </div>
@@ -23,6 +24,7 @@
         </li>
       </template>
     </ul>
+    <button id="home" v-on:click="routeHome()">Home</button>
   </div>
 </template>
 
@@ -39,27 +41,42 @@ export default {
       msg: "Pending Booking",
       itemsList: [],
       name: "",
+      clinicId: localStorage.getItem("uidClinic"),
+      clinicName: "",
     };
   },
   components: {},
   methods: {
+    routeHome: function() {
+      this.$router.push('/clinichome')
+    },
     fetchItems: function () {
-      database.collection("pendingbooking").onSnapshot((res) => {
-        const changes = res.docChanges();
+      console.log(this.itemsList)
+      database.collection("clinics").doc(this.clinicId).get().then((querySnapShot) => {
+        let item = querySnapShot.data();
+        this.clinicName = item.name;
+        console.log(this.clinicName)
+      
+        database.collection("pendingbooking").onSnapshot((res) => {
+          const changes = res.docChanges();
 
-        changes.forEach((change) => {
-          if (change.type === "added") {
-            this.itemsList.push(change.doc.data());
-          } else if (change.type === "modified") {
-            this.itemsList = this.itemsList.filter(
-              (item) => item.name.localeCompare(change.doc.data().name) !== 0
-            );
-            this.itemsList.push(change.doc.data());
-          } else if (change.type === "removed") {
-            this.itemsList = this.itemsList.filter(
-              (item) => item.name.localeCompare(change.doc.data().name) !== 0
-            );
-          }
+          changes.forEach((change) => {
+            //console.log(change.doc.data())
+            if (change.doc.data().clinic == this.clinicName) {
+              if (change.type === "added") {
+                this.itemsList.push(change.doc.data());
+              } else if (change.type === "modified") {
+                this.itemsList = this.itemsList.filter(
+                  (item) => item.patientId.localeCompare(change.doc.data().patientId) !== 0
+                );
+                this.itemsList.push(change.doc.data());
+              } else if (change.type === "removed") {
+                this.itemsList = this.itemsList.filter(
+                  (item) => item.patientId.localeCompare(change.doc.data().patientId) !== 0
+                );
+              }
+            }
+          });
         });
       });
 
@@ -67,9 +84,9 @@ export default {
         let item = {};
         querySnapShot.forEach((doc) => {
           item = doc.data().patientId;
-          console.log(item)
+          //console.log(item)
           database.collection("patients").doc(item).get().then((doc2) => {
-            console.log(doc2.data())
+            //console.log(doc2.data())
             let itema = doc2.data();
             this.name = itema.name;
           })

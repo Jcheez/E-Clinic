@@ -54,14 +54,16 @@ const actions = {
             })
             return firebase.firestore().collection('patients').doc(data.user.uid).set({
                 name: payload.name,
+                appointment_history: {},
                 phoneNumber: payload.phoneNumber,
                 dob: payload.birthday,
-                appointment_history: [],
                 verifiedclinics: [],
                 notes: {},
                 upcoming: {},
                 outstandingAmount: {},
-                amountPaid: {}
+                amountPaid: {},
+                oldNotifications: [],
+                newNotifications: [],
             })
         })
         .catch(error => {

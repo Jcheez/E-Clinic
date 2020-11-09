@@ -48,6 +48,7 @@ export default {
       itemsList: [],
       nameQuery: "",
       data: [],
+      clinic: localStorage.getItem("clinicName")
     };
   },
   computed: {
@@ -78,8 +79,11 @@ export default {
           let item = {};
           querySnapShot.forEach((doc) => {
             item = doc.data();
-            this.itemsList.push(item);
-            this.data.push(item);
+            if (item.appointment_history[this.clinic] != undefined) {
+              this.itemsList.push(item);
+              this.data.push(item);
+            }
+            
           });
         });
     },
@@ -236,5 +240,12 @@ button#searchbox {
 li a {
   color: white;
   text-decoration: none;
+}
+
+p#display {
+  font-size: 30px;
+  position:absolute;
+  top:500px;
+  left: 200px;
 }
 </style>
