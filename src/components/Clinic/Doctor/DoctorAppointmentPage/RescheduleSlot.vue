@@ -174,11 +174,60 @@ export default {
             });
           });
 
+          /*
+           * adding part to notify patient
+           * update patient upcoming field
+           * update patient appointment history
+          */
+          var e = new Date(newTimestamp.seconds * 1000)
+          var f = e.toLocaleString("en-SG", {day: "numeric"}) + " " + 
+                  e.toLocaleString("en-SG", {month: "long"}) + " " +
+                  e.toLocaleString("en-SG", {year: "numeric"}) 
+          var g = e.toLocaleString().substring(12) 
+          var h = this.formatTime(g)
+          console.log(h)
+          database.collection("patients").doc(d.patient).get().then((doc) => {
+            let item = doc.data()
+            let newMessages = item.newNotifications
+            newMessages.splice(0, 0, this.formatDate(new Date()) + ": Your consultation at " + d.clinic + " has been rescheduled, check it out in view appointments.")
+
+            let newmap = item.appointment_history
+            var index = newmap[d.clinic].indexOf(item.upcoming[1])
+            console.log(index)
+            if (index != -1) {
+              newmap[d.clinic].splice(index, 1, f)
+            }
+
+            database.collection("patients").doc(d.patient).update({
+              newNotifications: newMessages,
+              appointment_history: newmap,
+              upcoming: {
+                0: "online",
+                1: f,
+                2: h,
+                3: d.clinic
+              }
+            })
+          })
+
           alert("Successfully rescheduled slot!");
         } else {
           alert("Slot you are trying to reschedule to is not available!");
         }
       });
+    },
+
+    formatDate: function(date) {
+      let ldate = date.toLocaleDateString().split("/")
+      let i0 = ldate[0]
+      ldate[0] = ldate[1]
+      ldate[1] = i0
+      return ldate.join("/")
+    },
+    formatTime: function(time) {
+      let ltime =  time.replace(" ", ":").split(":")
+      ltime.splice(2,1)
+      return ltime[0] + ":" + ltime[1] + " " + ltime[2]
     },
   },
   // watch: {

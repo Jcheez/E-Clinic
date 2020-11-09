@@ -1,33 +1,48 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
-    <hr />
-    <ul>
-      <template v-for="(patient, x) in itemsList">
-        <li v-bind:key="x">
-          <div id="inner">
-            <span>{{ "Patient: " + name }}</span>
-            <span v-if="patient.firstTime">Reason: First Time Patient</span>
-            <span v-if="patient.physical">Reason: Physical Examination Required</span>
-          </div>
-          <button id="outofplace" v-if="patient.physical && patient.firstTime">
-            <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-            See Details
-            </router-link>
-          </button>
-          <button v-else-if="patient.physical || patient.firstTime">
-            <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-            See Details
-            </router-link>
-          </button>
-        </li>
-      </template>
-    </ul>
+    <div id="sideNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/clinichome">Dashboard</router-link><br />
+      <router-link to="/doctorslist">Doctors</router-link><br />
+      <router-link to="/patientsnotes">Patient Notes</router-link><br />
+      <router-link to="/pendingbooking">Pending</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+    <h4>{{ msg }}</h4>
+    <div id="emptyDiv" v-if="itemsList.length == 0">
+      There are no pending bookings by patients.
+    </div>
+    <div id = "main">
+      <ul>
+        <template v-for="(patient, x) in itemsList">
+          <li v-bind:key="x">
+            <div id="inner">
+              <span>{{ "Patient: " + patient.patientId }}</span>
+              <span v-if="patient.firstTime">Reason: <br>First Time Patient</span>
+              <span v-if="patient.physical">Reason: <br>Physical Examination Required</span>
+            </div>
+            <button class = "button" v-if="patient.physical && patient.firstTime">
+              <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
+              See Details
+              </router-link>
+            </button>
+            <button class = "button" v-else-if="patient.physical || patient.firstTime">
+              <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
+              See Details
+              </router-link>
+            </button>
+          </li>
+        </template>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import database from "../../../firebase.js";
+import { mapGetters, mapActions } from "vuex";
+
 //import * as firebase from "firebase";
 
 export default {
@@ -41,35 +56,48 @@ export default {
       name: "",
     };
   },
+  computed: {
+    ...mapGetters(["getUser"]),
+  },
   components: {},
   methods: {
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/cliniclogin");
+    },
     fetchItems: function () {
+      console.log(this.itemsList)
+      let x = this.getUser.displayName;
       database.collection("pendingbooking").onSnapshot((res) => {
-        const changes = res.docChanges();
+          const changes = res.docChanges();
 
-        changes.forEach((change) => {
-          if (change.type === "added") {
-            this.itemsList.push(change.doc.data());
-          } else if (change.type === "modified") {
-            this.itemsList = this.itemsList.filter(
-              (item) => item.name.localeCompare(change.doc.data().name) !== 0
-            );
-            this.itemsList.push(change.doc.data());
-          } else if (change.type === "removed") {
-            this.itemsList = this.itemsList.filter(
-              (item) => item.name.localeCompare(change.doc.data().name) !== 0
-            );
-          }
+          changes.forEach((change) => {
+            //console.log(change.doc.data())
+            if (change.doc.data().clinic == x) {
+              if (change.type === "added") {
+                this.itemsList.push(change.doc.data());
+              } else if (change.type === "modified") {
+                this.itemsList = this.itemsList.filter(
+                  (item) => item.patientId.localeCompare(change.doc.data().patientId) !== 0
+                );
+                this.itemsList.push(change.doc.data());
+              } else if (change.type === "removed") {
+                this.itemsList = this.itemsList.filter(
+                  (item) => item.patientId.localeCompare(change.doc.data().patientId) !== 0
+                );
+              }
+            }
+          });
         });
-      });
 
       database.collection("pendingbooking").get().then((querySnapShot) => {
         let item = {};
         querySnapShot.forEach((doc) => {
           item = doc.data().patientId;
-          console.log(item)
+          //console.log(item)
           database.collection("patients").doc(item).get().then((doc2) => {
-            console.log(doc2.data())
+            //console.log(doc2.data())
             let itema = doc2.data();
             this.name = itema.name;
           })
@@ -84,70 +112,128 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  position: absolute;
-  width: 372px;
-  height: 57px;
-  left: 86px;
-  top: 220px;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 42px;
-  line-height: 57px;
-
-  color: #000000;
-}
-
-hr {
-  position: absolute;
-  width: 1459px;
-  height: 40px;
-  left: 520px;
-  top: 250px;
-  background-color: #1677cf;
-}
-li {
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+#container {
   position: relative;
-  width: 562px;
-  height: 100px;
-  left: 73px;
-  top: 350px;
-
-  border: 1px solid #000000;
-  box-sizing: border-box;
-
-  list-style-type: none; /* Remove bullets */
-  padding-left: 10px;
-  padding-top: 20px;
-  display: block;
 }
-div#inner {
-  width: 70%;
+
+#main {
+  position: absolute;
+  top: 100px;
+}
+
+h4 {
+  position: absolute;
+  left: 250px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+}
+
+#sideNavBar a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin: 60px 0 0 0;
+  text-decoration: none;
+  font-weight: bold;
   display: inline-block;
 }
-span {
-  display: block;
-  text-align: left;
-}
-button {
-  width: 125px;
-  height: 30px;
-  background: rgba(169, 47, 47, 0.4);
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 15px;
+
+#sideNavBar a:hover {
+  font-size: 17px;
+  color: white;
+  cursor: pointer;
 }
 
-a {
-  color: black;
+#sideNavBar {
+  width: 180px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+}
+
+div #inner {
+  width: 50%;
+  display: inline-block;
+}
+
+#sideNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  padding: 10px 0px 20px 0px;
+}
+
+ul {
+  float: left;
+  margin-left: 200px;
+  margin-top: 50px;
+}
+
+li {
+  width: 400px;
+  height: 150px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+  box-sizing: border-box;
+  list-style-type: none; /* Remove bullets */
+  padding: 10px 0 0 0;
+  display: block;
+}
+
+span {
+  font-family: Nunito;
+  position: relative;
+  top: 14px;
+  display: block;
+  text-align: left;
+  font-size: 18px;
+}
+
+li a {
+  color: white;
   text-decoration: none;
 }
 
-button#outofplace {
-  position: relative;
-  bottom: 16px;
+div#emptyDiv{
+    position:absolute;
+    top:150px;
+    left: 250px;
+    height: 40px;
+    width: 400px;
+    font-size: 18px;
+    font-family: Nunito;
+    white-space: nowrap;
+    padding: 20px 10px 0px 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
 }
 
+.button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  background-color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  font-family: Nunito;
+  font-weight: bold;
+  color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+}
 
+.button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
 </style>

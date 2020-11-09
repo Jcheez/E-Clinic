@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <p class="up">Upload a pdf to Firebase:</p>
+      <p class="up">Upload a file:</p>
       <input type="file" @change="previewFile" accept="application/pdf" class="up"/>
     </div>
     <div>
@@ -29,6 +29,8 @@ export default {
       pdf: null,
       uploadValue: 0,
       doc: {},
+      clinic: localStorage.getItem("clinicName"),
+      newMessages: [],
     };
   },
 
@@ -46,6 +48,14 @@ export default {
       this.fileData = event.target.files[0];      
     },
 
+    formatDate: function(date) {
+          let ldate = date.toLocaleDateString().split("/")
+          let i0 = ldate[0]
+          ldate[0] = ldate[1]
+          ldate[1] = i0
+          return ldate.join("/")
+        },
+
     fetchItems: function () {
         database
         .collection("patients")
@@ -54,6 +64,7 @@ export default {
         .then((querySnapShot) => {
           querySnapShot.forEach((doc) => {
             this.doc = doc.data().notes;
+            this.newMessages = doc.data().newNotifications
             console.log("Fetched")
           }); 
         });
@@ -82,20 +93,31 @@ export default {
 
             console.log(this.doc)
             
-            if (this.doc[this.date] == undefined) {
+            if (this.doc[this.clinic] == undefined) {
               console.log(1)
-              this.doc[this.date] = {}
-              this.doc[this.date][this.type] = url
+              this.doc[this.clinic] = {}
+              this.doc[this.clinic][this.date] = {}
+              this.doc[this.clinic][this.date][this.type] = url
+            } else if (this.doc[this.clinic][this.date] == undefined) {
+              this.doc[this.clinic][this.date] = {}
+              this.doc[this.clinic][this.date][this.type] = url
             } else {
-              this.doc[this.date][this.type] = url
+              this.doc[this.clinic][this.date][this.type] = url
             }
+            
+            let today = this.formatDate(new Date())
+            this.newMessages.splice(0, 0, today + ": " + this.type + " has been updated")
 
             database
             .collection('patients')
             .doc(this.doc_id)
-            .update({notes: this.doc})
+            .update({
+              notes: this.doc,
+              newNotifications: this.newMessages
+              })
             .then(() => {
-            console.log('user updated!')
+            alert(this.type + " has been uploaded successfully")
+            location.reload()
             
             })
           });
@@ -112,11 +134,31 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
 img.preview {
     width: 200px;
 }
 .up {
-  font-size: 20px;
+  font-size: 16px;
+  font-family: Nunito;
   text-align: left;
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  position: absolute;
+  top: 95px;
+  right: -20px;
+  font-family: Nunito;
+  background-color:  rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
+  color: white;
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 </style>

@@ -9,7 +9,7 @@
             v-if="validationErrors.length"
             class="notification is-danger is-light"
           >
-            <div class="content">
+            <div class="content" style="margin-bottom: -40px">
               Please resolve the following error(s) before proceeding.
               <ul style = "list-style-type: none">
                 <li
@@ -104,11 +104,6 @@ export default {
       if (!this.password) {
         this.validationErrors.push("<strong>Password</strong> cannot be empty");
       }
-      if (/.{6,}/.test(this.password) != true) {
-        this.validationErrors.push(
-          "<strong>Password</strong> must be at least 6 characters long"
-        );
-      }
       // when valid then sign in
       if (this.validationErrors.length <= 0) {
         this.signIn();
@@ -135,7 +130,16 @@ export default {
   margin: auto;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
-  margin-top: -360px;
+  margin-bottom: 50px;
+  margin-top: 40px;
+}
+
+.card-content {
+  width: 380px;
+  height: 300px;
+  margin: auto;
+  border-radius: 20px;
+  margin-top: -400px;
   margin-left: 775px;
 }
 

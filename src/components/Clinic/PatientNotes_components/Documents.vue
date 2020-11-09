@@ -1,22 +1,75 @@
 <template>
-    <div>
-        <h1>{{ msg }}</h1>
-        <hr />
+    <div id="container">
+        <div id="sideNavBar">
+            <h3>E-Clinic</h3>
+            <router-link to="/clinichome">Dashboard</router-link><br />
+            <router-link to="/doctorslist">Doctors</router-link><br />
+            <router-link to="/patientsnotes">Patient Notes</router-link><br />
+            <router-link to="/pendingbooking">Pending</router-link><br />
+            <router-link to="/clinicsettings">Settings</router-link><br />
+            <a @click="signOut" class="button is-primary">Logout</a>
+        </div>
+        <h4>Upload Documents</h4>
         <p id="name">Patient: {{pName}}</p>
         <p id="date">Appointment Date: {{appDate}}</p>
-        <h2 id="mc1">Medical Certificate</h2>
-        <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
-        <div v-else id="uploadermc1">
-            <a id="links" v-bind:href="this.doc[this.appDate][mc]" target="_blank">View</a>
-            <a id="removers" v-on:click="remove(mc)">Remove</a>
+        <div id="mc">
+            <h2>Medical Certificate</h2>
+            <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+            <div v-else id="uploadermc1">
+                <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][mc]" target="_blank">View</a>
+                <a id="removers" v-on:click="remove(mc)">Remove</a>
+            </div>
         </div>
-        <h2 id="mc2">Invoice</h2>
+        <div id="invoice">
+            <h2>Invoice</h2>
+                <div v-if="this.outstandingMap[this.appDate] == undefined">
+                <label id="outpayment" for="paybox">Amount Paid:</label>
+                <input type="text" id="paybox" name="paybox" >
+                <input type="submit" id="submitpay" v-on:click="paybutton()">
+            </div>
+            <div v-else-if="this.outstandingMap[this.appDate][1].localeCompare(this.clinic) == 0" id=paybox>
+                <label>Amount Outstanding:</label>
+                <span>${{this.outstandingMap[this.appDate][0].toFixed(2)}}</span>
+            </div>
+            <label id="inpayment" for="receivebox">Enter Amount Received From Patient:</label>
+            <input type="text" id="receivebox" name="receivebox">
+            <input type="submit" id="submitreceive" v-on:click="receivebutton()">
+            <div id="receivetext" v-if="this.amountPaidMap[this.appDate] == undefined">
+                Patient has not paid.
+            </div>
+            <div id="receivetext" v-else-if="this.amountPaidMap[this.appDate][1].localeCompare(this.clinic) == 0">
+                Patient has paid ${{this.amountPaidMap[this.appDate][0].toFixed(2)}}.
+            </div>
+            <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+            <div v-else id="uploadermc2">
+                <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][i]" target="_blank">View</a>
+                <a id="removers" v-on:click="remove(i)">Remove</a>
+            </div>
+        </div>
+        <div id="prescription">
+            <h2>Prescription</h2>
+            <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+            <div v-else id="uploadermc3">
+                <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][p]" target="_blank">View</a>
+                <a id="removers" v-on:click="remove(p)">Remove</a>
+            </div>
+            <button id="home" v-on:click="routeHome()">Back to Dates</button> 
+        </div>
+
+        <!-- #####JJ's -->
+        <!-- <h2 id="mc1">Medical Certificate</h2>
+        <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.mc] == this.u" id="uploadermc1" type="Medical Certificate" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <div v-else id="uploadermc1">
+            <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][mc]" target="_blank">View</a>
+            <a id="removers" v-on:click="remove(mc)">Remove</a>
+        </div> -->
+        <!-- <h2 id="mc2">Invoice</h2>
         <label id="outpayment" for="paybox">Amount Paid:</label>
         <div v-if="this.outstandingMap[this.appDate] == undefined">
             <input type="text" id="paybox" name="paybox" >
             <input type="submit" id="submitpay" v-on:click="paybutton()">
         </div>
-        <div v-else id=paybox>
+        <div v-else-if="this.outstandingMap[this.appDate][1].localeCompare(this.clinic) == 0" id=paybox>
             The Patient has been asked to pay ${{this.outstandingMap[this.appDate][0].toFixed(2)}}
         </div>
         <label id="inpayment" for="receivebox">Amount received:</label>
@@ -24,26 +77,27 @@
         <input type="submit" id="submitreceive" v-on:click="receivebutton()">
         <div id="receivetext" v-if="this.amountPaidMap[this.appDate] == undefined">
             Patient has paid $0
-        </div>
-        <div id="receivetext" v-else>
+        </div> -->
+        <!-- <div id="receivetext" v-else-if="this.amountPaidMap[this.appDate][1].localeCompare(this.clinic) == 0">
             Patient has paid ${{this.amountPaidMap[this.appDate][0].toFixed(2)}}
-        </div>
-        <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        </div> -->
+        <!-- <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.i] == this.u" id="uploadermc2" type="Invoice" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
         <div v-else id="uploadermc2">
-            <a id="links" v-bind:href="this.doc[this.appDate][i]" target="_blank">View</a>
+            <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][i]" target="_blank">View</a>
             <a id="removers" v-on:click="remove(i)">Remove</a>
-        </div>
-        <h2 id="mc3">Prescription</h2>
-        <uploader v-if=" doc[this.appDate] == this.u || doc[this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
-        <div v-else id="uploadermc3">
-            <a id="links" v-bind:href="this.doc[this.appDate][p]" target="_blank">View</a>
+        </div> -->
+        <!-- <h2 id="mc3">Prescription</h2>
+        <uploader v-if=" doc[this.clinic] == this.u || doc[this.clinic][this.appDate] == this.u || doc[this.clinic][this.appDate][this.p] == this.u" id="uploadermc3" type="Prescription" v-bind:name="pName" v-bind:doc_id="docid[0]" v-bind:date="appDate"></uploader>
+        <div v-else id="uploadermc3"> -->
+            <!-- <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][p]" target="_blank">View</a>
             <a id="removers" v-on:click="remove(p)">Remove</a>
         </div>
-        <button id="home" v-on:click="routeHome()">Back to Patients</button> 
+        <button id="home" v-on:click="routeHome()">Back to Patients</button>  -->
     </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import uploader from "./uploadDocs.vue";
 import database from "../../../firebase.js";
 
@@ -59,9 +113,10 @@ export default {
             i: "Invoice",
             p: "Prescription",
             u: undefined,
-            clinic: "",
             outstandingMap: {},
-            amountPaidMap: {}
+            amountPaidMap: {},
+            clinic: localStorage.getItem("clinicName"),
+            newMessages: []
         }
     },
 
@@ -69,8 +124,15 @@ export default {
       patientName: String,
       appointmentDate: String
     },
-
+    computed: {
+    ...mapGetters(["getUser"]),
+    },
     methods: {
+        ...mapActions(["signOutAction"]),
+        signOut() {
+        this.signOutAction();
+        this.$router.push("/cliniclogin");
+    },        
         fetchItems: function () {
         database
         .collection("patients")
@@ -82,6 +144,7 @@ export default {
             this.doc = doc.data().notes;
             this.outstandingMap = doc.data().outstandingAmount;
             this.amountPaidMap = doc.data().amountPaid;
+            this.newMessages = doc.data().newNotifications;
             console.log(this.doc)
           });
         });
@@ -89,14 +152,23 @@ export default {
 
         remove: function (field) {
 
-            delete this.doc[this.appDate][field]
+            let today = this.formatDate(new Date())
+            this.newMessages.splice(0, 0, today + ": " + field + " has been removed")
+            console.log(this.newMessages)
+
+
+            delete this.doc[this.clinic][this.appDate][field]
             database
             .collection('patients')
             .doc(this.docid[0])
-            .update({notes: this.doc})
+            .update({
+                notes: this.doc,
+                newNotifications: this.newMessages
+                })
             .then(() => {
             console.log('user updated!')
             alert("Medical Certificate" + " deleted")
+            location.reload()
             
             })
             
@@ -149,23 +221,20 @@ export default {
                 this.$forceUpdate()
         },
 
-        getClinicName: function() {
-            database
-            .collection('clinics')
-            .doc(localStorage.getItem("uidClinic"))
-            .get()
-            .then((doc) => {
-                this.clinic = doc.data().name
-            });
+        routeHome: function() {
+            this.$router.push('/patientsnotes/appointments')
         },
 
-        routeHome: function() {
-            this.$router.push('/patientsnotes')
+        formatDate: function(date) {
+          let ldate = date.toLocaleDateString().split("/")
+          let i0 = ldate[0]
+          ldate[0] = ldate[1]
+          ldate[1] = i0
+          return ldate.join("/")
         },
     },
 
     created() {
-        this.getClinicName()
 
         if (this.pName == null || this.appDate == null) {
             this.pName = localStorage.getItem('pn3name');
@@ -192,183 +261,260 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  position: absolute;
-  width: 372px;
-  height: 57px;
-  left: 86px;
-  top: 220px;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 42px;
-  line-height: 57px;
-  color: #000000;
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+#container {
+  position: relative;
 }
-hr {
+#main {
   position: absolute;
-  width: 1459px;
-  height: 40px;
-  left: 520px;
-  top: 250px;
-  background-color: #1677cf;
+  top: 100px;
 }
 
-p#name {
-    position: absolute;
-    top: 310px;
-    left: 140px;
-    font-size:30px;
-    color:brown
+h4 {
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  margin-bottom: -30px;
+  font-size: 32px;
+  position: absolute;
+  left: 250px;
+  top: -40px;
+}
+
+#sideNavBar a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin: 60px 0 0 0;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}
+
+#sideNavBar a:hover {
+  font-size: 17px;
+  color: white;
+  cursor: pointer;
+}
+
+#sideNavBar {
+  width: 180px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+}
+
+#sideNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  padding: 10px 0px 20px 0px;
+}
+
+p#name, #date {
+  position: absolute;
+  left: 360px;
+  top: 56px;
+  font-family: Nunito;
+  margin: 40px -30px 0px -100px;
+  font-size:22px;
+  color: rgb(0, 114, 180);
 }
 
 p#date {
-    position: absolute;
-    top: 410px;
-    left: 140px;
-    font-size:30px;
-    color:brown
+    top: 86px;
 }
 
-h2#mc1 {
+#mc h2 {
     position: absolute;
-    top: 550px;
-    left: 140px;
-    font-size:30px;
+    top: 170px;
+    left: 250px;
+    font-size:20px;
+    font-family: Nunito;
     text-decoration: underline;
 }
 
 #uploadermc1 {
     position: absolute;
-    top: 610px;
-    left: 140px;
+    top: 210px;
+    left: 250px;
+    font-family: Nunito;
 }
 
-h2#mc2 {
+#invoice h2 {
     position: absolute;
-    top: 780px;
-    left: 140px;
-    font-size:30px;
+    top: 330px;
+    left: 250px;
+    font-size:20px;
+    font-family: Nunito;
     text-decoration: underline;
 }
 
 #uploadermc2 {
+    font-family: Nunito;
     position: absolute;
-    top: 840px;
-    left: 140px;
+    top: 370px;
+    left: 250px;
 }
 
-h2#mc3 {
+#prescription h2 {
     position: absolute;
-    top: 1010px;
-    left: 140px;
-    font-size:30px;
+    top: 490px;
+    left: 250px;
+    font-size: 20px;
+    font-family: Nunito;
     text-decoration: underline;
 }
 
 #uploadermc3 {
+    font-family: Nunito;
     position: absolute;
-    top: 1070px;
-    left: 140px;
+    top: 530px;
+    left: 250px;
 }
 
 a#links {
-    font-size: 25px;
+    font-size: 20px;
     position: relative;
     top: 20px;
-    color:blue
+    color:rgb(0, 114, 180)
 }
 
 a#removers {
-    font-size: 25px;
+    font-size: 20px;
     position: relative;
     top:20px;
     left: 10px;
     text-decoration: underline;
-    color: blue;
+    color: rgb(0, 114, 180);
     cursor: pointer;
 }
 
 label#outpayment {
     position:absolute;
-    top:400px;
-    left: 1200px;
-    font-size: 20px;
+    top:100px;
+    right: 240px;
+    font-size: 18px;
+    font-family: Nunito;
 }
 
 label#inpayment {
     position:absolute;
-    top:500px;
-    left: 1200px;
-    font-size: 20px;
+    top:140px;
+    right: 240px;
+    font-size: 18px;
+    font-family: Nunito;
 }
 
 input#paybox {
     position:absolute;
-    top:395px;
-    left: 1360px;
+    top: 98px;
+    right: 128px;
     height: 24px;
-    width:150px;
-    font-size: 20px;
+    width:100px;
+    font-size: 16px;
+    font-family: Nunito;
 }
 
 input#receivebox {
     position:absolute;
-    top:495px;
-    left: 1360px;
+    top:138px;
+    right: 128px;
     height: 24px;
-    width:150px;
-    font-size: 20px;
+    width: 100px;
+    font-size: 16px;
+    font-family: Nunito;
 }
 
 input#submitpay {
     position:absolute;
-    top:395px;
-    left: 1550px;
-    font-size: 20px;
+    top:100px;
+    right: 40px;
+    font-size: 18px;
+    font-family: Nunito;
 }
 
 input#submitreceive {
     position:absolute;
-    top:495px;
-    left: 1550px;
-    font-size: 20px;
+    top: 138px;
+    right: 40px;
+    font-size: 18px;
+    font-family: Nunito;
 }
 
-div#paybox {
+div#paybox span {
     position:absolute;
-    top:400px;
-    left: 1360px;
-    height: 24px;
-    width:150px;
-    font-size: 20px;
+    top: 101px;
+    right: 134px;
+    font-size: 18px;
+    font-family: Nunito;
+    font-size: 18px;
+    font-family: Nunito;
     white-space: nowrap;
+}
+
+div#paybox label {
+    position: absolute;
+    top:100px;
+    right: 240px;
+    font-size: 18px;
+    font-family: Nunito;
 }
 
 div#receivetext{
     position:absolute;
-    top:535px;
-    left: 1360px;
-    height: 24px;
-    width:150px;
-    font-size: 20px;
+    top:200px;
+    right: 40px;
+    height: 40px;
+    width: 320px;
+    font-size: 18px;
+    font-family: Nunito;
+    font-weight: bold;
     white-space: nowrap;
+    padding: 20px 10px 0px 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
 }
 
 button#home {
   transition: box-shadow 0.3s;
   transition: 0.3s;
-  color: rgb(0, 114, 180);
+  color: white;
   letter-spacing: 2px;
-  width: 125px;
-  height: 45px;
-  background-color: white;
+  width: 94px;
+  height: 46px;
+  background-color:  rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
-  z-index: -1;
   position: absolute;
-  top:600px;
-  left:1380px;
-  cursor: pointer;
+  top: 300px;
+  right: 40px;
+  font-size: 14px;
+  font-family: Nunito;
+}
+
+button#home:hover {
+    cursor: pointer;
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
+
+input[type=submit] {
+    font-family: Nunito;
+    background-color:rgb(0, 114, 180);
+    color: white;
+    border-color: rgb(0, 114, 180);
+}
+
+input[type=submit]:hover {
+    cursor: pointer;
 }
 </style>

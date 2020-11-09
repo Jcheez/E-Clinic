@@ -118,6 +118,20 @@ export default {
         });
       return this.countPhysical;
     },
+
+    getClinicName: function () {
+      database
+        .collection("clinics")
+        .doc(localStorage.getItem("uidClinic"))
+        .get()
+        .then((doc) => {
+          localStorage.setItem("clinicName", doc.data().name);
+        });
+    },
+  },
+
+  created() {
+    this.getClinicName();
   },
 };
 </script>
@@ -140,6 +154,7 @@ a {
   transition: 0.3s;
   font-family: Nunito;
   font-size: 17px;
+  letter-spacing: 2px;
   display: inline-block;
   margin: 50px 0 0 0;
   text-decoration: none;
@@ -276,7 +291,7 @@ a:hover {
   letter-spacing: 2px;
 }
 
-h3 {
+#sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;

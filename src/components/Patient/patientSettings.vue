@@ -1,13 +1,13 @@
 <template>
   <div class="settings">
-    <h1>Clinic Settings</h1>
+    <h1>Patient Settings</h1>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
-      <router-link to="/clinichome">Dashboard</router-link><br />
-      <router-link to="/doctorslist">Doctors</router-link><br />
-      <router-link to="/patientsnotes">Patient Notes</router-link><br />
-      <router-link to="/pendingbooking">Pending</router-link><br />
-      <router-link to="/clinicsettings">Settings</router-link><br />
+      <router-link to="/makebooking">Make Booking</router-link><br />
+      <router-link to="/pending">Pending Booking</router-link><br />
+      <router-link to="/viewdocuments">View Documents</router-link><br />
+      <router-link to="/viewappt">View Appointment</router-link><br />
+      <router-link to="/managepayments">Manage Payments</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="instructions">
@@ -15,8 +15,7 @@
 
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
-      <label>Update Interbank Account:</label>
-      <label>Update Qr Code: </label>
+      <label>Update Phone number:</label>
     </div>
     <div id="inputFields">
       <input
@@ -25,26 +24,26 @@
         id="changeEmail"
         v-model="newEmail"
       /><input
-        type="password"
+        type="text"
         placeholder="Enter New Password"
         id="changePW"
         v-model="newPassword"
       /><input
-        type="password"
+        type="text"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
         v-model="repeatPassword"
       /><input
         type="text"
-        placeholder="Enter New Interbank Account"
-        id="interbank"
-        v-model="interbank"
-      /><uploadQr></uploadQr>
+        placeholder="Enter New Phone Number"
+        id="phonenum"
+        v-model="phonenum"
+      />
     </div>
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
     ><button id="submitPW" v-on:click="changePassword">Update Password</button>
-    <button id="submitInterBank" v-on:click="changeInterBank">Update Interbank</button>
+    <button id="submitPhoneNum" v-on:click="changePhoneNum">Update Phone Number</button>
     <!--/div-->
   </div>
 </template>
@@ -52,7 +51,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import database from "../../firebase.js"
-import uploadQr from "./uploadQr.vue"
 
 export default {
   data() {
@@ -60,7 +58,7 @@ export default {
       newEmail: "",
       newPassword: "",
       repeatPassword: "",
-      interbank: "",
+      phonenum: "",
       validationErrors: [],
     };
   },
@@ -118,19 +116,22 @@ export default {
       }
     },
 
-    changeInterBank() {
-      database
-      .collection("clinics")
-      .doc(localStorage.getItem("uidClinic"))
-      .update({
-        interBank: this.interbank
-      })
+    changePhoneNum() {
+      if (this.phonenum.length != 8) {
+        alert("Phone number requires 8 digits.")
+      } else {
+        database
+        .collection("patients")
+        .doc(localStorage.getItem("uidPatient"))
+        .update({
+          phoneNumber: this.phonenum
+        }).then(() => {
+          alert("Phone Number updated")
+        })
+      }
+      
     },
   },
-
-  components: {
-    uploadQr:uploadQr
-  }
 };
 </script>
 
@@ -140,9 +141,9 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: 2px;
-  margin: 50px 0 0 0;
+  margin: 60px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -172,9 +173,6 @@ label {
   padding: 10px 0px 20px 0px;
   float: left;
   margin-bottom: 30px;
-  position: relative;
-  display: block;
-  width: 200px;
 }
 h3 {
   font-family: Nunito;
@@ -182,7 +180,7 @@ h3 {
   letter-spacing: 4px;
   color: white;
   font-weight: bolder;
-  padding: 10px 0px 0px 0px;
+  padding: 10px 0px 20px 0px;
 }
 input {
   width: 300px;
@@ -190,29 +188,26 @@ input {
   display: block;
   margin: 10px;
   margin-bottom: 50px;
-  position: relative;
 }
 #inputFields {
   width: 350px;
-  display: block;
+  display: inline-block;
   margin-top: 100px;
-  /*bottom: 300px;*/
-  position: absolute;
-  left: 500px;
+  position: relative;
+  left: -200px;
 }
 #instructions {
   width: 300px;
   margin: 10px;
-  left: 300px;
+  margin-left: 400px;
   margin-top: 100px;
   display: inline-block;
   height: 300px;
   float: left;
-  position: absolute;
 }
 #submitEmail {
   transition: 0.3s;
-  position: absolute; /*need change to relative?? */
+  position: absolute;
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
   padding: 10px;
@@ -228,7 +223,7 @@ input {
   width: 150px;
   text-align: center;
   margin-left: 20px;
-  left: 850px;
+  left: 950px;
   margin-bottom: 70px;
   height: 50px;
   top: 180px;
@@ -252,11 +247,11 @@ input {
   text-align: center;
   margin-left: 20px;
   height: 60px;
-  left: 850px;
+  left: 950px;
   top: 330px;
 }
 
-#submitInterBank {
+#submitPhoneNum {
   transition: 0.3s;
   position: absolute;
   background-color: rgb(0, 114, 180);

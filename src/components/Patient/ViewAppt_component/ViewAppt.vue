@@ -5,7 +5,7 @@
       <div v-if="this.physicalList.length > 0" id="physical">
         <span>{{ "Date: " + this.physicalList[0][1] + " " + this.physicalList[0][2] }}</span>
         <span>Consult Type: Physical</span>
-        <span>Add clinic name when it is props into pendingbooking >> patientupcoming</span>
+        <span>{{ "Clinic: " + this.physicalList[0][3]}}</span>
       </div>
       <div v-if="this.itemsList.length > 0" id="online">
         <span>{{ "Clinic: " + this.itemsList[0].clinic }}</span>
@@ -80,8 +80,13 @@ export default {
                 item = querySnapShot.id;
                 let itema = querySnapShot.data()
                 console.log(itema.upcoming[1])
+                let newmap = itema.appointment_history
+                var index = newmap[this.itemsList[0].clinic].indexOf(itema.upcoming[1])
+                if (index != -1) {
+                  newmap[this.itemsList[0].clinic].splice(index, 1)
+                }
                 database.collection("patients").doc(item).update({
-                  appointment_history: firebase.firestore.FieldValue.arrayRemove(itema.upcoming[1])
+                  appointment_history: newmap
                 })
                 database.collection("patients").doc(item).update({
                   upcoming: null
@@ -136,6 +141,7 @@ export default {
                           if (itemx.upcoming[0] == "physical") {
                               console.log("hello")
                               this.physicalList.push(itemx.upcoming);
+                              console.log(this.physicalList)
                           } else if (itemx.upcoming[0] == "online") {
                               database
                                 .collection("consultslots")

@@ -19,7 +19,7 @@
 
 <script>
 import database from "../../../firebase.js"
-import * as firebase from "firebase";
+//import * as firebase from "firebase";
 export default {
   data() {
     return {
@@ -28,6 +28,7 @@ export default {
         slot: [],
         datadoc: {},
         docsName: [],
+        apptHist :{},
     };
   },
   
@@ -56,24 +57,27 @@ export default {
                 .join("-")
 
                 if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
-                  let item2 = item
-                  item2.id = doc.id;
-                  database
-                  .collection("doctors")
-                  .doc(item.doctor)
-                  .get()
-                  .then((doc) => {
-                    let docName = doc.data().name;
-                    console.log(docName)
-                    item2.doctorName = docName
-                    console.log(item)
-                    this.slot.push(item2);
-                    if (this.docsName.includes(docName) == false){
-                      this.docsName.push(docName)
-                    }
-                    });
+                  if (new Date() <= item.date.toDate()) {
+                    let item2 = item
+                    item2.id = doc.id;
+                    database
+                    .collection("doctors")
+                    .doc(item.doctor)
+                    .get()
+                    .then((doc) => {
+                      let docName = doc.data().name;
+                      console.log(docName)
+                      item2.doctorName = docName
+                      console.log(item)
+                      this.slot.push(item2);
+                      if (this.docsName.includes(docName) == false){
+                        this.docsName.push(docName)
+                      }
+                      });
 
-                    }
+                      }
+                  }
+                  
                 });
             });
         },
@@ -92,7 +96,13 @@ export default {
       formatTime2: function(time) {
         let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
         ltime.splice(2,1)
-        return ltime[0] + "" + ltime[1]
+        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
+      },
+
+      formatTime3: function(time) {
+        let ltime =  time.replace(" ", ":").split(":")
+        ltime.splice(2,1)
+        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
       },
 
       getdoc: function(ide) {
@@ -137,6 +147,16 @@ export default {
         var day = this.date.getDate();
         var monthIndex = this.date.getMonth();
         var year = this.date.getFullYear();
+
+        var apptDate = day + ' ' + monthNames[monthIndex] + ' ' + year
+
+        if (this.apptHist[this.clinic] == undefined) {
+          this.apptHist[this.clinic] = [apptDate]
+        } else {
+          this.apptHist[this.clinic].push(apptDate)
+        }
+        console.log(this.apptHist)
+
         database
         .collection('patients')
         .doc(this.patientId)
@@ -145,13 +165,14 @@ export default {
           let item = {};
             item = querySnapShot.id;
             database.collection("patients").doc(item).update({
-              appointment_history: firebase.firestore.FieldValue.arrayUnion(day + ' ' + monthNames[monthIndex] + ' ' + year)
+              appointment_history: this.apptHist
             })
             database.collection("patients").doc(item).update({
               upcoming: {
                 0: "online",
                 1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                2: this.formatTime2(this.datadoc.date)
+                2: this.formatTime2(this.datadoc.date),
+                3: this.clinic
               }
             })
             console.log("online appt has been added")
@@ -161,9 +182,22 @@ export default {
       routeHome: function() {
             this.$router.push('/makebooking')
         },
+
+      getApptHist: function() {
+        database
+        .collection('patients')
+        .doc(this.patientId)
+        .get()
+        .then((querySnapShot) => {
+          this.apptHist = querySnapShot.data().appointment_history
+          console.log(this.apptHist)
+          console.log("Done")
+        })
+      }
   },
   created() {
       this.fetchitems();
+      this.getApptHist();
   },
   watch: {
     date: function () {
