@@ -1,8 +1,6 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-<<<<<<< HEAD
-
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
 
@@ -21,30 +19,6 @@
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
 
-=======
-    <ul>
-
-      <li>
-        <router-link to="/makebooking">Go to Make Booking</router-link>
-      </li>
-      <li>
-        <router-link to="/pending">See Pending Booking</router-link>
-      </li>
-      <li>
-        <router-link to="/viewdocuments">View Documents</router-link>
-      </li>
-      <li>
-        <router-link to="/viewappt">View Appointment</router-link>
-      </li>
-      <li>
-        <router-link to="/managepayments">Go to Manage Payments</router-link>
-      </li>
-      <li>
-        <router-link to="/patientsettings">Settings</router-link>
-      </li>
-    </ul>
-    <a @click="signOut" class="button is-primary">Logout</a>
->>>>>>> 10cdb1d181337bd2e6f40971e3203ee290bbb42c
     <notifications></notifications>
   </div>
 </template>
