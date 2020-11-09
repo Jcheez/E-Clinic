@@ -25,12 +25,12 @@
         id="changeEmail"
         v-model="newEmail"
       /><input
-        type="text"
+        type="password"
         placeholder="Enter New Password"
         id="changePW"
         v-model="newPassword"
       /><input
-        type="text"
+        type="password"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
         v-model="repeatPassword"
