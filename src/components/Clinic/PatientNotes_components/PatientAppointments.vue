@@ -13,7 +13,7 @@
     <div id="main">
       <div v-if="this.data.length != 0">
         <ul id="patients">
-          <li v-for="(patient, index) in this.data" :key="index">
+          <li v-for="(patient, index) in this.data[this.clinicName]" :key="index">
             <div id="inner">
               <span>{{ patient }}</span>
             </div>
@@ -48,13 +48,14 @@ export default {
   data() {
     return {
         msg: "Patient's Notes ",
-        data: [...this.apptDates],
+        data: {...this.apptDates},
         nameQuery: ""   
     };
   },
   props: {
-      apptDates: Array,
-      patientName: String
+      apptDates: Object,
+      patientName: String,
+      clinicName: String
   },
   computed: {
     ...mapGetters(["getUser"]),
