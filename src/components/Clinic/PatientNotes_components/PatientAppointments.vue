@@ -12,9 +12,9 @@
     <h4>Past Appointments</h4>
     <p id="pat">Patient: {{patientName2}}</p>
     <div id="main">
-      <div v-if="this.data.length != 0">
+      <div v-if="this.data2.length != 0">
         <ul id="patients">
-          <li v-for="(patient, index) in this.data[this.clinicName]" :key="index">
+          <li v-for="(patient, index) in this.data2" :key="index">
             <div id="inner">
               <span>{{ patient }}</span>
             </div>
@@ -24,8 +24,8 @@
           </li>
         </ul>
       </div>
-      <div id="emptyDiv" v-if="this.data.length == 0">
-        <p id="empty"> This patient does not have any past appointments!</p>
+      <div id="emptyDiv" v-if="this.data2.length == 0">
+        <p id="empty"> Past Appointment Date(s) not found</p>
       </div>
     </div>
     <div id="searchBar">
@@ -52,7 +52,8 @@ export default {
         data: {...this.apptDates},
         nameQuery: ""   ,
         patientName2: this.patientName,
-        clinicName: localStorage.getItem("clinicName")
+        clinicName: localStorage.getItem("clinicName"),
+        data2: {...this.apptDates}[localStorage.getItem("clinicName")],
     };
   },
   props: {
@@ -69,11 +70,11 @@ export default {
       this.$router.push("/cliniclogin");
     },
       dateSearch: function() {
-      let copied = this.data;
+      let copied = this.data[this.clinicName];
       copied = copied.filter(x => x.includes(this.nameQuery))
-      this.data = copied;
+      this.data2 = copied;
       if (this.nameQuery.localeCompare("") == 0) {
-        this.data = this.apptDates;
+        this.data2 = this.apptDates[this.clinicName];
         
       }
       this.$forceUpdate();
@@ -87,18 +88,18 @@ export default {
     if (this.patientName2 == null || this.data == null) {
         console.log("j")
         this.patientName2 = localStorage.getItem('pn4name');
-        this.data = JSON.parse(localStorage.getItem('pn4date'));
+        this.data2 = JSON.parse(localStorage.getItem('pn4date'))[localStorage.getItem("clinicName")];
     } else if (this.patientName2.localeCompare(localStorage.getItem('pn4name')) != 0 || JSON.stringify(this.data).localeCompare(localStorage.getItem('pn4date')) != 0) {
         console.log("k")
         localStorage.setItem('pn4name', this.patientName2);
         localStorage.setItem('pn4date', JSON.stringify(this.data));
 
         this.patientName2 = localStorage.getItem('pn4name');
-        this.data = JSON.parse(localStorage.getItem('pn4date'));
+        this.data2 = JSON.parse(localStorage.getItem('pn4date'))[localStorage.getItem("clinicName")];
     } else {
          console.log("l")
         this.patientName2 = localStorage.getItem('pn4name');
-        this.data = JSON.parse(localStorage.getItem('pn4date'));
+        this.data2 = JSON.parse(localStorage.getItem('pn4date'))[localStorage.getItem("clinicName")];
     }
   }
 };

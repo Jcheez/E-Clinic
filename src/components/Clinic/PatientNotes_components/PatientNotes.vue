@@ -11,7 +11,7 @@
     </div>
     <h4>List of Patients</h4>
     <div id="emptyDiv" v-if="this.itemsList.length == 0">
-      There are no patients yet!
+      No patients found.
     </div>
     <div id="main">
       <div id="patientList" v-if="this.itemsList.length != 0">
@@ -66,6 +66,7 @@ export default {
     },
     nameSearch: function() {
       let copied = this.data;
+      console.log(copied)
       copied = copied.filter(x => x.name.includes(this.nameQuery))
       this.itemsList = copied;
       if (this.nameQuery.localeCompare("") == 0) {
