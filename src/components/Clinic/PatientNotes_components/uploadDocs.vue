@@ -146,8 +146,8 @@ button {
   transition: box-shadow 0.3s;
   transition: 0.3s;
   position: absolute;
-  top: 96px;
-  right: 0px;
+  top: 95px;
+  right: -20px;
   font-family: Nunito;
   background-color:  rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);

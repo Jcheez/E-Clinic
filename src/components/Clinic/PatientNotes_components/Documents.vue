@@ -30,7 +30,7 @@
                 <label>Amount Outstanding:</label>
                 <span>${{this.outstandingMap[this.appDate][0].toFixed(2)}}</span>
             </div>
-            <label id="inpayment" for="receivebox">Amount Received:</label>
+            <label id="inpayment" for="receivebox">Enter Amount Received From Patient:</label>
             <input type="text" id="receivebox" name="receivebox">
             <input type="submit" id="submitreceive" v-on:click="receivebutton()">
             <div id="receivetext" v-if="this.amountPaidMap[this.appDate] == undefined">
@@ -378,19 +378,19 @@ p#date {
 }
 
 a#links {
-    font-size: 25px;
+    font-size: 20px;
     position: relative;
     top: 20px;
-    color:blue
+    color:rgb(0, 114, 180)
 }
 
 a#removers {
-    font-size: 25px;
+    font-size: 20px;
     position: relative;
     top:20px;
     left: 10px;
     text-decoration: underline;
-    color: blue;
+    color: rgb(0, 114, 180);
     cursor: pointer;
 }
 
