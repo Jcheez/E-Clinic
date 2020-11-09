@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="container">
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -8,24 +8,26 @@
       <router-link to="/patientsnotes">patientsnotes</router-link><br>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <div>
-      <h4>Past Appointments</h4>
-      <p id="pat">Patient: {{patientName}}</p>
-      <ul id="patients">
-        <li v-for="(patient, index) in this.data" :key="index">
-          <div id="inner">
-            <span>{{ patient }}</span>
-          </div>
-          <button id="view">
-            <router-link :to="{ name:'uploaddocuments', params: {patientName: patientName, appointmentDate: patient}}">View</router-link>
-          </button>
-        </li>
-      </ul>
-      <div id="emptyDiv">
-        <p v-if="this.data.length == 0" id="empty"> This patient does not have any past appointments!</p>
+    <h4>Past Appointments</h4>
+    <p id="pat">Patient: {{patientName}}</p>
+    <div id="main">
+      <div v-if="this.data.length != 0">
+        <ul id="patients">
+          <li v-for="(patient, index) in this.data" :key="index">
+            <div id="inner">
+              <span>{{ patient }}</span>
+            </div>
+            <button id="view">
+              <router-link :to="{ name:'uploaddocuments', params: {patientName: patientName, appointmentDate: patient}}">View</router-link>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div id="emptyDiv" v-if="this.data.length == 0">
+        <p id="empty"> This patient does not have any past appointments!</p>
       </div>
     </div>
-    <div>
+    <div id="searchBar">
       <input
         id="searchbox"
         type="text"
@@ -34,9 +36,9 @@
         v-model="nameQuery"
         v-on:keyup.enter="dateSearch()"
       />
-      <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button>
-      <button id="home" v-on:click="routeHome()">Back to Patients</button>
+      <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button><br>
     </div>
+    <button id="home" v-on:click="routeHome()">Back to Patients</button>
   </div>
 </template>
 
@@ -50,16 +52,15 @@ export default {
         nameQuery: ""   
     };
   },
-
   props: {
       apptDates: Array,
       patientName: String
   },
-    computed: {
+  computed: {
     ...mapGetters(["getUser"]),
   },
   methods: {
-        ...mapActions(["signOutAction"]),
+    ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
       this.$router.push("/cliniclogin");
@@ -84,12 +85,21 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+#container {
+  position: relative;
+}
+#main {
+  position: absolute;
+  top: 120px;
+}
+
 h4 {
   font-family: Nunito;
-  margin-left: -570px;
   padding: 30px 0 0 0;
   margin-bottom: -30px;
   font-size: 32px;
+  position: absolute;
+  left: 250px;
 }
 
 #sideNavBar a {
@@ -163,6 +173,12 @@ span {
   font-size: 18px;
 }
 
+#searchBar {
+  position: absolute;
+  top: 30px;
+  right: 100px;
+}
+
 input#searchbox {
   margin-left: 100px;
   margin-top: 50px;
@@ -172,17 +188,24 @@ input#searchbox {
 
 button#view {
   position: relative;
-  top: 14px;
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  top: 12px;
   left: 30px;
   width: 85px;
   height: 30px;
-  background: rgb(0, 114, 180);
+  background-color: rgb(0, 114, 180);
   border: none;
   /* border-radius: 15px; */
   font-size: 16px;
   font-family: Nunito;
   border-radius: 4px;
 }
+
+button#view:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
+
 
 button:hover {
   cursor: pointer;
@@ -201,11 +224,12 @@ button#searchbox {
 }
 
 p#pat {
+  position: absolute;
+  left: 360px;
+  top: 86px;
   font-family: Nunito;
-  margin-left: -640px;
-  margin-top: 40px;
-  margin-bottom: -30px;
-  font-size:24px;
+  margin: 40px -30px 0px -100px;
+  font-size:22px;
   color: rgb(0, 114, 180);
 }
 
@@ -216,10 +240,10 @@ li a {
 
 #emptyDiv {
   border-radius: 8px;
-  width: 600px;
+  width: 500px;
   height: 100px;
   font-size: 18px;
-  margin-left: 220px;
+  margin-left: 240px;
   margin-top: 40px;
   box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
 }
@@ -227,19 +251,28 @@ li a {
 #empty {
   font-family: Nunito;
   text-align: center;
-  padding: 20px 10px 10px 10px;
+  padding: 40px 10px 10px 10px;
 }
 
 button#home {
   transition: box-shadow 0.3s;
   transition: 0.3s;
-  color: rgb(0, 114, 180);
+  color: white;
   letter-spacing: 2px;
-  width: 125px;
-  height: 45px;
-  background-color: white;
+  width: 94px;
+  height: 46px;
+  background-color:  rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
-  z-index: -1;
+  position: absolute;
+  top: 300px;
+  right: 100px;
+  font-size: 14px;
+  font-family: Nunito;
+}
+
+button#home:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 </style>

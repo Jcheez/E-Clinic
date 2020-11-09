@@ -244,7 +244,7 @@ a:hover {
   color: rgb(238, 249, 255);
 }
 
-h3 {
+#sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;

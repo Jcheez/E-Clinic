@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="container">
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -9,18 +9,21 @@
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <h4>List of Patients</h4>
-    <div id="patientList">
-      <ul id="patients">
-        <li v-for="(patient, index) in this.itemsList" :key="index">
-          <div id="inner">
-            <span>{{ "Name: " + patient.name }}</span>
-          </div>
-          <button id="view">
-            <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
-          </button>
-        </li>
-      </ul>
+    <div id="main">
+      <div id="patientList">
+        <ul id="patients">
+          <li v-for="(patient, index) in this.itemsList" :key="index">
+            <div id="inner">
+              <span>{{ "Name: " + patient.name }}</span>
+            </div>
+            <button id="view">
+              <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
+    <div id="searchBar">
       <input
         id="searchbox"
         type="text"
@@ -31,6 +34,7 @@
       />
       <button id="searchbox" type="submit" v-on:click="nameSearch()">Search</button>
       <!-- <button id="home" v-on:click="routeHome()">Back to Home</button> -->
+    </div>
   </div>
 </template>
  
@@ -92,11 +96,20 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+#container {
+  position: relative;
+}
+
+#main {
+  position: absolute;
+  top: 80px;
+}
+
 h4 {
+  position: absolute;
+  left: 250px;
   font-family: Nunito;
-  margin-left: -570px;
   padding: 30px 0 0 0;
-  margin-bottom: -30px;
   font-size: 32px;
 }
 
@@ -171,6 +184,12 @@ span {
   font-size: 18px;
 }
 
+#searchBar {
+  position: absolute;
+  top: 30px;
+  right: 100px;
+}
+
 input#searchbox {
   margin-left: 100px;
   margin-top: 50px;
@@ -180,16 +199,22 @@ input#searchbox {
 
 button#view {
   position: relative;
-  top: 14px;
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  top: 12px;
   left: 30px;
   width: 85px;
   height: 30px;
-  background: rgb(0, 114, 180);
+  background-color: rgb(0, 114, 180);
   border: none;
   /* border-radius: 15px; */
   font-size: 16px;
   font-family: Nunito;
   border-radius: 4px;
+}
+
+button#view:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 
 button:hover {
