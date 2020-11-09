@@ -21,7 +21,7 @@
               <span>{{ "Name: " + patient.name }}</span>
             </div>
             <button id="view">
-              <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name, clinicName: clinic}}">View</router-link>
+              <router-link :to="{ name:'appointments', params: {apptDates: patient.appointment_history, patientName: patient.name}}">View</router-link>
             </button>
           </li>
         </ul>

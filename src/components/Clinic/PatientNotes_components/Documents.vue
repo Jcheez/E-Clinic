@@ -52,7 +52,7 @@
                 <a id="links" v-bind:href="this.doc[this.clinic][this.appDate][p]" target="_blank">View</a>
                 <a id="removers" v-on:click="remove(p)">Remove</a>
             </div>
-            <button id="home" v-on:click="routeHome()">Back to Patients</button> 
+            <button id="home" v-on:click="routeHome()">Back to Dates</button> 
         </div>
 
         <!-- #####JJ's -->
@@ -221,7 +221,7 @@ export default {
         },
 
         routeHome: function() {
-            this.$router.push('/patientsnotes')
+            this.$router.push('/patientsnotes/appointments')
         },
 
         formatDate: function(date) {

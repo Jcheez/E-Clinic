@@ -110,7 +110,22 @@ export default {
         });
       return this.countPhysical;
     },
-  }}
+
+    getClinicName: function() {
+      database
+      .collection("clinics")
+      .doc(localStorage.getItem("uidClinic"))
+      .get()
+      .then((doc) => {
+        localStorage.setItem("clinicName", doc.data().name)
+      })
+    },
+  },
+
+  created() {
+    this.getClinicName()
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
