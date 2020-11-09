@@ -21,6 +21,7 @@
         <button class = "delete" v-on:click="toggle">Proceed</button>
       </router-link>
     </div>
+    <a style = "bottom: 100px; left: 370px; position: absolute; font-size: 8px;" href="https://stories.freepik.com/work">Illustration by Freepik Stories</a>
   </div>
 </template>
 
