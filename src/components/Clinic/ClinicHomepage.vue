@@ -145,7 +145,7 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 2px;
   display: inline-block;
   margin: 60px 0 0 0;
@@ -258,7 +258,7 @@ a:hover {
   color: rgb(238, 249, 255);
 }
 
-h3 {
+#sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;

@@ -1,35 +1,49 @@
 <template>
-  <div>
-    <h1>{{ msg }}</h1>
-    <hr />
-    <h2>Past Appointments</h2>
+  <div id="container">
+    <div id="sideNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/clinichome">Dashboard</router-link><br />
+      <router-link to="/doctorslist">Doctors</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
+      <router-link to="/patientsnotes">patientsnotes</router-link><br>
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+    <h4>Past Appointments</h4>
     <p id="pat">Patient: {{patientName}}</p>
-    <ul id="patients">
-      <li v-for="(patient, index) in this.data" :key="index">
-        <div id="inner">
-          <span>{{ patient }}</span>
-        </div>
-        <button id="view">
-          <router-link :to="{ name:'uploaddocuments', params: {patientName: patientName, appointmentDate: patient}}">View</router-link>
-        </button>
-      </li>
-    </ul>
-    <p v-if="this.data.length == 0" id="empty"> This patient does not have any past appointments!</p>
-    <input
-      id="searchbox"
-      type="text"
-      placeholder="Search Date..."
-      name="search"
-      v-model="nameQuery"
-      v-on:keyup.enter="dateSearch()"
-    />
-    <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button>
-    <button id="home" v-on:click="routeHome()">Back to Patients</button>  
+    <div id="main">
+      <div v-if="this.data.length != 0">
+        <ul id="patients">
+          <li v-for="(patient, index) in this.data" :key="index">
+            <div id="inner">
+              <span>{{ patient }}</span>
+            </div>
+            <button id="view">
+              <router-link :to="{ name:'uploaddocuments', params: {patientName: patientName, appointmentDate: patient}}">View</router-link>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div id="emptyDiv" v-if="this.data.length == 0">
+        <p id="empty"> This patient does not have any past appointments!</p>
+      </div>
+    </div>
+    <div id="searchBar">
+      <input
+        id="searchbox"
+        type="text"
+        placeholder="Search Date..."
+        name="search"
+        v-model="nameQuery"
+        v-on:keyup.enter="dateSearch()"
+      />
+      <button id="searchbox" type="submit" v-on:click="dateSearch()">Search</button><br>
+    </div>
+    <button id="home" v-on:click="routeHome()">Back to Patients</button>
   </div>
 </template>
 
 <script>
-
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -38,13 +52,19 @@ export default {
         nameQuery: ""   
     };
   },
-
   props: {
       apptDates: Array,
       patientName: String
   },
-
+  computed: {
+    ...mapGetters(["getUser"]),
+  },
   methods: {
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/cliniclogin");
+    },
       dateSearch: function() {
       let copied = this.data;
       copied = copied.filter(x => x.includes(this.nameQuery))
@@ -64,82 +84,128 @@ export default {
 </script>
 
 <style scoped>
-h1 {
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+#container {
+  position: relative;
+}
+#main {
   position: absolute;
-  width: 372px;
-  height: 57px;
-  left: 86px;
-  top: 220px;
-  font-family: Open Sans;
-  font-style: normal;
+  top: 120px;
+}
+
+h4 {
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  margin-bottom: -30px;
+  font-size: 32px;
+  position: absolute;
+  left: 250px;
+}
+
+#sideNavBar a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin: 60px 0 0 0;
+  text-decoration: none;
   font-weight: bold;
-  font-size: 42px;
-  line-height: 57px;
-  color: #000000;
-}
-
-hr {
-  position: absolute;
-  width: 1459px;
-  height: 40px;
-  left: 520px;
-  top: 250px;
-  background-color: #1677cf;
-}
-
-h2 {
-  position: absolute;
-  top: 380px;
-  left: 280px;
-  text-decoration: underline;
-  font-size: 30px;
-}
-
-div#inner {
-  width: 70%;
   display: inline-block;
 }
 
+#sideNavBar a:hover {
+  font-size: 17px;
+  color: white;
+  cursor: pointer;
+}
+
+#sideNavBar {
+  width: 180px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+}
+
+#sideNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  padding: 10px 0px 20px 0px;
+}
+
+div #inner {
+  width: 50%;
+  display: inline-block;
+}
+
+ul {
+  float: left;
+  margin-left: 200px;
+  margin-top: 50px;
+}
+
 li {
-  position: relative;
-  width: 562px;
-  height: 100px;
-  left: 73px;
-  top: 450px;
-  border: 1px solid #000000;
+  width: 400px;
+  height: 60px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
-  padding-left: 10px;
-  padding-top: 20px;
+  padding: 10px 0 0 0;
   display: block;
 }
 
 span {
+  font-family: Nunito;
   position: relative;
   top: 14px;
   display: block;
   text-align: left;
-  font-size: 20px;
+  font-size: 18px;
+}
+
+#searchBar {
+  position: absolute;
+  top: 30px;
+  right: 100px;
 }
 
 input#searchbox {
-  position: absolute;
-  top: 400px;
-  left: 1100px;
-  font-size: 30px;
+  margin-left: 100px;
+  margin-top: 50px;
+  font-size: 16px;
+  font-family: Nunito;
 }
 
 button#view {
   position: relative;
-  top: 14px;
-  width: 125px;
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  top: 12px;
+  left: 30px;
+  width: 85px;
   height: 30px;
-  background: aqua;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 15px;
-  font-size: 20px;
+  background-color: rgb(0, 114, 180);
+  border: none;
+  /* border-radius: 15px; */
+  font-size: 16px;
+  font-family: Nunito;
+  border-radius: 4px;
 }
+
+button#view:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
+
 
 button:hover {
   cursor: pointer;
@@ -149,46 +215,64 @@ button:focus {
 }
 
 button#searchbox {
-  position: absolute;
-  top: 400px;
-  left: 1473px;
-  font-size: 30px;
-  background-color: aqua;
+  font-family: Nunito;
+  margin-top: 50px;
+  font-size: 16px;
+  background-color:rgb(0, 114, 180);
+  color: white;
+  border-color: rgb(0, 114, 180);
 }
 
 p#pat {
-    position: absolute;
-    top: 310px;
-    left: 140px;
-    font-size:30px;
-    color:brown
+  position: absolute;
+  left: 360px;
+  top: 86px;
+  font-family: Nunito;
+  margin: 40px -30px 0px -100px;
+  font-size:22px;
+  color: rgb(0, 114, 180);
 }
 
-a {
-  color: black;
+li a {
+  color: white;
   text-decoration: none;
 }
 
-p#empty {
-  position: absolute;
-  top:500px;
-  left:140px;
-  font-size: 25px;
+#emptyDiv {
+  border-radius: 8px;
+  width: 500px;
+  height: 100px;
+  font-size: 18px;
+  margin-left: 240px;
+  margin-top: 40px;
+  box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+}
+
+#empty {
+  font-family: Nunito;
+  text-align: center;
+  padding: 40px 10px 10px 10px;
 }
 
 button#home {
   transition: box-shadow 0.3s;
   transition: 0.3s;
-  color: rgb(0, 114, 180);
+  color: white;
   letter-spacing: 2px;
-  width: 125px;
-  height: 45px;
-  background-color: white;
+  width: 94px;
+  height: 46px;
+  background-color:  rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
-  z-index: -1;
   position: absolute;
-  top:510px;
-  left:1250px;
+  top: 300px;
+  right: 100px;
+  font-size: 14px;
+  font-family: Nunito;
+}
+
+button#home:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <p class="up">Upload a file:</p>
       <input type="file" @change="previewFile" accept="application/pdf" class="up"/>
     </div>
     <div>
@@ -130,11 +131,14 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
 img.preview {
     width: 200px;
 }
 .up {
-  font-size: 20px;
+  font-size: 16px;
+  font-family: Nunito;
   text-align: left;
 }
 </style>

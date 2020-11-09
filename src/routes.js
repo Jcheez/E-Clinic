@@ -106,7 +106,7 @@ export default [
     path: "/doctorslist/appointment/doctorsettings",
     component: DoctorSettings,
     name: "doctorSettings",
-    props: true,
+    props: true
   },
   { path: "/makebooking", component: MakeBooking },
   { path: "/makebooking/makebookingter", component: MakeBookingTer },
