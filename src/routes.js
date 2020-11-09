@@ -4,20 +4,21 @@ import { Role } from "./store/role";
 // All routes for Patient Notes Component
 import PatientNotes from "./components/Clinic/PatientNotes_components/PatientNotes.vue";
 import PatientAppointments from "./components/Clinic/PatientNotes_components/PatientAppointments.vue";
-import Documents from "./components/Clinic/PatientNotes_components/Documents.vue"
-import PendingPatient from "./components/Patient/PendingBooking_component/Pending.vue"
-import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue"
-import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue"
-import MakeBookingPass from "./components/Patient/MakeBooking_component/MakeBookingPass.vue"
-import MakeBookingConfirmation from "./components/Patient/MakeBooking_component/MakeBookingConfirmationOnline.vue"
-import PatientHome from "./components/Patient/PatientHomepage"
-import ViewDocuments from "./components/Patient/ViewDocument_component/ViewDocuments.vue"
-import ViewDocumentsInner from "./components/Patient/ViewDocument_component/ViewDocumentsInner.vue"
-import ViewAppt from "./components/Patient/ViewAppt_component/ViewAppt.vue"
-import Rebook from "./components/Patient/ViewAppt_component/Rebook.vue"
-import ManagePayments from "./components/Patient/ManagePayments/managePayments.vue"
-import PatientLogin from "./components/Patient/PatientLogin"
-import PatientSignup from "./components/Patient/PatientSignup"
+import Documents from "./components/Clinic/PatientNotes_components/Documents.vue";
+import PendingPatient from "./components/Patient/PendingBooking_component/Pending.vue";
+import MakeBooking from "./components/Patient/MakeBooking_component/MakeBooking1.vue";
+import MakeBookingTer from "./components/Patient/MakeBooking_component/MakeBookingTer.vue";
+import MakeBookingPass from "./components/Patient/MakeBooking_component/MakeBookingPass.vue";
+import MakeBookingConfirmation from "./components/Patient/MakeBooking_component/MakeBookingConfirmationOnline.vue";
+import PatientHome from "./components/Patient/PatientHomepage";
+import ViewDocuments from "./components/Patient/ViewDocument_component/ViewDocuments.vue";
+import ViewDocumentsInner from "./components/Patient/ViewDocument_component/ViewDocumentsInner.vue";
+import ViewAppt from "./components/Patient/ViewAppt_component/ViewAppt.vue";
+import Rebook from "./components/Patient/ViewAppt_component/Rebook.vue";
+import ManagePayments from "./components/Patient/ManagePayments/managePayments.vue";
+import PatientLogin from "./components/Patient/PatientLogin";
+import PatientSignup from "./components/Patient/PatientSignup";
+import PatientSettings from "./components/Patient/PatientSettings";
 
 //routes for clinics
 import AppointmentPage from "./components/Clinic/Doctor/DoctorAppointmentPage/AppointmentPage";
@@ -123,4 +124,5 @@ export default [
     component: MakeBookingConfirmation,
   },
   { path: "/managepayments", component: ManagePayments },
+  { path: "/patientsettings", component: PatientSettings },
 ];

@@ -71,6 +71,7 @@ export default {
         database.collection("doctors").doc(this.doctorAdd.dNum).set({
           name: this.doctorAdd.dName,
           clinic: this.getUser.displayName,
+          zoom: "",
         });
         alert("Successfully added new doctor!");
         this.doctorAdd.dName = "";

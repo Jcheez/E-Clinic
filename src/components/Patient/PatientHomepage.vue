@@ -14,7 +14,9 @@
       <router-link to="/viewappt">View Appointments</router-link>
 
       <router-link to="/managepayments">Manage Payments</router-link>
-      <!--add a patient settings route-->
+
+      <router-link to="/patientsettings">Settings</router-link>
+
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
 
