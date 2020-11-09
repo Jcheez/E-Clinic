@@ -57,24 +57,27 @@ export default {
                 .join("-")
 
                 if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
-                  let item2 = item
-                  item2.id = doc.id;
-                  database
-                  .collection("doctors")
-                  .doc(item.doctor)
-                  .get()
-                  .then((doc) => {
-                    let docName = doc.data().name;
-                    console.log(docName)
-                    item2.doctorName = docName
-                    console.log(item)
-                    this.slot.push(item2);
-                    if (this.docsName.includes(docName) == false){
-                      this.docsName.push(docName)
-                    }
-                    });
+                  if (new Date() <= item.date.toDate()) {
+                    let item2 = item
+                    item2.id = doc.id;
+                    database
+                    .collection("doctors")
+                    .doc(item.doctor)
+                    .get()
+                    .then((doc) => {
+                      let docName = doc.data().name;
+                      console.log(docName)
+                      item2.doctorName = docName
+                      console.log(item)
+                      this.slot.push(item2);
+                      if (this.docsName.includes(docName) == false){
+                        this.docsName.push(docName)
+                      }
+                      });
 
-                    }
+                      }
+                  }
+                  
                 });
             });
         },
@@ -92,6 +95,12 @@ export default {
         },
       formatTime2: function(time) {
         let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
+        ltime.splice(2,1)
+        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
+      },
+
+      formatTime3: function(time) {
+        let ltime =  time.replace(" ", ":").split(":")
         ltime.splice(2,1)
         return ltime[0] + ":" + ltime[1] + " " + ltime[2]
       },

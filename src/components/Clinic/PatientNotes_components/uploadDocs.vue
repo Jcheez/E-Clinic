@@ -29,7 +29,8 @@ export default {
       pdf: null,
       uploadValue: 0,
       doc: {},
-      clinic: localStorage.getItem("clinicName") // To change this dynamically
+      clinic: localStorage.getItem("clinicName"),
+      newMessages: [],
     };
   },
 
@@ -63,6 +64,7 @@ export default {
         .then((querySnapShot) => {
           querySnapShot.forEach((doc) => {
             this.doc = doc.data().notes;
+            this.newMessages = doc.data().newNotifications
             console.log("Fetched")
           }); 
         });
@@ -104,17 +106,18 @@ export default {
             }
             
             let today = this.formatDate(new Date())
-            let result = today + ": " + this.type + " has been updated"
+            this.newMessages.splice(0, 0, today + ": " + this.type + " has been updated")
 
             database
             .collection('patients')
             .doc(this.doc_id)
             .update({
               notes: this.doc,
-              newNotifications: firebase.firestore.FieldValue.arrayUnion(result)
+              newNotifications: this.newMessages
               })
             .then(() => {
-            console.log('user updated!')
+            alert(this.type + " has been uploaded successfully")
+            location.reload()
             
             })
           });

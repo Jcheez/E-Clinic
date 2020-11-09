@@ -99,7 +99,6 @@
 import { mapActions, mapGetters } from "vuex";
 import uploader from "./uploadDocs.vue";
 import database from "../../../firebase.js";
-import firebase from "firebase";
 
 export default {
     data() {
@@ -115,7 +114,8 @@ export default {
             u: undefined,
             outstandingMap: {},
             amountPaidMap: {},
-            clinic: localStorage.getItem("clinicName")
+            clinic: localStorage.getItem("clinicName"),
+            newMessages: []
         }
     },
 
@@ -143,6 +143,7 @@ export default {
             this.doc = doc.data().notes;
             this.outstandingMap = doc.data().outstandingAmount;
             this.amountPaidMap = doc.data().amountPaid;
+            this.newMessages = doc.data().newNotifications;
             console.log(this.doc)
           });
         });
@@ -151,7 +152,9 @@ export default {
         remove: function (field) {
 
             let today = this.formatDate(new Date())
-            let result = today + ": " + field + " has been removed"
+            this.newMessages.splice(0, 0, today + ": " + field + " has been removed")
+            console.log(this.newMessages)
+
 
             delete this.doc[this.clinic][this.appDate][field]
             database
@@ -159,11 +162,12 @@ export default {
             .doc(this.docid[0])
             .update({
                 notes: this.doc,
-                newNotifications: firebase.firestore.FieldValue.arrayUnion(result)
+                newNotifications: this.newMessages
                 })
             .then(() => {
             console.log('user updated!')
             alert("Medical Certificate" + " deleted")
+            location.reload()
             
             })
             

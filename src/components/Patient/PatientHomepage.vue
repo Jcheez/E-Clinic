@@ -18,6 +18,9 @@
       <li>
         <router-link to="/managepayments">Go to Manage Payments</router-link>
       </li>
+      <li>
+        <router-link to="/patientsettings">Settings</router-link>
+      </li>
     </ul>
     <a @click="signOut" class="button is-primary">Logout</a>
     <notifications></notifications>
