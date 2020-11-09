@@ -9,8 +9,11 @@
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <h4>List of Patients</h4>
+    <div id="emptyDiv" v-if="this.itemsList.length == 0">
+      There are no patients yet!
+    </div>
     <div id="main">
-      <div id="patientList">
+      <div id="patientList" v-if="this.itemsList.length != 0">
         <ul id="patients">
           <li v-for="(patient, index) in this.itemsList" :key="index">
             <div id="inner">
@@ -44,7 +47,6 @@ import database from "../../../firebase.js";
 export default {
   data() {
     return {
-      msg: "Patient's Notes ",
       itemsList: [],
       nameQuery: "",
       data: [],
@@ -247,5 +249,19 @@ p#display {
   position:absolute;
   top:500px;
   left: 200px;
+}
+
+div#emptyDiv{
+    position:absolute;
+    top:150px;
+    left: 250px;
+    height: 40px;
+    width: 400px;
+    font-size: 18px;
+    font-family: Nunito;
+    white-space: nowrap;
+    padding: 20px 10px 0px 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
 }
 </style>
