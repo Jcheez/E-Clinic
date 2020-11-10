@@ -2,7 +2,7 @@
   <div class="hello">
     <h1>E-Clinic</h1>
     <h2>Empowering Medicine <br>Through the Internet</h2>
-    <div v-if ="about" style = "margin-left: 650px; margin-top: 100px">
+    <div v-if ="about" style = "margin-left: 650px; margin-top: 100px; position: absolute; right: 150px;">
       <h4>Choose Your Account Type</h4>
       <ul>
         <li>
@@ -21,7 +21,7 @@
         <button class = "delete" v-on:click="toggle">Proceed</button>
       </router-link>
     </div>
-    <a style = "bottom: 100px; left: 370px; position: absolute; font-size: 8px;" href="https://stories.freepik.com/work">Illustration by Freepik Stories</a>
+    <a style = "bottom: 40px; left: 350px; position: absolute; font-size: 8px;" href="https://stories.freepik.com/work">Illustration by Freepik Stories</a>
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap');
 
 .hello {
+  position: relative;
   background-image: url("~@/assets/Online Doctor-pana.png");
   background-size: 700px auto;
   background-repeat: no-repeat;

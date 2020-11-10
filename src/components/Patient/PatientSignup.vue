@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container">
   <HelloWorld v-bind:about="true"></HelloWorld>
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
@@ -21,7 +21,7 @@
               <button @click="resetError()" class="delete">Ok</button>
             </div>
           </div>
-          <form class="signup">
+          <form class="signup" v-if="!validationErrors.length">
             <div class="field">
               <!-- <label class="label">Name</label> -->
               <div class="control">
@@ -152,15 +152,15 @@ export default {
       }
       // password validation
       if (!this.password) {
-        this.validationErrors.push("<strong>Password</strong> cannot be empty");
+        this.validationErrors.push("<strong>Password</strong> cannot be empty.");
       }
       if (/.{6,}/.test(this.password) != true) {
         this.validationErrors.push(
-          "<strong>Password</strong> must be at least 6 characters long"
+          "<strong>Password</strong> must be at least 6 characters long."
         );
       }
       if (!(this.password === this.passwordRepeat)) {
-        this.validationErrors.push("<strong>Passwords</strong> did not match");
+        this.validationErrors.push("<strong>Passwords</strong> did not match.");
       }
 
       // when valid then sign in
@@ -184,17 +184,27 @@ export default {
 </script>
 
 <style scoped>
+#container {
+  position: relative;
+}
+
 .signup {
+  position: absolute;
   background-color: white;
   width: 380px;
   height: 400px;
   margin: auto;
+  bottom: -150px;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
   margin-bottom: 50px;
 }
 
 .card-content {
+  font-family: Nunito;
+  position: absolute;
+  right: 80px;
+  bottom: 60px;
   width: 380px;
   height: 300px;
   margin: auto;
@@ -219,6 +229,8 @@ input[type=text], input[type=password], input[type=date] {
 }
 
 .control button {
+  position: relative;
+  top: -12px;
   display:block;
   margin: 40px 0px 0px 250px;
   transition: box-shadow 0.3s;
