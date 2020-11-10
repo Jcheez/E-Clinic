@@ -62,9 +62,7 @@ export default {
           console.log(index)
           this.consultData.splice(index, 1)
           console.log(this.consultData)
-          if (this.consultData.length == 0) {
-            this.$emit("fetchItems");
-          }
+          this.$emit("fetchItems");
         });
     },
     showTime: function (data) {

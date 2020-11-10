@@ -15,7 +15,7 @@
     </div>
 
     <div class="leftColumn">
-      <v-date-picker v-model="date" is-inline :min-date="new Date()" />
+      <v-date-picker :attributes='attributes' v-model="date" is-inline :min-date="new Date()" />
       <join-zoom class="zoom" v-bind:zoomlink="zoomString"></join-zoom>
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
@@ -58,11 +58,22 @@ export default {
       status: false,
       text: "Add Slots",
       zoomString: "",
+      all: [],
     };
   },
   props: {
     currDoctor: {
       type: Object,
+    },
+  },
+  computed: {
+    attributes() {
+      return this.all.map(t => ({
+        //key: `todo.${t.id}`,
+        dot: t.dot,
+        dates: t.date.toDate(),
+        customData: t,
+      }));
     },
   },
   methods: {
@@ -75,8 +86,8 @@ export default {
       this.$router.push("/cliniclogin");
     },
     fetchItems: function () {
-      console.log("called");
-      this.slots = [];
+      let temp = []
+      let temp2 = []
       let date = this.date.toLocaleDateString().split("/").reverse().join("-");
       //console.log(this.currDoctor);
       database
@@ -98,14 +109,25 @@ export default {
               .split("/")
               .reverse()
               .join("-");
-            if (item_date == date) {
-              item.id = doc.id;
-              item.hover = false;
-              item.reschedule = false;
-              this.slots.push(item);
+            item.id = doc.id;
+            item.hover = false;
+            item.reschedule = false;
+            if (item.patient) {
+              item.dot = 'red'
+            } else {
+              item.dot ='green'
             }
-          });
-        });
+            let today = new Date()
+            if (item_date >= today.toLocaleDateString().split("/").reverse().join("-")) {
+              temp.push(item)
+            }
+            if (item_date == date) {
+              temp2.push(item);
+            }
+          })
+          this.all = temp
+          this.slots = temp2
+        })
     },
     getZoomString: function () {
       database
@@ -126,9 +148,6 @@ export default {
     joinZoom: joinTeleConsult,
   },
   watch: {
-    date: function () {
-      this.fetchItems();
-    },
     status: function () {
       if (this.text == "Add Slots") {
         this.text = "Back";
@@ -136,11 +155,15 @@ export default {
         this.text = "Add Slots";
       }
     },
+    date: function() {
+      this.slots = [];
+      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
+      this.slots = this.all.filter(t => t.date.toDate().toLocaleDateString().split("/").reverse().join("-") == date)
+    }
   },
   created() {
     this.fetchItems();
     this.getZoomString();
-    console.log(this.currDoctor);
   },
 };
 </script>
