@@ -53,7 +53,7 @@ export default {
         this.$router.push("/patientlogin");
       },
         fetchItems: function () {
-          console.log(this.clinic)
+          
           console.log(this.patientId)
             database
                 .collection("patients")
@@ -62,7 +62,11 @@ export default {
                 .then((querySnapShot) => {
                     let item = {};
                     item = querySnapShot.data().notes[this.clinic];
-                    this.itemsList.push(item[this.apptDate]);
+                    if(item[this.apptDate] != undefined) {
+                      if (Object.keys(item[this.apptDate]).length !== 0) {
+                        this.itemsList.push(item[this.apptDate]);
+                      }
+                    }
                 });
         },
 
