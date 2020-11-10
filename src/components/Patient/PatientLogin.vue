@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container">
   <HelloWorld v-bind:about="true"></HelloWorld>
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
@@ -22,7 +22,7 @@
             </div>
           </div>
           <!-- <HelloWorld msg="Welcome to E-Clinic"/> -->
-          <form class="login">
+          <form class="login" v-if="!validationErrors.length">
             <div class="field">
               <label class="label">E-mail</label>
               <div class="control">
@@ -102,7 +102,7 @@ export default {
       }
       // password validation
       if (!this.password) {
-        this.validationErrors.push("<strong>Password</strong> cannot be empty");
+        this.validationErrors.push("<strong>Password</strong> cannot be empty.");
       }
       // when valid then sign in
       if (this.validationErrors.length <= 0) {
@@ -123,11 +123,18 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
 
+#container {
+  position: relative;
+}
+
 .login {
+  position: absolute;
   background-color: white;
   width: 380px;
   height: 300px;
   margin: auto;
+  right: 0px;
+  bottom: -50px;
   border-radius: 20px;
   box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
   margin-bottom: 50px;
@@ -135,8 +142,12 @@ export default {
 }
 
 .card-content {
+  position: absolute;
+  font-family: Nunito;
   width: 380px;
   height: 300px;
+  right: 80px;
+  bottom: 60px;
   margin: auto;
   border-radius: 20px;
   margin-top: -400px;

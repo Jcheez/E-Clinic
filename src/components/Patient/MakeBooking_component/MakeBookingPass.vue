@@ -95,55 +95,7 @@ export default {
               this.slot = temp2
             });
         },
-        fetchitems2: function() {
-          database
-          .collection("consultslots")
-          .where("clinic", "==", this.clinic)
-          .orderBy("date")
-          .get()
-          .then((querySnapShot) => {
-              let temp2 = []
-              this.docsName = []
-              let item = {};
-            querySnapShot.forEach((doc) => {
-                item = doc.data();
-                let item_date = item.date
-                .toDate()
-                .toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-");
-                
-                let filtered_date = this.date.toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-")
-
-
-                if (item.patient == null && new Date() <= item.date.toDate()) {
-                  
-                    let item2 = item
-                    item2.id = doc.id;
-                    database
-                    .collection("doctors")
-                    .doc(item.doctor)
-                    .get()
-                    .then((doc) => {
-                      let docName = doc.data().name;
-                      console.log(docName)
-                      item2.doctorName = docName
-                      console.log(item)
-                      if (item_date.localeCompare(filtered_date) == 0) {
-                      temp2.push(item2);
-                      if (this.docsName.includes(docName) == false){
-                        this.docsName.push(docName)
-                      }}
-                    })
-                } 
-              });
-              this.slot = temp2
-            });
-        },
+        
       formatDate: function(date) {
           let ldate = date.toDate().toLocaleDateString().split("/")
           let i0 = ldate[0]
@@ -264,7 +216,15 @@ export default {
   },
   watch: {
     date: function () {
-      this.fetchitems2()
+      this.slot = [];
+      this.docsName = []
+      console.log(this.all)
+      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
+      console.log(date)
+      this.slot = this.all.filter(t => t.date.toDate().toLocaleDateString().split("/").reverse().join("-") == date)
+      for (var s of this.slot) {
+        this.docsName.push(s.doctorName)
+      }
     },
   },
   props: {
