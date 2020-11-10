@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>{{ msg }}</p>
-    <v-date-picker v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
+    <v-date-picker :attributes='attributes' v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
     <ul id="slots">
       <li v-for="(s, index) in this.docsName" :key="index">
         <div id="inner">
@@ -29,17 +29,29 @@ export default {
         datadoc: {},
         docsName: [],
         apptHist :{},
+        all: []
     };
   },
-  
+  computed: {
+    attributes() {
+      return this.all.map(t => ({
+        //key: `todo.${t.id}`,
+        dot: true,
+        dates: t.date.toDate(),
+        customData: t,
+      }));
+    },
+  },
   methods: {
       fetchitems: function() {
           database
           .collection("consultslots")
+          .where("clinic", "==", this.clinic)
           .orderBy("date")
           .get()
           .then((querySnapShot) => {
-              this.slot = []
+              let temp = []
+              let temp2 = []
               this.docsName = []
               let item = {};
             querySnapShot.forEach((doc) => {
@@ -56,8 +68,9 @@ export default {
                 .reverse()
                 .join("-")
 
-                if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
-                  if (new Date() <= item.date.toDate()) {
+
+                if (item.patient == null && new Date() <= item.date.toDate()) {
+                  
                     let item2 = item
                     item2.id = doc.id;
                     database
@@ -69,16 +82,66 @@ export default {
                       console.log(docName)
                       item2.doctorName = docName
                       console.log(item)
-                      this.slot.push(item2);
+                      temp.push(item2)
+                      if (item_date.localeCompare(filtered_date) == 0) {
+                      temp2.push(item2);
                       if (this.docsName.includes(docName) == false){
                         this.docsName.push(docName)
-                      }
-                      });
+                      }}
+                    })
+                } 
+              });
+              this.all = temp
+              this.slot = temp2
+            });
+        },
+        fetchitems2: function() {
+          database
+          .collection("consultslots")
+          .where("clinic", "==", this.clinic)
+          .orderBy("date")
+          .get()
+          .then((querySnapShot) => {
+              let temp2 = []
+              this.docsName = []
+              let item = {};
+            querySnapShot.forEach((doc) => {
+                item = doc.data();
+                let item_date = item.date
+                .toDate()
+                .toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-");
+                
+                let filtered_date = this.date.toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-")
 
-                      }
-                  }
+
+                if (item.patient == null && new Date() <= item.date.toDate()) {
                   
-                });
+                    let item2 = item
+                    item2.id = doc.id;
+                    database
+                    .collection("doctors")
+                    .doc(item.doctor)
+                    .get()
+                    .then((doc) => {
+                      let docName = doc.data().name;
+                      console.log(docName)
+                      item2.doctorName = docName
+                      console.log(item)
+                      if (item_date.localeCompare(filtered_date) == 0) {
+                      temp2.push(item2);
+                      if (this.docsName.includes(docName) == false){
+                        this.docsName.push(docName)
+                      }}
+                    })
+                } 
+              });
+              this.slot = temp2
             });
         },
       formatDate: function(date) {
@@ -201,7 +264,7 @@ export default {
   },
   watch: {
     date: function () {
-      this.fetchitems();
+      this.fetchitems2()
     },
   },
   props: {
