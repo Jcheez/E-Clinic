@@ -264,7 +264,16 @@ export default {
   },
   watch: {
     date: function () {
-      this.fetchitems2()
+      //this.fetchitems2()
+      this.slot = [];
+      this.docsName = []
+      console.log(this.all)
+      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
+      console.log(date)
+      this.slot = this.all.filter(t => t.date.toDate().toLocaleDateString().split("/").reverse().join("-") == date)
+      for (var s of this.slot) {
+        this.docsName.push(s.doctorName)
+      }
     },
   },
   props: {
