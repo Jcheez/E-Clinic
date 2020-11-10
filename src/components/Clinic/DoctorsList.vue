@@ -108,9 +108,9 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: 2px;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -141,7 +141,7 @@ h3 {
   letter-spacing: 4px;
   color: white;
   font-weight: bolder;
-  padding: 10px 0px 20px 0px;
+  padding: 10px 0px 0px 0px;
 }
 
 li {

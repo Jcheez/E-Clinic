@@ -13,23 +13,37 @@
     <div id="emptyDiv" v-if="itemsList.length == 0">
       There are no pending bookings by patients.
     </div>
-    <div id = "main">
+    <div id="main">
       <ul>
         <template v-for="(patient, x) in itemsList">
           <li v-bind:key="x">
             <div id="inner">
               <span>{{ "Patient: " + patient.patientId }}</span>
-              <span v-if="patient.firstTime">Reason: <br>First Time Patient</span>
-              <span v-if="patient.physical">Reason: <br>Physical Examination Required</span>
+              <span v-if="patient.firstTime"
+                >Reason: <br />First Time Patient</span
+              >
+              <span v-if="patient.physical"
+                >Reason: <br />Physical Examination Required</span
+              >
             </div>
-            <button class = "button" v-if="patient.physical && patient.firstTime">
-              <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-              See Details
+            <button
+              class="seeDetailsbutton"
+              v-if="patient.physical && patient.firstTime"
+            >
+              <router-link
+                :to="{ name: 'resolve', params: { patientDetails: patient } }"
+              >
+                See Details
               </router-link>
             </button>
-            <button class = "button" v-else-if="patient.physical || patient.firstTime">
-              <router-link :to="{ name:'resolve', params: {patientDetails: patient}}">
-              See Details
+            <button
+              class="seeDetailsbutton"
+              v-else-if="patient.physical || patient.firstTime"
+            >
+              <router-link
+                :to="{ name: 'resolve', params: { patientDetails: patient } }"
+              >
+                See Details
               </router-link>
             </button>
           </li>
@@ -50,7 +64,7 @@ export default {
     return {
       /* when clinic login is complete, remember to props clinic name / something unique
        * otherwise doctors will be able to see pending bookings of all clinic
-       */ 
+       */
       msg: "Pending Booking",
       itemsList: [],
       name: "",
@@ -67,43 +81,54 @@ export default {
       this.$router.push("/cliniclogin");
     },
     fetchItems: function () {
-      console.log(this.itemsList)
+      console.log(this.itemsList);
       let x = this.getUser.displayName;
       database.collection("pendingbooking").onSnapshot((res) => {
-          const changes = res.docChanges();
+        const changes = res.docChanges();
 
-          changes.forEach((change) => {
-            //console.log(change.doc.data())
-            if (change.doc.data().clinic == x) {
-              if (change.type === "added") {
-                this.itemsList.push(change.doc.data());
-              } else if (change.type === "modified") {
-                this.itemsList = this.itemsList.filter(
-                  (item) => item.patientId.localeCompare(change.doc.data().patientId) !== 0
-                );
-                this.itemsList.push(change.doc.data());
-              } else if (change.type === "removed") {
-                this.itemsList = this.itemsList.filter(
-                  (item) => item.patientId.localeCompare(change.doc.data().patientId) !== 0
-                );
-              }
+        changes.forEach((change) => {
+          //console.log(change.doc.data())
+          if (change.doc.data().clinic == x) {
+            if (change.type === "added") {
+              this.itemsList.push(change.doc.data());
+            } else if (change.type === "modified") {
+              this.itemsList = this.itemsList.filter(
+                (item) =>
+                  item.patientId.localeCompare(change.doc.data().patientId) !==
+                  0
+              );
+              this.itemsList.push(change.doc.data());
+            } else if (change.type === "removed") {
+              this.itemsList = this.itemsList.filter(
+                (item) =>
+                  item.patientId.localeCompare(change.doc.data().patientId) !==
+                  0
+              );
             }
+          }
+        });
+      });
+
+      database
+        .collection("pendingbooking")
+        .get()
+        .then((querySnapShot) => {
+          let item = {};
+          querySnapShot.forEach((doc) => {
+            item = doc.data().patientId;
+            //console.log(item)
+            database
+              .collection("patients")
+              .doc(item)
+              .get()
+              .then((doc2) => {
+                //console.log(doc2.data())
+                let itema = doc2.data();
+                this.name = itema.name;
+              });
           });
         });
-
-      database.collection("pendingbooking").get().then((querySnapShot) => {
-        let item = {};
-        querySnapShot.forEach((doc) => {
-          item = doc.data().patientId;
-          //console.log(item)
-          database.collection("patients").doc(item).get().then((doc2) => {
-            //console.log(doc2.data())
-            let itema = doc2.data();
-            this.name = itema.name;
-          })
-        });
-      })
-    }
+    },
   },
   created() {
     this.fetchItems();
@@ -134,20 +159,18 @@ h4 {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing: 2px;
-  margin: 60px 0 0 0;
-  text-decoration: none;
-  font-weight: bold;
   display: inline-block;
+  margin: 50px 0 0 0;
+  text-decoration: none;
 }
 
 #sideNavBar a:hover {
-  font-size: 17px;
+  font-size: 18px;
   color: white;
   cursor: pointer;
 }
-
 #sideNavBar {
   width: 180px;
   position: fixed;
@@ -159,6 +182,8 @@ h4 {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 div #inner {
@@ -171,8 +196,8 @@ div #inner {
   font-size: 24px;
   letter-spacing: 4px;
   color: white;
-  font-weight: bolder;
-  padding: 10px 0px 20px 0px;
+  font-weight: bold;
+  padding: 10px 0px 0px 0px;
 }
 
 ul {
@@ -185,7 +210,7 @@ li {
   width: 400px;
   height: 150px;
   border-radius: 4px;
-  box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
   padding: 10px 0 0 0;
@@ -206,21 +231,21 @@ li a {
   text-decoration: none;
 }
 
-div#emptyDiv{
-    position:absolute;
-    top:150px;
-    left: 250px;
-    height: 40px;
-    width: 400px;
-    font-size: 18px;
-    font-family: Nunito;
-    white-space: nowrap;
-    padding: 20px 10px 0px 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+div#emptyDiv {
+  position: absolute;
+  top: 150px;
+  left: 250px;
+  height: 40px;
+  width: 400px;
+  font-size: 18px;
+  font-family: Nunito;
+  white-space: nowrap;
+  padding: 20px 10px 0px 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
 }
 
-.button {
+.seeDetailsbutton {
   transition: box-shadow 0.3s;
   transition: 0.3s;
   background-color: rgb(0, 114, 180);
@@ -232,7 +257,7 @@ div#emptyDiv{
   border-radius: 5px;
 }
 
-.button:hover {
+.seeDetailsbutton:hover {
   cursor: pointer;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }

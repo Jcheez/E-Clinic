@@ -15,7 +15,7 @@
 
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
-      <label>Update Phone number:</label>
+      <label>Update Phone Number:</label>
     </div>
     <div id="inputFields">
       <input
@@ -43,14 +43,16 @@
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
     ><button id="submitPW" v-on:click="changePassword">Update Password</button>
-    <button id="submitPhoneNum" v-on:click="changePhoneNum">Update Phone Number</button>
+    <button id="submitPhoneNum" v-on:click="changePhoneNum">
+      Update Phone Number
+    </button>
     <!--/div-->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import database from "../../firebase.js"
+import database from "../../firebase.js";
 
 export default {
   data() {
@@ -118,18 +120,18 @@ export default {
 
     changePhoneNum() {
       if (this.phonenum.length != 8) {
-        alert("Phone number requires 8 digits.")
+        alert("Phone number requires 8 digits.");
       } else {
         database
-        .collection("patients")
-        .doc(localStorage.getItem("uidPatient"))
-        .update({
-          phoneNumber: this.phonenum
-        }).then(() => {
-          alert("Phone Number updated")
-        })
+          .collection("patients")
+          .doc(localStorage.getItem("uidPatient"))
+          .update({
+            phoneNumber: this.phonenum,
+          })
+          .then(() => {
+            alert("Phone Number updated");
+          });
       }
-      
     },
   },
 };
@@ -137,26 +139,36 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-a {
+
+#sideNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  padding: 10px 0px 0px 0px;
+  margin: 40px 0 0;
+}
+#sideNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: 2px;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
+  width: 90%;
 }
 
-a:hover {
+#sideNavBar a:hover {
   font-size: 18px;
   color: white;
   cursor: pointer;
 }
-
 #sideNavBar {
-  width: 180px;
+  width: 250px;
   position: fixed;
   top: 0;
   left: 0;

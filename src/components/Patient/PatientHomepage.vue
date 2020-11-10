@@ -1,35 +1,31 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <ul>
+    <div id="sideNavBar">
+      <h3>E-Clinic</h3>
 
-      <li>
-        <router-link to="/makebooking">Go to Make Booking</router-link>
-      </li>
-      <li>
-        <router-link to="/pending">See Pending Booking</router-link>
-      </li>
-      <li>
-        <router-link to="/viewdocuments">View Documents</router-link>
-      </li>
-      <li>
-        <router-link to="/viewappt">View Appointment</router-link>
-      </li>
-      <li>
-        <router-link to="/managepayments">Go to Manage Payments</router-link>
-      </li>
-      <li>
-        <router-link to="/patientsettings">Settings</router-link>
-      </li>
-    </ul>
-    <a @click="signOut" class="button is-primary">Logout</a>
+      <router-link to="/makebooking">Make A Booking</router-link>
+
+      <router-link to="/pending">Pending Booking</router-link>
+
+      <router-link to="/viewdocuments">View Documents</router-link>
+
+      <router-link to="/viewappt">View Appointments</router-link>
+
+      <router-link to="/managepayments">Manage Payments</router-link>
+
+      <router-link to="/patientsettings">Settings</router-link>
+
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+
     <notifications></notifications>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import notifications from "./notification component/notifications.vue"
+import notifications from "./notification component/notifications.vue";
 
 export default {
   name: "patienthome",
@@ -48,25 +44,53 @@ export default {
   },
 
   components: {
-    notifications
-  }
+    notifications,
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
+#sideNavBar a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 17px;
+  letter-spacing: 2px;
+  margin: 50px 0 0 0;
+  text-decoration: none;
+  font-weight: bold;
   display: inline-block;
-  margin: 0 10px;
+  width: 90%;
 }
-a {
-  color: #42b983;
+
+#sideNavBar a:hover {
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+
+#sideNavBar {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+  height: 100%;
+}
+
+h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  padding: 10px 0px 0px 0px;
+  margin: 40px 0 0;
 }
 </style>

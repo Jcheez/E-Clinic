@@ -1,20 +1,5 @@
 <template>
   <div class="hello">
-    <!-- <ul>
-      <li>
-        <router-link to="/pendingbooking">Go to Pending Booking</router-link>
-      </li>
-      <li>
-        <router-link to="/patientsnotes">Go to Patient Notes</router-link>
-      </li>
-      <li>
-        <router-link to="/appointment">Appointment Page</router-link>
-      </li>
-      <li>
-        <router-link to="/doctorsettings">Doctor's Settings</router-link>
-      </li>
-    </ul> -->
-
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -30,26 +15,34 @@
       <div v-if="isUserAuth" id="monthlyPatient">
         <mp></mp>
       </div>
-      <router-link to="/pendingbooking">
-      <div v-if="isUserAuth" id="verify">
-        Total Patients to Verify:<br /><br />
-        <p>{{ numOfPatientsToVerify() }}</p>
-        As of today
+
+      <div id="rhs">
+        <div v-if="isUserAuth" id="verify">
+          <router-link to="/pendingbooking" id="numberBoxToPending">
+            Total Patients to Verify:<br /><br />
+            <p>{{ numOfPatientsToVerify() }}</p>
+            As of today
+          </router-link>
+        </div>
+
+        <br />
+
+        <div v-if="isUserAuth" id="physical">
+          <router-link to="/pendingbooking" id="numberBoxToPending">
+            Total Patients to Arrange Physical Consultations:<br /><br />
+            <p>{{ numOfPatientsPhysical() }}</p>
+            As of today
+          </router-link>
+        </div>
       </div>
-      </router-link>
-      <br />
-      <router-link to="/pendingbooking">
-      <div v-if="isUserAuth" id="physical">
-        Total Patients to Arrange Physical Consultations:<br /><br />
-        <p>{{ numOfPatientsPhysical() }}</p>
-        As of today
-      </div>
-      </router-link>
-      <div v-if="isUserAuth" id="monthlyRev">
-        <linechart></linechart>
-      </div>
-      <div v-if="isUserAuth" id="rating">
-        <ratingchart></ratingchart>
+
+      <div id="bottom-half">
+        <div v-if="isUserAuth" id="monthlyRev">
+          <linechart></linechart>
+        </div>
+        <div v-if="isUserAuth" id="rating">
+          <ratingchart></ratingchart>
+        </div>
       </div>
     </div>
   </div>
@@ -111,21 +104,21 @@ export default {
       return this.countPhysical;
     },
 
-    getClinicName: function() {
+    getClinicName: function () {
       database
-      .collection("clinics")
-      .doc(localStorage.getItem("uidClinic"))
-      .get()
-      .then((doc) => {
-        localStorage.setItem("clinicName", doc.data().name)
-      })
+        .collection("clinics")
+        .doc(localStorage.getItem("uidClinic"))
+        .get()
+        .then((doc) => {
+          localStorage.setItem("clinicName", doc.data().name);
+        });
     },
   },
 
   created() {
-    this.getClinicName()
-  }
-}
+    this.getClinicName();
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -145,12 +138,11 @@ a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing: 2px;
   display: inline-block;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
-  font-weight: bold;
 }
 
 a:hover {
@@ -177,7 +169,20 @@ a:hover {
   padding: 10px 10px 10px 16px;
   border-radius: 10px;
 }
-
+#rhs {
+  position: absolute;
+  left: 970px;
+  top: 0px;
+  width: 250px;
+}
+#numberBoxToPending {
+  margin: 0px;
+  width: 220px;
+  height: 150px;
+  left: 830px;
+  font-size: 15px;
+  display: block;
+}
 #verify p {
   font-size: 38px;
   font-weight: bold;
@@ -199,7 +204,7 @@ a:hover {
   width: 220px;
   height: 140px;
   margin-left: -180px;
-  margin-top: 28px;
+  margin-top: 45px;
   padding: 12px 10px 10px 16px;
   border-radius: 10px;
 }
@@ -216,26 +221,37 @@ a:hover {
 
 #monthlyPatient {
   height: 100%;
-  width: 500px;
+  width: 550px;
   /* border-style: solid;
   border-color: rgb(0, 114, 180);
   border-width: 1px; */
-  padding: 0px 30px;
+  padding: 0px 30px 30px;
   margin: 10px;
   float: left;
 }
 
-#monthlyRev,
-#rating {
+#monthlyRev {
   height: 100%;
-  width: 360px;
-  /* border-style: solid;
-  border-color: rgb(0, 114, 180);
-  border-width: 1px; */
-  padding: 0px 30px;
+  width: 380px;
+  padding: 0px 20px 30px;
   margin: 10px;
   display: inline-block;
   float: left;
+}
+#rating {
+  height: 100%;
+  width: 400px;
+  padding: 0px 20px;
+  margin: 10px;
+  display: inline-block;
+  float: left;
+}
+#bottom-half {
+  position: absolute;
+  height: 400px;
+  top: 450px;
+  left: 260px;
+  display: block;
 }
 /*#rating {
   height: 240px;
@@ -256,6 +272,8 @@ a:hover {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 #sideNavBar h3 {
@@ -264,7 +282,7 @@ a:hover {
   letter-spacing: 4px;
   color: white;
   font-weight: bold;
-  padding: 10px 0px 20px 0px;
+  padding: 10px 0px 0px 0px;
 }
 
 .main {
