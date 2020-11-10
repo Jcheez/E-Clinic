@@ -3,11 +3,19 @@
     <h1>Patient Settings</h1>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
-      <router-link to="/makebooking">Make Booking</router-link><br />
-      <router-link to="/pending">Pending Booking</router-link><br />
-      <router-link to="/viewdocuments">View Documents</router-link><br />
-      <router-link to="/viewappt">View Appointment</router-link><br />
-      <router-link to="/managepayments">Manage Payments</router-link><br />
+
+      <router-link to="/makebooking">Make A Booking</router-link>
+
+      <router-link to="/pending">Pending Booking</router-link>
+
+      <router-link to="/viewdocuments">View Documents</router-link>
+
+      <router-link to="/viewappt">View Appointments</router-link>
+
+      <router-link to="/managepayments">Manage Payments</router-link>
+
+      <router-link to="/patientsettings">Settings</router-link>
+
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="instructions">
