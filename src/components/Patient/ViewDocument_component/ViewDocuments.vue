@@ -214,8 +214,8 @@ li {
   list-style-type: none; /* Remove bullets */
   padding: 10px 0 0 0;
   display: block;
-  left: 320px;
-  position: absolute;
+  left: 270px;
+  position: relative;
 }
 
 span {
