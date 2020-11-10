@@ -17,137 +17,141 @@
 
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <h3>Please Choose a Clinic:</h3>
-    <select v-model="selected">
-      <option
-        v-for="(clinic, x) in clinics"
-        v-bind:value="clinic.name"
-        v-bind:key="x"
+    <div id="main">
+      <h3>Please Choose a Clinic:</h3>
+      <select v-model="selected">
+        <option
+          v-for="(clinic, x) in clinics"
+          v-bind:value="clinic.name"
+          v-bind:key="x"
+        >
+          {{ clinic.name }}
+        </option>
+      </select>
+      <br />
+      <span v-if="selected"
+        >You have selected:
+        <div
+          style="
+            font-family: Nunito;
+            color: rgb(0, 114, 180);
+            display: inline-block;
+          "
+        >
+          {{ selected }}
+        </div></span
       >
-        {{ clinic.name }}
-      </option>
-    </select>
-    <br />
-    <span v-if="selected"
-      >You have selected:
-      <div
-        style="
-          font-family: Nunito;
-          color: rgb(0, 114, 180);
-          display: inline-block;
-        "
-      >
-        {{ selected }}
-      </div></span
-    >
-    <br />
-    <h3>Please Select the Conditions You Are Experiencing:</h3>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Fever"
-        value="Fever"
-        v-model="checkedConditions"
-      />
-      <label for="Fever">Fever</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Cough"
-        value="Cough"
-        v-model="checkedConditions"
-      />
-      <label for="Cough">Cough</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Runny Nose"
-        value="Runny Nose"
-        v-model="checkedConditions"
-      />
-      <label for="Runny Nose">Runny Nose</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Sore Throat"
-        value="Sore Throat"
-        v-model="checkedConditions"
-      />
-      <label for="Sore Throat">Sore Throat</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Chest Pain"
-        value="Chest Pain"
-        v-model="checkedConditions"
-      />
-      <label for="Chest Pain">Chest Pain</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Diarrhoea"
-        value="Diarrhoea"
-        v-model="checkedConditions"
-      />
-      <label for="Diarrhoea">Diarrhoea</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Skin Conditions"
-        value="Skin Conditions"
-        v-model="checkedConditions"
-      />
-      <label for="Skin Conditions">Skin Conditions</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="High Blood Pressure"
-        value="High Blood Pressure"
-        v-model="checkedConditions"
-      />
-      <label for="High Blood Pressure">High Blood Pressure</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Diabetes"
-        value="Diabetes"
-        v-model="checkedConditions"
-      />
-      <label for="Diabetes">Diabetes</label>
-    </div>
-    <div id="conditionSet">
-      <input
-        type="checkbox"
-        id="Family Planning"
-        value="Family Planning"
-        v-model="checkedConditions"
-      />
-      <label for="Family Planning">Family Planning</label>
-    </div>
+      <br />
+      <h3>Please Select the Conditions You Are Experiencing:</h3>
+      <div id="allconditions">
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Fever"
+            value="Fever"
+            v-model="checkedConditions"
+          />
+          <label for="Fever">Fever</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Cough"
+            value="Cough"
+            v-model="checkedConditions"
+          />
+          <label for="Cough">Cough</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Runny Nose"
+            value="Runny Nose"
+            v-model="checkedConditions"
+          />
+          <label for="Runny Nose">Runny Nose</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Sore Throat"
+            value="Sore Throat"
+            v-model="checkedConditions"
+          />
+          <label for="Sore Throat">Sore Throat</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Chest Pain"
+            value="Chest Pain"
+            v-model="checkedConditions"
+          />
+          <label for="Chest Pain">Chest Pain</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Diarrhoea"
+            value="Diarrhoea"
+            v-model="checkedConditions"
+          />
+          <label for="Diarrhoea">Diarrhoea</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Skin Conditions"
+            value="Skin Conditions"
+            v-model="checkedConditions"
+          />
+          <label for="Skin Conditions">Skin Conditions</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="High Blood Pressure"
+            value="High Blood Pressure"
+            v-model="checkedConditions"
+          />
+          <label for="High Blood Pressure">High Blood Pressure</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Diabetes"
+            value="Diabetes"
+            v-model="checkedConditions"
+          />
+          <label for="Diabetes">Diabetes</label>
+        </div>
+        <div id="conditionSet">
+          <input
+            type="checkbox"
+            id="Family Planning"
+            value="Family Planning"
+            v-model="checkedConditions"
+          />
+          <label for="Family Planning">Family Planning</label>
+        </div>
+      </div>
+      <br />
+      <span id="selectedCon">Checked Conditions: {{ checkedConditions }}</span>
+      <br />
+      <br />
 
-    <br />
-    <span>Checked Conditions: {{ checkedConditions }}</span>
-    <br />
-    <br />
-    <div id="buttons">
-      <p id="error">{{ this.errorstring }}</p>
-      <button @click="next">Next</button>
-      <button id="home" v-on:click="routeHome()">Back to Home</button>
+      <div id="buttons">
+        <p id="error">{{ this.errorstring }}</p>
+        <button @click="next">Next</button>
+        <button id="home" v-on:click="routeHome()">Back to Home</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import database from "../../../firebase.js";
-
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -171,6 +175,11 @@ export default {
   methods: {
     routeHome: function () {
       this.$router.push("/patienthome");
+    },
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/cliniclogin");
     },
 
     next: function () {
@@ -327,6 +336,20 @@ p#error {
   color: red;
   font-family: Nunito;
 }
+#main {
+  position: absolute;
+  width: 80%;
+  left: 200px;
+  align-items: center;
+}
+span {
+  font-size: 18px;
+}
+#allconditions {
+  width: 700px;
+  left: 250px;
+  position: absolute;
+}
 #sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
@@ -367,10 +390,10 @@ p#error {
   color: rgb(238, 249, 255);
 }
 #conditionSet {
-  display: block;
-  width: 250px;
+  display: inline-block;
+  width: 300px;
   margin: 20px;
-  margin-left: 500px;
+  left: 450px;
   font-family: Nunito;
 }
 input[type="checkbox"] {
@@ -387,12 +410,14 @@ label {
   font-family: Nunito;
   width: 170px;
   text-align: left;
+  font-size: 18px;
 }
 select {
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
   width: 200px;
   height: 30px;
   font-family: Nunito;
+  font-size: 18px;
 }
 
 #home {
@@ -403,6 +428,7 @@ select {
   width: 600px;
   left: 300px;
   position: absolute;
+  top: 600px;
 }
 button {
   transition: 0.3s;
@@ -430,7 +456,12 @@ button:hover {
   color: rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
 }
-span {
+#selectedCon {
   font-family: Nunito;
+  position: absolute;
+  left: 280px;
+  font-size: 18px;
+  top: 550px;
+  text-align: left;
 }
 </style>
