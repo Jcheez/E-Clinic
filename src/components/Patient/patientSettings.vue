@@ -15,7 +15,7 @@
 
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
-      <label>Update Phone number:</label>
+      <label>Update Phone Number:</label>
     </div>
     <div id="inputFields">
       <input
@@ -43,14 +43,16 @@
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
     ><button id="submitPW" v-on:click="changePassword">Update Password</button>
-    <button id="submitPhoneNum" v-on:click="changePhoneNum">Update Phone Number</button>
+    <button id="submitPhoneNum" v-on:click="changePhoneNum">
+      Update Phone Number
+    </button>
     <!--/div-->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import database from "../../firebase.js"
+import database from "../../firebase.js";
 
 export default {
   data() {
@@ -118,18 +120,18 @@ export default {
 
     changePhoneNum() {
       if (this.phonenum.length != 8) {
-        alert("Phone number requires 8 digits.")
+        alert("Phone number requires 8 digits.");
       } else {
         database
-        .collection("patients")
-        .doc(localStorage.getItem("uidPatient"))
-        .update({
-          phoneNumber: this.phonenum
-        }).then(() => {
-          alert("Phone Number updated")
-        })
+          .collection("patients")
+          .doc(localStorage.getItem("uidPatient"))
+          .update({
+            phoneNumber: this.phonenum,
+          })
+          .then(() => {
+            alert("Phone Number updated");
+          });
       }
-      
     },
   },
 };
