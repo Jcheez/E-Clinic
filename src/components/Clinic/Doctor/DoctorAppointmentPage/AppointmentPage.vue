@@ -64,6 +64,7 @@ export default {
       text: "Add Slots",
       zoomString: "",
       all: [],
+      show: []
     };
   },
   props: {
@@ -73,7 +74,7 @@ export default {
   },
   computed: {
     attributes() {
-      return this.all.map((t) => ({
+      return this.show.map((t) => ({
         //key: `todo.${t.id}`,
         dot: t.dot,
         dates: t.date.toDate(),
@@ -93,7 +94,9 @@ export default {
     fetchItems: function () {
       let temp = [];
       let temp2 = [];
-      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
+      let temp3 = {}
+      let temp4 = [];
+      let date = this.date.getDate() + this.date.getMonth() + this.date.getFullYear();
       //console.log(this.currDoctor);
       database
         .collection("consultslots")
@@ -114,7 +117,9 @@ export default {
               .split("/")
               .reverse()
               .join("-");*/
-            let item_date = item.date.toDate().getTime();
+            let item_year = item.date.toDate().getFullYear()
+            let item_month = item.date.toDate().getMonth()
+            let item_day = item.date.toDate().getDate()
             item.id = doc.id;
             item.hover = false;
             item.reschedule = false;
@@ -124,16 +129,36 @@ export default {
               item.dot = "green";
             }
             let today = new Date();
-            if (item_date >= today.getTime()) {
-              //today.toLocaleDateString().split("/").reverse().join("-")) {
-              temp.push(item);
+            if (item_year >= today.getFullYear()) {
+              if (item_month > today.getMonth() | (item_month == today.getMonth() && item_day >= today.getDate())) {
+                temp.push(item);
+                if (temp3[item_year + " " + item_month + " " + item_day] == undefined) {
+                  temp3[item_year + " " + item_month + " " + item_day] = [item]
+                } else {
+                  temp3[item_year + " " + item_month + " " + item_day].push(item)
+                }
+              }
             }
-            if (item_date == date) {
+            if (item_year + item_month + item_day == date) {
               temp2.push(item);
             }
           });
           this.all = temp;
           this.slots = temp2;
+          for (var s in temp3) {
+            while (temp3[s].length > 3) {
+              if (temp3[s][0].patient) {
+                let item = temp3[s][0]
+                temp3[s].pop()
+                temp3[s].push(item)
+              }
+              temp3[s].pop()
+            }
+            for (var ss in temp3[s]) {
+              temp4.push(temp3[s][ss])
+            }
+          }
+          this.show = temp4
         });
     },
     getZoomString: function () {
@@ -164,12 +189,11 @@ export default {
     },
     date: function () {
       this.slots = [];
-      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
-      this.slots = this.all.filter(
-        (t) =>
-          t.date.toDate().toLocaleDateString().split("/").reverse().join("-") ==
-          date
-      );
+      let date = this.date.getDate() + this.date.getMonth() + this.date.getFullYear();
+      this.slots = this.all.filter(t => {
+      let t_date = t.date.toDate().getDate() + t.date.toDate().getMonth() + t.date.toDate().getFullYear()
+      return t_date == date
+      })
     },
   },
   created() {
