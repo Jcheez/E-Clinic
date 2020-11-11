@@ -15,7 +15,12 @@
     </div>
 
     <div class="leftColumn">
-      <v-date-picker :attributes='attributes' v-model="date" is-inline :min-date="new Date()" />
+      <v-date-picker
+        :attributes="attributes"
+        v-model="date"
+        is-inline
+        :min-date="new Date()"
+      />
       <join-zoom class="zoom" v-bind:zoomlink="zoomString"></join-zoom>
       <schedule v-bind:consultData="slots" class="schedule" />
     </div>
@@ -68,7 +73,7 @@ export default {
   },
   computed: {
     attributes() {
-      return this.all.map(t => ({
+      return this.all.map((t) => ({
         //key: `todo.${t.id}`,
         dot: t.dot,
         dates: t.date.toDate(),
@@ -86,8 +91,8 @@ export default {
       this.$router.push("/cliniclogin");
     },
     fetchItems: function () {
-      let temp = []
-      let temp2 = []
+      let temp = [];
+      let temp2 = [];
       let date = this.date.toLocaleDateString().split("/").reverse().join("-");
       //console.log(this.currDoctor);
       database
@@ -103,31 +108,33 @@ export default {
               hover: false 
               }, { merge: true });*/
             item = doc.data();
-            let item_date = item.date
+            /*let item_date = item.date
               .toDate()
               .toLocaleDateString()
               .split("/")
               .reverse()
-              .join("-");
+              .join("-");*/
+            let item_date = item.date.toDate().getTime();
             item.id = doc.id;
             item.hover = false;
             item.reschedule = false;
             if (item.patient) {
-              item.dot = 'red'
+              item.dot = "red";
             } else {
-              item.dot ='green'
+              item.dot = "green";
             }
-            let today = new Date()
-            if (item_date >= today.toLocaleDateString().split("/").reverse().join("-")) {
-              temp.push(item)
+            let today = new Date();
+            if (item_date >= today.getTime()) {
+              //today.toLocaleDateString().split("/").reverse().join("-")) {
+              temp.push(item);
             }
             if (item_date == date) {
               temp2.push(item);
             }
-          })
-          this.all = temp
-          this.slots = temp2
-        })
+          });
+          this.all = temp;
+          this.slots = temp2;
+        });
     },
     getZoomString: function () {
       database
@@ -155,11 +162,15 @@ export default {
         this.text = "Add Slots";
       }
     },
-    date: function() {
+    date: function () {
       this.slots = [];
       let date = this.date.toLocaleDateString().split("/").reverse().join("-");
-      this.slots = this.all.filter(t => t.date.toDate().toLocaleDateString().split("/").reverse().join("-") == date)
-    }
+      this.slots = this.all.filter(
+        (t) =>
+          t.date.toDate().toLocaleDateString().split("/").reverse().join("-") ==
+          date
+      );
+    },
   },
   created() {
     this.fetchItems();
