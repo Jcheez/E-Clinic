@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h4>Make A Booking</h4>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
 
@@ -18,29 +19,32 @@
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="main">
-      <h3>Please Choose a Clinic:</h3>
-      <select v-model="selected">
-        <option
-          v-for="(clinic, x) in clinics"
-          v-bind:value="clinic.name"
-          v-bind:key="x"
+      <div id="selectClinic">
+        <h3>Please Choose a Clinic:</h3>
+        <select v-model="selected">
+          <option
+            v-for="(clinic, x) in clinics"
+            v-bind:value="clinic.name"
+            v-bind:key="x"
+          >
+            {{ clinic.name }}
+          </option>
+        </select>
+        <br />
+        <span v-if="selected"
+          >You have selected:
+          <div
+            style="
+              font-family: Nunito;
+              color: rgb(0, 114, 180);
+              display: inline-block;
+              position: absolute;
+            "
+          >
+            {{ selected }}
+          </div></span
         >
-          {{ clinic.name }}
-        </option>
-      </select>
-      <br />
-      <span v-if="selected"
-        >You have selected:
-        <div
-          style="
-            font-family: Nunito;
-            color: rgb(0, 114, 180);
-            display: inline-block;
-          "
-        >
-          {{ selected }}
-        </div></span
-      >
+      </div>
       <br />
       <h3>Please Select the Conditions You Are Experiencing:</h3>
       <div id="allconditions">
@@ -341,6 +345,19 @@ p#error {
   width: 80%;
   left: 200px;
   align-items: center;
+  top: 100px;
+}
+h4 {
+  position: absolute;
+  left: 300px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+  top: 0px;
+}
+
+#selectClinic {
+  position: absolute;
 }
 span {
   font-size: 18px;
@@ -418,6 +435,8 @@ select {
   height: 30px;
   font-family: Nunito;
   font-size: 18px;
+  position: absolute;
+  left: 380px;
 }
 
 #home {

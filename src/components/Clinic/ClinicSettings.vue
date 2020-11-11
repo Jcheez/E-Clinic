@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1>Clinic Settings</h1>
+    <h4>Clinic Settings</h4>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -39,7 +39,7 @@
         placeholder="Enter New Interbank Account"
         id="interbank"
         v-model="interbank"
-      /><uploadQr></uploadQr>
+      /><uploadQr style="margin: 10px"></uploadQr>
     </div>
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
@@ -138,6 +138,19 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+h4 {
+  position: absolute;
+  left: 250px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+  top: 0px;
+}
 a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
@@ -198,16 +211,17 @@ input {
 #inputFields {
   width: 350px;
   display: block;
-  margin-top: 100px;
-  /*bottom: 300px;*/
+  /*margin-top: 100px;
+  bottom: 300px;*/
   position: absolute;
   left: 500px;
+  top: 160px;
 }
 #instructions {
   width: 300px;
   margin: 10px;
   left: 260px;
-  margin-top: 100px;
+  top: 150px;
   display: inline-block;
   height: 300px;
   float: left;
@@ -234,7 +248,7 @@ input {
   left: 850px;
   margin-bottom: 70px;
   height: 50px;
-  top: 180px;
+  top: 160px;
 }
 #submitPW {
   transition: 0.3s;
@@ -256,7 +270,7 @@ input {
   margin-left: 20px;
   height: 60px;
   left: 850px;
-  top: 330px;
+  top: 310px;
 }
 
 #submitInterBank {
@@ -279,7 +293,7 @@ input {
   margin-left: 20px;
   height: 60px;
   left: 850px;
-  top: 400px;
+  top: 385px;
 }
 button:hover {
   background-color: white;
