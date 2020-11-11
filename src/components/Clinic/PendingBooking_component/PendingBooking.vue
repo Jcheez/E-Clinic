@@ -18,12 +18,15 @@
         <template v-for="(patient, x) in itemsList">
           <li v-bind:key="x">
             <div id="inner">
-              <span>{{ "Patient: " + patient.patientId }}</span>
-              <span v-if="patient.firstTime"
-                >Reason: <br />First Time Patient</span
+              <span style="white-space:nowrap">{{ "Patient Id: " + patient.patientId }}</span>
+              <span v-if="patient.firstTime && patient.physical" style="white-space:nowrap"
+                >Reason: First Time Patient & Physical Examination Required</span
               >
-              <span v-if="patient.physical"
-                >Reason: <br />Physical Examination Required</span
+              <span v-else-if="patient.physical" style="white-space:nowrap"
+                >Reason: Physical Examination Required</span
+              >
+              <span v-else-if="patient.firstTime" style="white-space:nowrap"
+                >Reason: First Time Patient</span
               >
             </div>
             <button
@@ -39,6 +42,7 @@
             <button
               class="seeDetailsbutton"
               v-else-if="patient.physical || patient.firstTime"
+            
             >
               <router-link
                 :to="{ name: 'resolve', params: { patientDetails: patient } }"
@@ -207,14 +211,15 @@ ul {
 }
 
 li {
-  width: 400px;
-  height: 150px;
+  width: 550px;
+  height: 130px;
   border-radius: 4px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
-  padding: 10px 0 0 0;
+  padding: 10px 0 0 20px;
   display: block;
+  text-align: left;
 }
 
 span {
@@ -255,6 +260,10 @@ div#emptyDiv {
   color: white;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
+  position: relative;
+  top:55px;
+  left: 140px
+
 }
 
 .seeDetailsbutton:hover {
