@@ -186,6 +186,7 @@ export default {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  height: 100%;
 }
 label {
   color: black;

@@ -16,7 +16,7 @@
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
       <label>Update Interbank Account:</label>
-      <label>Update Qr Code: </label>
+      <label>Update QR Code: </label>
     </div>
     <div id="inputFields">
       <input
@@ -167,6 +167,7 @@ a:hover {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  height: 100%;
 }
 label {
   color: black;

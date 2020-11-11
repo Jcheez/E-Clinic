@@ -274,6 +274,7 @@ a:hover {
   color: rgb(238, 249, 255);
   font-weight: bold;
   letter-spacing: 2px;
+  height: 100%;
 }
 
 #sideNavBar h3 {

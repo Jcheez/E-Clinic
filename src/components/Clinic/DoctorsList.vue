@@ -26,7 +26,6 @@
       {{ text }}
     </button>
     <div id="manageDoc" v-if="status">
-      <!--class="manageDoc"-->
       <manageDoctor
         v-bind:doctors="this.doctors"
         @fetchItems="fetchItems"
@@ -104,6 +103,11 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+.docs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
