@@ -85,10 +85,11 @@ export default {
         console.log(index)
         this.consultData.splice(index, 1)
         console.log(this.consultData)
-        if (this.consultData.length == 0) {
-          this.$emit("fetchItems");
-        }
+        //if (this.consultData.length == 0) {
+        //  this.$emit("fetchItems");
+        //}
       }
+      this.$emit("fetchItems")
       let li = document.getElementById(removeData.id)
       li.parentNode.removeChild(li)
       
