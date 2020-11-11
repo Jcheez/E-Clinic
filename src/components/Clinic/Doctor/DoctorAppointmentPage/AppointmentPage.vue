@@ -96,7 +96,9 @@ export default {
       let temp2 = [];
       let temp3 = {}
       let temp4 = [];
-      let date = this.date.getDate() + this.date.getMonth() + this.date.getFullYear();
+      let date_year = this.date.getFullYear();
+      let date_month = this.date.getMonth()
+      let date_day = this.date.getDate()
       //console.log(this.currDoctor);
       database
         .collection("consultslots")
@@ -139,7 +141,7 @@ export default {
                 }
               }
             }
-            if (item_year + item_month + item_day == date) {
+            if (item_year == date_year && item_month == date_month && item_day == date_day) {
               temp2.push(item);
             }
           });
@@ -189,11 +191,11 @@ export default {
     },
     date: function () {
       this.slots = [];
-      let date = this.date.getDate() + this.date.getMonth() + this.date.getFullYear();
-      this.slots = this.all.filter(t => {
-      let t_date = t.date.toDate().getDate() + t.date.toDate().getMonth() + t.date.toDate().getFullYear()
-      return t_date == date
-      })
+      let date_year = this.date.getFullYear();
+      let date_month = this.date.getMonth()
+      let date_day = this.date.getDate()
+      this.slots = this.all.filter(t => t.date.toDate().getDate() == date_day && 
+      t.date.toDate().getMonth() == date_month && t.date.toDate().getFullYear() == date_year)
     },
   },
   created() {
