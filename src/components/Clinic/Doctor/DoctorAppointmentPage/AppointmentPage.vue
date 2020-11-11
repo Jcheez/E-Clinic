@@ -147,6 +147,7 @@ export default {
           });
           this.all = temp;
           this.slots = temp2;
+          console.log(temp3)
           for (var s in temp3) {
             while (temp3[s].length > 3) {
               if (temp3[s][0].patient) {

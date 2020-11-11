@@ -289,6 +289,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
@@ -311,6 +312,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
@@ -342,6 +344,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
@@ -371,6 +374,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }

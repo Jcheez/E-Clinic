@@ -29,12 +29,13 @@ export default {
         datadoc: {},
         docsName: [],
         apptHist :{},
-        all: []
+        all: [],
+        show: []
     };
   },
   computed: {
     attributes() {
-      return this.all.map(t => ({
+      return this.show.map(t => ({
         //key: `todo.${t.id}`,
         dot: true,
         dates: t.date.toDate(),
@@ -52,25 +53,27 @@ export default {
           .then((querySnapShot) => {
               let temp = []
               let temp2 = []
+              let temp3 = {}
+              let temp4 = [];
               this.docsName = []
               let item = {};
-            querySnapShot.forEach((doc) => {
+              querySnapShot.forEach((doc) => {
                 item = doc.data();
-                let item_date = item.date
-                .toDate()
-                .toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-");
-                
-                let filtered_date = this.date.toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-")
 
+                let item_year = item.date.toDate().getFullYear()
+                let item_month = item.date.toDate().getMonth()
+                let item_day = item.date.toDate().getDate()
+                
+                let filter_year = this.date.getFullYear()
+                let filter_month = this.date.getMonth()
+                let filter_day = this.date.getDate()
 
                 if (item.patient == null && new Date() <= item.date.toDate()) {
-                  
+                    if (temp3[item_year + " " + item_month + " " + item_day] == undefined) {
+                        temp3[item_year + " " + item_month + " " + item_day] = [item]
+                      } else {
+                        temp3[item_year + " " + item_month + " " + item_day].push(item)
+                      }
                     let item2 = item
                     item2.id = doc.id;
                     database
@@ -79,11 +82,12 @@ export default {
                     .get()
                     .then((doc) => {
                       let docName = doc.data().name;
-                      console.log(docName)
+                      //console.log(docName)
                       item2.doctorName = docName
-                      console.log(item)
+                      //console.log(item)
                       temp.push(item2)
-                      if (item_date.localeCompare(filtered_date) == 0) {
+                      
+                      if (item_year == filter_year && item_month == filter_month && item_day == filter_day) {
                       temp2.push(item2);
                       if (this.docsName.includes(docName) == false){
                         this.docsName.push(docName)
@@ -93,32 +97,34 @@ export default {
               });
               this.all = temp
               this.slot = temp2
+              for (var s in temp3) {
+              while (temp3[s].length > 3) {
+                if (temp3[s][0].patient) {
+                  let item = temp3[s][0]
+                  temp3[s].pop()
+                  temp3[s].push(item)
+                }
+                temp3[s].pop()
+              }
+              for (var ss in temp3[s]) {
+                temp4.push(temp3[s][ss])
+              }
+            }
+            this.show = temp4
             });
         },
         
-      formatDate: function(date) {
-          let ldate = date.toDate().toLocaleDateString().split("/")
-          let i0 = ldate[0]
-          ldate[0] = ldate[1]
-          ldate[1] = i0
-          return ldate.join("/")
-        },
       formatTime: function(time) {
-          let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
-          ltime.splice(2,1)
-          return ltime[0] + ":" + ltime[1] + " " + ltime[2]
+          let min = time.toDate().getMinutes();
+          let h = time.toDate().getHours();
+          if (h < 10) {
+            h = "0" + h;
+          }   
+          if (min == 0) {
+            min = "00";
+          }
+          return h + ":" + min;
         },
-      formatTime2: function(time) {
-        let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
-        ltime.splice(2,1)
-        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
-      },
-
-      formatTime3: function(time) {
-        let ltime =  time.replace(" ", ":").split(":")
-        ltime.splice(2,1)
-        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
-      },
 
       getdoc: function(ide) {
           database
@@ -170,7 +176,7 @@ export default {
         } else {
           this.apptHist[this.clinic].push(apptDate)
         }
-        console.log(this.apptHist)
+        //console.log(this.apptHist)
 
         database
         .collection('patients')
@@ -186,11 +192,11 @@ export default {
               upcoming: {
                 0: "online",
                 1: day + ' ' + monthNames[monthIndex] + ' ' + year,
-                2: this.formatTime2(this.datadoc.date),
+                2: this.formatTime(this.datadoc.date),
                 3: this.clinic
               }
             })
-            console.log("online appt has been added")
+            //console.log("online appt has been added")
         })
       },
 
@@ -205,8 +211,8 @@ export default {
         .get()
         .then((querySnapShot) => {
           this.apptHist = querySnapShot.data().appointment_history
-          console.log(this.apptHist)
-          console.log("Done")
+          //console.log(this.apptHist)
+          //console.log("Done")
         })
       }
   },
@@ -218,12 +224,17 @@ export default {
     date: function () {
       this.slot = [];
       this.docsName = []
-      console.log(this.all)
-      let date = this.date.toLocaleDateString().split("/").reverse().join("-");
-      console.log(date)
-      this.slot = this.all.filter(t => t.date.toDate().toLocaleDateString().split("/").reverse().join("-") == date)
+      let date_year = this.date.getFullYear();
+      let date_month = this.date.getMonth()
+      let date_day = this.date.getDate()
+      this.slot = this.all.filter(t => t.date.toDate().getDate() == date_day && 
+      t.date.toDate().getMonth() == date_month && t.date.toDate().getFullYear() == date_year)
       for (var s of this.slot) {
+        if (this.docsName.includes(s.doctorName) == false) {
         this.docsName.push(s.doctorName)
+      }
+      
+      
       }
     },
   },
