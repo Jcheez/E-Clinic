@@ -77,7 +77,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
     numOfPatientsToVerify: function () {
       let x = this.getUser.displayName;
