@@ -77,7 +77,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
     numOfPatientsToVerify: function () {
       let x = this.getUser.displayName;
@@ -124,7 +124,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-
 ul {
   list-style-type: none;
   padding: 0;
@@ -274,6 +273,7 @@ a:hover {
   color: rgb(238, 249, 255);
   font-weight: bold;
   letter-spacing: 2px;
+  height: 100%;
 }
 
 #sideNavBar h3 {

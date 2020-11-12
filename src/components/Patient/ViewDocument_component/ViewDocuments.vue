@@ -1,40 +1,56 @@
 <template>
-    <div id="container">
-      <div id="sideNavBar">
-        <h3>E-Clinic</h3>
-        <router-link to="/makebooking">Make A Booking</router-link>
-        <router-link to="/pending">Pending Booking</router-link>
-        <router-link to="/viewdocuments">View Documents</router-link>
-        <router-link to="/viewappt">View Appointments</router-link>
-        <router-link to="/managepayments">Manage Payments</router-link>
-        <router-link to="/patientsettings">Settings</router-link>
-        <a @click="signOut" class="button is-primary">Logout</a>
+  <div id="container">
+    <div id="sideNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/makebooking">Make A Booking</router-link>
+      <router-link to="/pending">Pending Booking</router-link>
+      <router-link to="/viewdocuments">View Documents</router-link>
+      <router-link to="/viewappt">View Appointments</router-link>
+      <router-link to="/managepayments">Manage Payments</router-link>
+      <router-link to="/patientsettings">Settings</router-link>
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+    <h4>Documents</h4>
+    <p id="choose">Choose a Clinic:</p>
+    <div id="main">
+      <select v-model="selected">
+        <option
+          v-for="(clinic, x) in clinic"
+          v-bind:value="clinic"
+          v-bind:key="x"
+        >
+          {{ clinic }}
+        </option>
+      </select>
+      <br />
+      <div id="instructions">
+        <p v-if="selected">List of Appointment History</p>
+        <p v-if="selected">
+          Click on 'View' to see all documents related to that appointment
+        </p>
       </div>
-      <h4>Documents</h4>
-      <p id="choose">Choose a Clinic:</p>
-      <div id="main">
-        <select v-model="selected">
-          <option v-for="(clinic, x) in clinic" v-bind:value="clinic" v-bind:key="x">
-          {{clinic}}
-          </option>
-        </select>
-        <br>
-        <ul id="patients">
-          <li v-for="(appt, index) in this.itemsList" :key="index">
-            <div id="inner">
-              <span>{{ "Date: " + appt }}</span>
-            </div>
-            <button id="view">
-              <router-link :to="{ name:'view', params: {apptDate: appt, clinic: selected}}">View</router-link>
-            </button>
-          </li>
-        </ul>
-        <div id="emptyDiv" v-if="itemsList.length == 0 && selected != ''">
-          <p>You did not arrange any appointments <br>with this clinic yet.</p>
-        </div>
-        <!-- <button id="home" v-on:click="routeHome()">Back to home</button> -->
+      <ul id="patients">
+        <li v-for="(appt, index) in this.itemsList" :key="index">
+          <div id="inner">
+            <span>{{ "Date: " + appt }}</span>
+          </div>
+          <button id="view">
+            <router-link
+              :to="{
+                name: 'view',
+                params: { apptDate: appt, clinic: selected },
+              }"
+              >View</router-link
+            >
+          </button>
+        </li>
+      </ul>
+      <div id="emptyDiv" v-if="itemsList.length == 0 && selected != ''">
+        <p>You did not arrange any appointments <br />with this clinic yet.</p>
       </div>
-    </div>  
+      <!-- <button id="home" v-on:click="routeHome()">Back to home</button> -->
+    </div>
+  </div>
 </template>
 
 <script>
@@ -47,8 +63,8 @@ export default {
       msg: "Patient's Notes ",
       itemsList: [],
       clinic: [],
-      selected: '',
-      patientId: localStorage.getItem("uidPatient")
+      selected: "",
+      patientId: localStorage.getItem("uidPatient"),
     };
   },
   computed: {
@@ -60,50 +76,50 @@ export default {
       this.signOutAction();
       this.$router.push("/patientlogin");
     },
-    routeHome: function() {
-        this.$router.push('/patienthome')
+    routeHome: function () {
+      this.$router.push("/patienthome");
     },
-        
+
     fetchItems: function () {
-      console.log(this.patientId)
-        //var x = this.name;
-        database
-            .collection("patients")
-            .doc(this.patientId)
-            .get()
-            .then((querySnapShot) => {
-                let item = {};
-                  item = querySnapShot.data().appointment_history;
-                  console.log(item)
-                  for (var clinic in item) {
-                    this.clinic.push(clinic);
-                  }
-            });
-        },
+      console.log(this.patientId);
+      //var x = this.name;
+      database
+        .collection("patients")
+        .doc(this.patientId)
+        .get()
+        .then((querySnapShot) => {
+          let item = {};
+          item = querySnapShot.data().appointment_history;
+          console.log(item);
+          for (var clinic in item) {
+            this.clinic.push(clinic);
+          }
+        });
+    },
 
     fetchItems2: function () {
       this.itemsList = [];
-        //var x = this.name;
-        database
-            .collection("patients")
-            .doc(this.patientId)
-            .get()
-            .then((querySnapShot) => {
-                let item = {};
-                  item = querySnapShot.data().appointment_history;
-                  console.log(item)
-                  let arrayOfApptDates = item[this.selected];
-                  for (var date in arrayOfApptDates) {
-                    this.itemsList.push(arrayOfApptDates[date]);
-                  }
-                  console.log(this.itemsList)
-            });
-        },
+      //var x = this.name;
+      database
+        .collection("patients")
+        .doc(this.patientId)
+        .get()
+        .then((querySnapShot) => {
+          let item = {};
+          item = querySnapShot.data().appointment_history;
+          console.log(item);
+          let arrayOfApptDates = item[this.selected];
+          for (var date in arrayOfApptDates) {
+            this.itemsList.push(arrayOfApptDates[date]);
+          }
+          console.log(this.itemsList);
+        });
+    },
   },
   watch: {
-    selected: function() {
+    selected: function () {
       this.fetchItems2();
-    }
+    },
   },
 
   created() {
@@ -119,6 +135,8 @@ export default {
 #main {
   position: absolute;
   top: 100px;
+  display: inline-block;
+  left: 300px;
 }
 
 #sideNavBar a {
@@ -174,7 +192,7 @@ h4 {
 
 select {
   position: absolute;
-  left: 465px;
+  left: 200px;
   top: 23px;
   width: 200px;
   font-family: Nunito;
@@ -184,17 +202,15 @@ select {
 option {
   font-size: 14px;
 }
-
 p#choose {
   position: absolute;
   left: 410px;
   top: 80px;
   font-family: Nunito;
   margin: 40px -30px 0px -100px;
-  font-size:20px;
+  font-size: 20px;
   color: rgb(0, 114, 180);
 }
-
 div #inner {
   width: 50%;
   display: inline-block;
@@ -202,7 +218,9 @@ div #inner {
 
 ul {
   float: left;
-  margin-top: 50px;
+  /*margin-top: 50px;*/
+  position: absolute;
+  top: 130px;
 }
 
 li {
@@ -214,7 +232,7 @@ li {
   list-style-type: none; /* Remove bullets */
   padding: 10px 0 0 0;
   display: block;
-  left: 270px;
+  left: 0px;
   position: relative;
 }
 
@@ -259,23 +277,27 @@ li a {
   text-decoration: none;
 }
 
-/* button#home{
-  position: relative;
-  top: 450px;
-} */
+#instructions {
+  position: absolute;
+  left: 10px;
+  width: 500px;
+  text-align: left;
+  top: 50px;
+}
 
 div#emptyDiv {
   position: absolute;
   width: 400px;
   height: 76px;
   display: block;
-  left: 320px;
-  top: 60px;
+  /*left: 320px;
+  top: 60px;*/
   font-size: 18px;
   font-family: Nunito;
   white-space: nowrap;
   padding: 10px 0 0 0;
   text-align: center;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
+  top: 130px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="docs">
-    <h1>Doctor Profiles</h1>
+    <h4>Doctor Profiles</h4>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -10,7 +10,7 @@
       <router-link to="/clinicsettings">Settings</router-link><br />
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <div v-if="!status">
+    <div v-if="!status" class="inner">
       <ul id="indivDoctor" style="list-style-type: none">
         <li v-for="d in doctors" v-bind:key="d.dNum">
           {{ d.dName }} <br /><br />
@@ -26,7 +26,6 @@
       {{ text }}
     </button>
     <div id="manageDoc" v-if="status">
-      <!--class="manageDoc"-->
       <manageDoctor
         v-bind:doctors="this.doctors"
         @fetchItems="fetchItems"
@@ -104,6 +103,19 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+.docs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+h4 {
+  position: absolute;
+  left: 250px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+  top: 0px;
+}
 a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
@@ -115,7 +127,6 @@ a {
   font-weight: bold;
   display: inline-block;
 }
-
 a:hover {
   font-size: 18px;
   color: white;
@@ -143,7 +154,16 @@ h3 {
   font-weight: bolder;
   padding: 10px 0px 0px 0px;
 }
-
+.inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  left: 0px;
+  /*margin-top: 10px;*/
+  top: 120px;
+  height: 450px;
+  position: absolute;
+}
 li {
   color: black;
   width: 100px;
@@ -152,12 +172,12 @@ li {
   border-radius: 3px;
   position: relative;
   margin: 10px;
-  left: 200px;
+  left: 0px;
   text-align: center;
   display: inline-block;
-  float: left;
   font-family: Nunito;
   font-size: 18px;
+  float: left;
 }
 #apptment {
   display: block;
@@ -195,6 +215,7 @@ p {
   width: 100px;
   text-align: center;
   left: 1000px;
+  top: 120px;
 }
 button:hover {
   background-color: white;
@@ -204,11 +225,18 @@ button:hover {
 }
 #indivDoctor {
   width: 700px;
+  position: absolute;
+  left: 200px;
+  display: inline-block;
 }
 #manageDoc {
   width: 800px;
   margin: 10px;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  top: 100px;
+  display: block;
+  left: 20px;
 }
 </style>

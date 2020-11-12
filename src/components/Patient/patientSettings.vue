@@ -3,11 +3,19 @@
     <h1>Patient Settings</h1>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
-      <router-link to="/makebooking">Make Booking</router-link><br />
-      <router-link to="/pending">Pending Booking</router-link><br />
-      <router-link to="/viewdocuments">View Documents</router-link><br />
-      <router-link to="/viewappt">View Appointment</router-link><br />
-      <router-link to="/managepayments">Manage Payments</router-link><br />
+
+      <router-link to="/makebooking">Make A Booking</router-link>
+
+      <router-link to="/pending">Pending Booking</router-link>
+
+      <router-link to="/viewdocuments">View Documents</router-link>
+
+      <router-link to="/viewappt">View Appointments</router-link>
+
+      <router-link to="/managepayments">Manage Payments</router-link>
+
+      <router-link to="/patientsettings">Settings</router-link>
+
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="instructions">
@@ -139,7 +147,11 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
@@ -178,6 +190,7 @@ export default {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  height: 100%;
 }
 label {
   color: black;
@@ -201,14 +214,15 @@ input {
   margin: 10px;
   margin-bottom: 50px;
 }
-#inputFields {
+/*#inputFields {
   width: 350px;
   display: inline-block;
   margin-top: 100px;
   position: relative;
   left: -200px;
-}
-#instructions {
+}*/
+
+/*#instructions {
   width: 300px;
   margin: 10px;
   margin-left: 400px;
@@ -216,6 +230,25 @@ input {
   display: inline-block;
   height: 300px;
   float: left;
+}*/
+#inputFields {
+  width: 350px;
+  display: block;
+  /*margin-top: 100px;
+  bottom: 300px;*/
+  position: absolute;
+  left: 600px;
+  top: 160px;
+}
+#instructions {
+  width: 300px;
+  margin: 10px;
+  left: 400px;
+  top: 150px;
+  display: inline-block;
+  height: 300px;
+  float: left;
+  position: absolute;
 }
 #submitEmail {
   transition: 0.3s;
@@ -238,7 +271,7 @@ input {
   left: 950px;
   margin-bottom: 70px;
   height: 50px;
-  top: 180px;
+  top: 160px;
 }
 #submitPW {
   transition: 0.3s;
@@ -260,7 +293,7 @@ input {
   margin-left: 20px;
   height: 60px;
   left: 950px;
-  top: 330px;
+  top: 310px;
 }
 
 #submitPhoneNum {
@@ -283,7 +316,7 @@ input {
   margin-left: 20px;
   height: 60px;
   left: 950px;
-  top: 400px;
+  top: 385px;
 }
 button:hover {
   background-color: white;

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h4>Make A Booking</h4>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
 
@@ -18,32 +19,35 @@
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="main">
-      <h3>Please Choose a Clinic:</h3>
-      <select v-model="selected">
-        <option
-          v-for="(clinic, x) in clinics"
-          v-bind:value="clinic.name"
-          v-bind:key="x"
+      <div id="selectClinic">
+        <h3 id="choose">Please Choose a Clinic:</h3>
+        <select v-model="selected">
+          <option
+            v-for="(clinic, x) in clinics"
+            v-bind:value="clinic.name"
+            v-bind:key="x"
+          >
+            {{ clinic.name }}
+          </option>
+        </select>
+        <br />
+        <span id="selectStatement" v-if="selected"
+          >You have selected:
+          <div
+            style="
+              font-family: Nunito;
+              color: rgb(0, 114, 180);
+              display: inline-block;
+            "
+          >
+            {{ selected }}
+          </div></span
         >
-          {{ clinic.name }}
-        </option>
-      </select>
+      </div>
       <br />
-      <span v-if="selected"
-        >You have selected:
-        <div
-          style="
-            font-family: Nunito;
-            color: rgb(0, 114, 180);
-            display: inline-block;
-          "
-        >
-          {{ selected }}
-        </div></span
-      >
-      <br />
-      <h3>Please Select the Conditions You Are Experiencing:</h3>
+
       <div id="allconditions">
+        <h3>Please Select the Conditions You Are Experiencing:</h3>
         <div id="conditionSet">
           <input
             type="checkbox"
@@ -341,14 +345,35 @@ p#error {
   width: 80%;
   left: 200px;
   align-items: center;
+  top: 100px;
+}
+h4 {
+  position: absolute;
+  left: 300px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+  top: 0px;
+}
+
+#selectClinic {
+  position: absolute;
+  left: 250px;
+  align-items: left;
+  width: 700px;
+  text-align: left;
+  top: 50px;
 }
 span {
   font-size: 18px;
 }
 #allconditions {
   width: 700px;
-  left: 250px;
+  left: 100px;
   position: absolute;
+  top: 150px;
+  text-align: left;
+  font-family: Nunito;
 }
 #sideNavBar h3 {
   font-family: Nunito;
@@ -357,7 +382,6 @@ span {
   color: white;
   font-weight: bolder;
   padding: 10px 0px 0px 0px;
-  margin: 40px 0 0;
 }
 #sideNavBar a {
   color: rgb(238, 249, 255);
@@ -413,11 +437,13 @@ label {
   font-size: 18px;
 }
 select {
-  margin: 0px 20px 20px 20px;
+  margin: 0px 20px 20px 0px;
   width: 200px;
   height: 30px;
   font-family: Nunito;
   font-size: 18px;
+  position: absolute;
+  left: 80px;
 }
 
 #home {
@@ -426,7 +452,7 @@ select {
 
 #buttons {
   width: 600px;
-  left: 300px;
+  left: 100px;
   position: absolute;
   top: 600px;
 }
@@ -459,9 +485,21 @@ button:hover {
 #selectedCon {
   font-family: Nunito;
   position: absolute;
-  left: 280px;
+  left: 130px;
   font-size: 18px;
   top: 550px;
   text-align: left;
+}
+#selectStatement {
+  position: absolute;
+  top: 60px;
+  left: 80px;
+}
+
+h3#choose {
+  position: absolute;
+  left: -150px;
+  top: -20px;
+  font-family: Nunito;
 }
 </style>

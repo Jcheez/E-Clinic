@@ -13,7 +13,7 @@
         name="consultStart"
         step="1800"
         min="08:30"
-        max="18:00"
+        max="22:00"
         list="slotTimes"
         required
         v-model="slotStartTime"
@@ -32,6 +32,24 @@
         <option>11:30</option>
         <option>12:00</option>
         <option>12:30</option>
+        <option>13:00</option>
+        <option>13:30</option>
+        <option>14:00</option>
+        <option>14:30</option>
+        <option>15:00</option>
+        <option>15:30</option>
+        <option>16:00</option>
+        <option>16:30</option>
+        <option>17:00</option>
+        <option>17:30</option>
+        <option>18:00</option>
+        <option>18:30</option>
+        <option>19:00</option>
+        <option>19:30</option>
+        <option>20:00</option>
+        <option>20:30</option>
+        <option>21:00</option>
+        <option>21:30</option>
       </datalist>
 
       <br />
@@ -206,7 +224,7 @@ export default {
               clinic: this.getUser.displayName,
             });
             alert("Successfully added slots!");
-            this.$emit('fetchItems')
+            this.$emit("fetchItems");
           } else {
             alert("Slot you are trying to add already exists!");
           }
@@ -271,6 +289,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
@@ -293,6 +312,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
@@ -324,6 +344,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
@@ -353,6 +374,7 @@ export default {
                 });
               }
               alert("Successfully added slots!");
+              this.$emit('fetchItems')
             } else {
               alert("Slot you are trying to add already exists!");
             }
