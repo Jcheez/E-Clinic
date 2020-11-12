@@ -11,7 +11,7 @@
       <router-link to="/patientsettings">Settings</router-link>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
-    <hr />
+    <!--hr /-->
     <ul>
       <template v-for="(patient, x) in itemsList">
         <li v-bind:key="x">
@@ -137,6 +137,7 @@ export default {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   height: 100%;
+  /*overflow-y: hidden; /*idk why some will have vertical scroll bar on sideNavBar */
 }
 
 #sideNavBar h3 {
@@ -157,14 +158,14 @@ h4 {
   left: 300px;
 }
 
-hr {
+/*hr {
   position: absolute;
   width: 1459px;
   height: 40px;
   left: 580px;
   top: 75px;
   background-color: rgb(0, 114, 180);
-}
+}*/
 ul {
   position: absolute;
   left: 300px;

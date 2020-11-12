@@ -382,7 +382,6 @@ span {
   color: white;
   font-weight: bolder;
   padding: 10px 0px 0px 0px;
-  margin: 40px 0 0;
 }
 #sideNavBar a {
   color: rgb(238, 249, 255);
