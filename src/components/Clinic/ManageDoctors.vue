@@ -121,11 +121,13 @@ export default {
 </script>
 <style scoped>
 #addDoctor {
+  font-family: Nunito;
   height: 300px;
   width: 350px;
   display: inline-block;
 }
 #deleteDoctor {
+  font-family: Nunito;
   width: 400px;
   display: inline-block;
   border-left: 1px solid rgb(0, 114, 180);
@@ -144,24 +146,24 @@ input {
   font-size: 18px;
   display: inline-block;
   background-color: white;
-  border-bottom: 1px solid rgb(0, 114, 180);
-  border-radius: 5px;
-  border-left: 1px solid rgb(0, 114, 180);
-  border-top: none;
-  border-right: none;
+  border: none;
   float: right;
   margin-top: -19px;
   box-shadow: none;
 }
 li {
+  font-family: Nunito;
   text-align: left;
   height: 50px;
   margin-top: 20px;
-  border: 1px solid rgb(0, 114, 180);
+  /* border: 1px solid rgb(0, 114, 180); */
   border-radius: 5px;
   width: 320px;
+  box-shadow: 0 6px 10px -3px  rgba(0, 0, 0, 0.377);
 }
 #add {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
   background-color: white;
   border: 1px solid rgb(0, 114, 180);
   padding: 10px;
@@ -175,6 +177,7 @@ li {
   margin: 20px;
 }
 #add:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
