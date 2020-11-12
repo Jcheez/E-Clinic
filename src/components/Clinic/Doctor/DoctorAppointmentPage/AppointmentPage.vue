@@ -217,30 +217,35 @@ export default {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  left: 0px;
-  margin-top: 10px;
+  left: 420px;
+  /*margin-top: 10px;*/
+  top: 90px;
   height: 450px;
+  position: absolute;
 }
 
 .zoom {
   margin: 10px;
   margin-bottom: 0px;
   left: -110px;
+  position: absolute;
 }
 .addslot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  left: 0px;
   width: 500px;
   height: 450px;
-  margin-top: 30px;
+  top: 150px;
+  left: 450px;
+  position: absolute;
 }
 
 .schedule {
-  left: 120px;
   margin: 20px;
   display: flex;
+  position: absolute;
+  left: -120px;
 }
 .vc-container {
   left: -100px;
@@ -251,7 +256,9 @@ export default {
   height: 500px;
   float: left;
   margin: 10px;
-  margin-top: 100px;
+  top: 100px;
+  position: absolute;
+  left: 200px;
 }
 
 .placeholder {
@@ -262,7 +269,7 @@ export default {
 }
 .addSlotButton {
   transition: 0.3s;
-  position: relative;
+  position: absolute;
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
   padding: 10px;
@@ -275,9 +282,10 @@ export default {
   letter-spacing: 3px;
   outline: none;
   display: inline-block;
-  top: -150px;
+  top: 120px;
   width: 80px;
   text-align: center;
+  left: 1000px;
 }
 
 .addSlotButton:hover {

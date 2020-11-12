@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <!--input-zoom v-bind:currDoctor="this.currDoctor"></input-zoom!-->
     <div id="topNavBar">
       <h3>E-Clinic</h3>
@@ -77,6 +77,11 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 form {
   align-items: center;
   display: inline-block;
