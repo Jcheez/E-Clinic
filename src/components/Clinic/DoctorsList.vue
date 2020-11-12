@@ -177,7 +177,7 @@ li {
   font-family: Nunito;
   font-size: 18px;
   float: left;
-  box-shadow: 0 6px 12px -3px  rgba(0, 0, 0, 0.377);
+  box-shadow: 0 6px 12px -3px rgba(0, 0, 0, 0.377);
 }
 
 /* ul {
@@ -254,6 +254,6 @@ button:hover {
   position: absolute;
   top: 100px;
   display: block;
-  left: 20px;
+  left: 200px;
 }
 </style>

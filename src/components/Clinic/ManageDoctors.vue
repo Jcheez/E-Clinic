@@ -125,6 +125,8 @@ export default {
   height: 300px;
   width: 350px;
   display: inline-block;
+  position: absolute;
+  left: 0px;
 }
 #deleteDoctor {
   font-family: Nunito;
@@ -133,6 +135,7 @@ export default {
   border-left: 1px solid rgb(0, 114, 180);
   height: 500px;
   position: absolute;
+  left: 380px;
 }
 input {
   margin: 15px 0px 5px 30px;
