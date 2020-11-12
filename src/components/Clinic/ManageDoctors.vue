@@ -159,7 +159,8 @@ li {
   /* border: 1px solid rgb(0, 114, 180); */
   border-radius: 5px;
   width: 320px;
-  box-shadow: 0 6px 10px -3px  rgba(0, 0, 0, 0.377);
+  box-shadow: 0 6px 10px -3px rgba(0, 0, 0, 0.377);
+  padding: 0px 0px 0px 10px;
 }
 #add {
   transition: box-shadow 0.3s;
