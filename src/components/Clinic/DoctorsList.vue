@@ -166,9 +166,8 @@ h3 {
 }
 li {
   color: black;
-  width: 100px;
-  height: 100px;
-  border: 1px solid rgb(0, 114, 180);
+  width: 120px;
+  height: 110px;
   border-radius: 3px;
   position: relative;
   margin: 10px;
@@ -178,7 +177,25 @@ li {
   font-family: Nunito;
   font-size: 18px;
   float: left;
+  box-shadow: 0 6px 12px -3px  rgba(0, 0, 0, 0.377);
 }
+
+/* ul {
+  float: left;
+  margin-left: 200px;
+  margin-top: 50px;
+}
+
+li {
+  width: 400px;
+  height: 60px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px -4px  rgba(0, 0, 0, 0.377);
+  box-sizing: border-box;
+  list-style-type: none; Remove bullets
+  padding: 10px 0 0 0;
+  display: block;
+} */
 #apptment {
   display: block;
   width: 100px;

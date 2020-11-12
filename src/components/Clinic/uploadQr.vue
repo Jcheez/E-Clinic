@@ -79,7 +79,25 @@ img.preview {
     width: 200px;
 }
 .up {
-  font-size: 20px;
+  font-size: 16px;
   text-align: left;
+  margin-left: -30px;
+}
+
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  position: relative;
+  bottom: 55px;
+  left: 100px;
+  font-family: Nunito;
+  background-color:  rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
+  color: white;
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 </style>
