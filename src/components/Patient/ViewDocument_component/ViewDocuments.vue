@@ -23,6 +23,12 @@
         </option>
       </select>
       <br />
+      <div id="instructions">
+        <p v-if="selected">List of Appointment History</p>
+        <p v-if="selected">
+          Click on 'View' to see all documents related to that appointment
+        </p>
+      </div>
       <ul id="patients">
         <li v-for="(appt, index) in this.itemsList" :key="index">
           <div id="inner">
@@ -130,7 +136,7 @@ export default {
   position: absolute;
   top: 100px;
   display: inline-block;
-  left: 0px;
+  left: 300px;
 }
 
 #sideNavBar a {
@@ -186,7 +192,7 @@ h4 {
 
 select {
   position: absolute;
-  left: 465px;
+  left: 200px;
   top: 23px;
   width: 200px;
   font-family: Nunito;
@@ -196,7 +202,6 @@ select {
 option {
   font-size: 14px;
 }
-
 p#choose {
   position: absolute;
   left: 410px;
@@ -206,7 +211,6 @@ p#choose {
   font-size: 20px;
   color: rgb(0, 114, 180);
 }
-
 div #inner {
   width: 50%;
   display: inline-block;
@@ -214,7 +218,9 @@ div #inner {
 
 ul {
   float: left;
-  margin-top: 50px;
+  /*margin-top: 50px;*/
+  position: absolute;
+  top: 130px;
 }
 
 li {
@@ -226,7 +232,7 @@ li {
   list-style-type: none; /* Remove bullets */
   padding: 10px 0 0 0;
   display: block;
-  left: 270px;
+  left: 0px;
   position: relative;
 }
 
@@ -271,23 +277,27 @@ li a {
   text-decoration: none;
 }
 
-/* button#home{
-  position: relative;
-  top: 450px;
-} */
+#instructions {
+  position: absolute;
+  left: 10px;
+  width: 500px;
+  text-align: left;
+  top: 50px;
+}
 
 div#emptyDiv {
   position: absolute;
   width: 400px;
   height: 76px;
   display: block;
-  left: 320px;
-  top: 60px;
+  /*left: 320px;
+  top: 60px;*/
   font-size: 18px;
   font-family: Nunito;
   white-space: nowrap;
   padding: 10px 0 0 0;
   text-align: center;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
+  top: 130px;
 }
 </style>

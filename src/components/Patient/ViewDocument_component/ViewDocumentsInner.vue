@@ -13,12 +13,15 @@
     <h4>Documents</h4>
     <div id="main">
       <div id="emptyDiv" v-if="!docschecker()">
-        <p>Clinic has not uploaded any documents.<br>Please check again later.</p>
+        <p>
+          Clinic has not uploaded any documents.<br />Please check again later.
+        </p>
       </div>
       <ul v-if="docschecker()" id="patients">
         <li v-for="(doc, name, index) in this.itemsList[0]" :key="index">
           <div id="inner">
-            {{ name + ": " }} <p id="url" v-on:click="opendoc(doc)">Click to View</p>
+            {{ name + ": " }}
+            <p id="url" v-on:click="opendoc(doc)">Click to View</p>
           </div>
         </li>
       </ul>
@@ -31,69 +34,67 @@
 import { mapGetters, mapActions } from "vuex";
 import database from "../../../firebase.js";
 export default {
-    data() {
-        return {
-            msg: "Patient's Notes ",
-            itemsList: [],
-            patientId: localStorage.getItem("uidPatient")
-        }
-    },
+  data() {
+    return {
+      msg: "Patient's Notes ",
+      itemsList: [],
+      patientId: localStorage.getItem("uidPatient"),
+    };
+  },
 
-    props: {
-      apptDate: String,
-      clinic: String
-    },
-    computed: {
+  props: {
+    apptDate: String,
+    clinic: String,
+  },
+  computed: {
     ...mapGetters(["getUser", "isUserAuth"]),
+  },
+  methods: {
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/patientlogin");
     },
-    methods: {
-      ...mapActions(["signOutAction"]),
-      signOut() {
-        this.signOutAction();
-        this.$router.push("/patientlogin");
-      },
-        fetchItems: function () {
-          
-          console.log(this.patientId)
-            database
-                .collection("patients")
-                .doc(this.patientId)
-                .get()
-                .then((querySnapShot) => {
-                    let item = {};
-                    item = querySnapShot.data().notes[this.clinic];
-                    if(item[this.apptDate] != undefined) {
-                      if (Object.keys(item[this.apptDate]).length !== 0) {
-                        this.itemsList.push(item[this.apptDate]);
-                      }
-                    }
-                });
-        },
-
-        docschecker: function() {
-          //console.log(this.itemsList)
-          if (this.itemsList.length > 0) {
-            return true;
-          } else {
-            return false;
+    fetchItems: function () {
+      console.log(this.patientId);
+      database
+        .collection("patients")
+        .doc(this.patientId)
+        .get()
+        .then((querySnapShot) => {
+          let item = {};
+          item = querySnapShot.data().notes[this.clinic];
+          if (item[this.apptDate] != undefined) {
+            if (Object.keys(item[this.apptDate]).length !== 0) {
+              this.itemsList.push(item[this.apptDate]);
+            }
           }
-        },
-
-        opendoc: function(url) {
-          window.open(url, "_blank");
-          console.log("reached here")
-        },
-
-        routeBack: function() {
-            this.$router.push('/viewdocuments')
-        },
+        });
     },
 
-    created() {
-        this.fetchItems();
+    docschecker: function () {
+      //console.log(this.itemsList)
+      if (this.itemsList.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
     },
+
+    opendoc: function (url) {
+      window.open(url, "_blank");
+      console.log("reached here");
+    },
+
+    routeBack: function () {
+      this.$router.push("/viewdocuments");
+    },
+  },
+
+  created() {
+    this.fetchItems();
+  },
 };
-
 </script>
 
 <style scoped>
@@ -187,7 +188,7 @@ div #inner {
   font-weight: bold;
 }
 
-p#url{
+p#url {
   display: inline;
   color: rgb(0, 114, 180);
   text-decoration: underline;
@@ -195,6 +196,7 @@ p#url{
   right: -120px;
   font-size: 20px;
   font-weight: normal;
+  cursor: pointer;
 }
 
 button#back {
@@ -204,7 +206,7 @@ button#back {
   letter-spacing: 2px;
   width: 180px;
   height: 50px;
-  background-color:  rgb(0, 114, 180);
+  background-color: rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
   position: absolute;
@@ -215,8 +217,8 @@ button#back {
 }
 
 button#back:hover {
-    cursor: pointer;
-    box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 
 div#emptyDiv {
