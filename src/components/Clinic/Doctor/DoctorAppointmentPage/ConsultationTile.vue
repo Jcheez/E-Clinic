@@ -26,7 +26,7 @@
           class="reschedule"
           v-if="data.patient != null && data.reschedule == true"
         >
-          <reschedule @fetch = "fetch" @changeTile = "changeTile" v-bind:slotData="data" ></reschedule>
+          <reschedule @changeTile = "changeTile" v-bind:slotData="data" ></reschedule>
         </div>
       </li>
     </ul>
@@ -49,10 +49,6 @@ export default {
     Reschedule,
   },
   methods: {
-    fetch: function() {
-      console.log("fetching...")
-      this.$emit("fetchItems")
-    },
     removeSlot: function (data) {
       database
         .collection("consultslots")
@@ -82,6 +78,7 @@ export default {
       return h + ":" + min;
     },
     changeTile: function(removeData, addData, bool) {
+      console.log("bool")
       if (bool) {
         this.consultData.push(addData)
       } else {

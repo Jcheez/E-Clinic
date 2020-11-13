@@ -1,7 +1,7 @@
 <template>
   <div id= "container">
     <h4>Hi, {{this.getUser.displayName}}</h4>
-    <h3>Upcoming appointments</h3>
+    <h3>Upcoming Appointments</h3>
     <div id="sideNavBar">
       <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <router-link to="/makebooking">Make A Booking</router-link>

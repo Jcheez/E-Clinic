@@ -20,7 +20,7 @@
             <div id="inner">
               <span style="white-space:nowrap">{{ "Patient Id: " + patient.patientId }}</span>
               <span v-if="patient.firstTime && patient.physical" style="white-space:nowrap"
-                >Reason: First Time Patient & Physical Examination Required</span
+                >Reason: First Time Patient and Physical Examination Required</span
               >
               <span v-else-if="patient.physical" style="white-space:nowrap"
                 >Reason: Physical Examination Required</span
