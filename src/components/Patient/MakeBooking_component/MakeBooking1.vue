@@ -2,7 +2,7 @@
   <div>
     <h4>Make A Booking</h4>
     <div id="sideNavBar">
-      <h3>E-Clinic</h3>
+      <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
 
       <router-link to="/makebooking">Make A Booking</router-link>
 
@@ -373,14 +373,6 @@ span {
   text-align: left;
   font-family: Nunito;
 }
-#sideNavBar h3 {
-  font-family: Nunito;
-  font-size: 24px;
-  letter-spacing: 4px;
-  color: white;
-  font-weight: bolder;
-  padding: 10px 0px 0px 0px;
-}
 #sideNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
@@ -399,6 +391,7 @@ span {
   color: white;
   cursor: pointer;
 }
+
 #sideNavBar {
   width: 250px;
   position: fixed;
@@ -410,7 +403,22 @@ span {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  height: 100%;
+  /*overflow-y: hidden; /*idk why some will have vertical scroll bar on sideNavBar */
 }
+
+#sideNavBar #clinic {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+}
+
+#sideNavBar #clinic:hover {
+  cursor: pointer;
+}
+
 #conditionSet {
   display: inline-block;
   width: 300px;
