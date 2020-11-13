@@ -71,7 +71,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
 
     resetError() {
