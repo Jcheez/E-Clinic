@@ -17,19 +17,24 @@ export default {
     };
   },
   methods: {
-    formatDate: function(date) {
-        let ldate = date.toDate().toLocaleDateString().split("/")
-        let i0 = ldate[0]
-        ldate[0] = ldate[1]
-        ldate[1] = i0
-        return ldate.join("/")
+    formatDate: function (date) {
+      let filter_year = date.toDate().getFullYear()
+      let filter_month = date.toDate().getMonth() + 1
+      let filter_day = date.toDate().getDate()
+      return filter_day + "/" + filter_month + "/" + filter_year
     },
 
     formatTime: function(time) {
-        let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
-        ltime.splice(2,1)
-        return ltime[0] + ":" + ltime[1] + " " + ltime[2]
-    },
+          let min = time.toDate().getMinutes();
+          let h = time.toDate().getHours();
+          if (h < 10) {
+            h = "0" + h;
+          }   
+          if (min == 0) {
+            min = "00";
+          }
+          return h + ":" + min;
+        },
     
     routeHome: function() {
       this.$router.push('/patienthome')

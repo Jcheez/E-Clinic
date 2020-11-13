@@ -109,13 +109,13 @@ export default {
                 conditions: null,
               });
             });
-          });
-
-        database
-          .collection("patients")
-          .doc(this.patientId)
-          .get()
-          .then((querySnapShot) => {
+          }).then(() => {
+            this.consult = []
+            database
+              .collection("patients")
+              .doc(this.patientId)
+              .get()
+              .then((querySnapShot) => {
             let item = {};
             item = querySnapShot.id;
             let itema = querySnapShot.data();
@@ -134,8 +134,11 @@ export default {
               upcoming: null,
             });
             console.log("appointment has been cancelled");
-          });
-        this.$router.push("/patienthome");
+            }).then(() => {
+            this.itemsList = []
+            this.fetchItems()
+          })
+        })
       }
     },
 
@@ -150,20 +153,6 @@ export default {
       });
     },
 
-    formatDate: function (date) {
-      let ldate = date.toLocaleDateString().split("/");
-      let i0 = ldate[0];
-      ldate[0] = ldate[1];
-      ldate[1] = i0;
-      return ldate.join("/");
-    },
-
-    formatTime: function (time) {
-      let ltime = time.toLocaleTimeString().replace(" ", ":").split(":");
-      ltime.splice(2, 1);
-      return ltime[0] + ":" + ltime[1] + " " + ltime[2];
-    },
-
     fetchItems: function () {
       //var x = this.name;
       database
@@ -176,7 +165,7 @@ export default {
           this.noupcoming = null;
           var today = new Date();
           if (itemx.upcoming == null) {
-            this.noupcoming = "You have no upcoming booking.";
+            this.noupcoming = "You have no upcoming appointments";
           } else if (
             Date.parse(itemx.upcoming[1]) > today.getTime() ||
             (Date.parse(itemx.upcoming[1]) == today.getTime() &&
@@ -340,7 +329,9 @@ div#noupcoming {
   height: 140px;
   left: 300px;
   top: 200px; */
-  text-align: left;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 140px; 
   position: absolute;
   width: 500px;
   height: 140px;
