@@ -139,6 +139,15 @@ export default {
       }
       if (!this.birthday) {
         this.validationErrors.push("<strong>DOB</strong> cannot be empty.");
+      } else {
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = today.getMonth() + 1
+        let day = today.getDate()
+        let fixed = year + "-" + month + "-" + day
+        if (fixed <= this.birthday) {
+          this.validationErrors.push("<strong>DOB</strong> is not valid.");
+        }
       }
       if (!this.phoneNumber) {
         this.validationErrors.push("<strong>Phone no.</strong> cannot be empty.");

@@ -10,8 +10,6 @@
 
       <router-link to="/viewdocuments">View Documents</router-link>
 
-      <router-link to="/viewappt">View Appointments</router-link>
-
       <router-link to="/managepayments">Manage Payments</router-link>
 
       <router-link to="/patientsettings">Settings</router-link>
@@ -183,7 +181,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
 
     next: function () {
@@ -195,7 +193,7 @@ export default {
         this.errorstring = "Please choose at least 1 condition";
       } else if (this.availableToBook == false) {
         alert("You have an upcoming appointment. Unable to make a new Booking");
-        this.$router.push("/viewappt");
+        this.$router.push("/patienthome");
       } else if (this.checkpending(this.selected, this.consultslots)) {
         alert("You have a pending booking with this particular clinic.");
         this.$router.push("/pending");

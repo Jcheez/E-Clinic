@@ -6,7 +6,6 @@
       <router-link to="/makebooking">Make A Booking</router-link>
       <router-link to="/pending">Pending Booking</router-link>
       <router-link to="/viewdocuments">View Documents</router-link>
-      <router-link to="/viewappt">View Appointments</router-link>
       <router-link to="/managepayments">Manage Payments</router-link>
       <router-link to="/patientsettings">Settings</router-link>
       <a @click="signOut" class="button is-primary">Logout</a>
@@ -47,7 +46,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
     fetchItems: function () {
       database

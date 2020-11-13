@@ -115,7 +115,7 @@ export default {
                           conditions: this.consult[0].conditions
                       })
                       .then(() => {
-                        this.$router.push("/viewappt")
+                        this.$router.push("/patienthome")
                       })
                       
                   }
@@ -209,7 +209,7 @@ export default {
         },
 
         routeHome: function() {
-            this.$router.push('/viewappt')
+            this.$router.push('/patienthome')
         },
   },
     created() {

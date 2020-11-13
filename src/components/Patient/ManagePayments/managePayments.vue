@@ -10,8 +10,6 @@
 
       <router-link to="/viewdocuments">View Documents</router-link>
 
-      <router-link to="/viewappt">View Appointments</router-link>
-
       <router-link to="/managepayments">Manage Payments</router-link>
 
       <router-link to="/patientsettings">Settings</router-link>

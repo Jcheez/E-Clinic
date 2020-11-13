@@ -172,6 +172,7 @@ export default {
               console.log("deleted corresponding free slot");
               doc.ref.delete();
             });
+            this.$emit("fetch")
           });
 
           /*
