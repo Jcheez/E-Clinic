@@ -15,10 +15,6 @@
             <span >Time: {{showTime(data)}}</span><br />
             <span>Patient: {{ getPatientName(data.patient) }}</span>
           </div>
-          <div class="data">
-            <span v-html="showTime(data)"></span><br />
-            <span>{{ data.patient }}</span>
-          </div>
         </li>
       </ul>
     </div>

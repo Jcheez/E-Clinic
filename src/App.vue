@@ -31,7 +31,7 @@ export default {
         this.$router.push("/viewappt")
       } else if (performance.navigation.type == 0 && this.$route.path == '/viewdocuments/view') {
         this.$router.push("/viewdocuments")
-      }
+      } 
   },
   mounted() {
     this.authAction();
