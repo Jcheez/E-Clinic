@@ -2,20 +2,13 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <div id="sideNavBar">
-      <h3>E-Clinic</h3>
-
+      <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <router-link to="/makebooking">Make A Booking</router-link>
-
       <router-link to="/pending">Pending Booking</router-link>
-
       <router-link to="/viewdocuments">View Documents</router-link>
-
       <router-link to="/viewappt">View Appointments</router-link>
-
       <router-link to="/managepayments">Manage Payments</router-link>
-
       <router-link to="/patientsettings">Settings</router-link>
-
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
 
@@ -57,7 +50,7 @@ export default {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 50px 0 0 0;
+  margin: 45px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -84,13 +77,11 @@ export default {
   height: 100%;
 }
 
-h3 {
+#sideNavBar #clinic {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;
   color: white;
   font-weight: bolder;
-  padding: 10px 0px 0px 0px;
-  margin: 40px 0 0;
 }
 </style>
