@@ -19,7 +19,7 @@
             <span v-if="patient.physical"
               ><b>Reason:</b> Physical Examination Required</span
             >
-            <span><b>Status:</b> {{ patient.pendingstatus }}</span>
+            <span style="white-space: nowrap"><b>Status:</b> {{ patient.pendingstatus }}</span>
           </div>
         </li>
       </template>
