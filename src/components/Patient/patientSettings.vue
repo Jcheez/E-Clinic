@@ -2,20 +2,12 @@
   <div class="settings">
     <h4>Patient Settings</h4>
     <div id="sideNavBar">
-      <h3>E-Clinic</h3>
-
+      <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <router-link to="/makebooking">Make A Booking</router-link>
-
       <router-link to="/pending">Pending Booking</router-link>
-
       <router-link to="/viewdocuments">View Documents</router-link>
-
-      <router-link to="/viewappt">View Appointments</router-link>
-
       <router-link to="/managepayments">Manage Payments</router-link>
-
       <router-link to="/patientsettings">Settings</router-link>
-
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
     <div id="instructions">
@@ -79,7 +71,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
 
     resetError() {
@@ -175,7 +167,7 @@ h4 {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 50px 0 0 0;
+  margin: 45px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -199,6 +191,18 @@ h4 {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   height: 100%;
+}
+
+#sideNavBar #clinic {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+}
+
+#sideNavBar #clinic:hover {
+  cursor: pointer;
 }
 label {
   color: black;

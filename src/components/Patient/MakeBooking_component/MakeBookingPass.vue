@@ -231,10 +231,8 @@ export default {
       t.date.toDate().getMonth() == date_month && t.date.toDate().getFullYear() == date_year)
       for (var s of this.slot) {
         if (this.docsName.includes(s.doctorName) == false) {
-        this.docsName.push(s.doctorName)
-      }
-      
-      
+          this.docsName.push(s.doctorName)
+        }
       }
     },
   },

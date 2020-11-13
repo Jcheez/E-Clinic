@@ -172,6 +172,7 @@ export default {
               console.log("deleted corresponding free slot");
               doc.ref.delete();
             });
+            this.$emit("fetch")
           });
 
           /*
@@ -179,18 +180,16 @@ export default {
            * update patient upcoming field
            * update patient appointment history
           */
+         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
           var e = new Date(newTimestamp.seconds * 1000)
-          var f = e.toLocaleString("en-SG", {day: "numeric"}) + " " + 
-                  e.toLocaleString("en-SG", {month: "long"}) + " " +
-                  e.toLocaleString("en-SG", {year: "numeric"}) 
-          var g = e.toLocaleString().substring(12) 
-          var h = this.formatTime(g)
+          var f = e.getDate() + " " + monthNames[e.getMonth()] + " " + e.getFullYear()
+          var h = this.formatTime(e)
           console.log(h)
           database.collection("patients").doc(d.patient).get().then((doc) => {
             let item = doc.data()
             let newMessages = item.newNotifications
-            newMessages.splice(0, 0, this.formatDate(new Date()) + ": Your consultation at " + d.clinic + " has been rescheduled, check it out in view appointments.")
-
+            newMessages.splice(0, 0, this.formatDate(new Date()) + ": Your consultation at " + d.clinic + " has been rescheduled.")
+            console.log(newMessages)
             let newmap = item.appointment_history
             var index = newmap[d.clinic].indexOf(item.upcoming[1])
             console.log(index)
@@ -218,17 +217,22 @@ export default {
     },
 
     formatDate: function(date) {
-      let ldate = date.toLocaleDateString().split("/")
-      let i0 = ldate[0]
-      ldate[0] = ldate[1]
-      ldate[1] = i0
-      return ldate.join("/")
+      let filter_year = date.getFullYear()
+      let filter_month = date.getMonth() + 1
+      let filter_day = date.getDate()
+      return filter_day + "/" + filter_month + "/" + filter_year
     },
     formatTime: function(time) {
-      let ltime =  time.replace(" ", ":").split(":")
-      ltime.splice(2,1)
-      return ltime[0] + ":" + ltime[1] + " " + ltime[2]
-    },
+          let min = time.getMinutes();
+          let h = time.getHours();
+          if (h < 10) {
+            h = "0" + h;
+          }   
+          if (min == 0) {
+            min = "00";
+          }
+          return h + ":" + min;
+        },
   },
   // watch: {
   //   rescheduleSlot: function () {

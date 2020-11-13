@@ -64,11 +64,10 @@ export default {
         },
 
         formatDate: function(date) {
-          let ldate = date.toLocaleDateString().split("/")
-          let i0 = ldate[0]
-          ldate[0] = ldate[1]
-          ldate[1] = i0
-          return ldate.join("/")
+            let filter_year = date.getFullYear()
+            let filter_month = date.getMonth() + 1
+            let filter_day = date.getDate()
+            return filter_day + "/" + filter_month + "/" + filter_year
         },
 
         failcall: function () {

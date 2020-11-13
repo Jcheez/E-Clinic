@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>{{ msg }}</p>
-    <v-date-picker v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
+    <v-date-picker :attributes='attributes' v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
     <ul id="slots">
       <li v-for="(s, index) in this.docsName" :key="index">
         <div id="inner">
@@ -29,75 +29,103 @@ export default {
         slot: [],
         datadoc: {},
         docsName: [],
+        all: [],
+        show: []
     };
+  },
+  computed: {
+    attributes() {
+      return this.show.map(t => ({
+        //key: `todo.${t.id}`,
+        dot: true,
+        dates: t.date.toDate(),
+        customData: t,
+      }));
+    },
   },
 
   methods: {
       fetchitems: function() {
           database
           .collection("consultslots")
+          .where("clinic", "==", this.clinic)
           .orderBy("date")
           .get()
           .then((querySnapShot) => {
-              this.slot = []
+              let temp = []
+              let temp2 = []
+              let temp3 = {}
+              let temp4 = [];
               this.docsName = []
               let item = {};
-            querySnapShot.forEach((doc) => {
+              querySnapShot.forEach((doc) => {
                 item = doc.data();
-                let item_date = item.date
-                .toDate()
-                .toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-");
+
+                let item_year = item.date.toDate().getFullYear()
+                let item_month = item.date.toDate().getMonth()
+                let item_day = item.date.toDate().getDate()
                 
-                let filtered_date = this.date.toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-")
+                let filter_year = this.date.getFullYear()
+                let filter_month = this.date.getMonth()
+                let filter_day = this.date.getDate()
 
-                if (item_date.localeCompare(filtered_date) == 0 && item.patient == null && item.clinic.localeCompare(this.clinic) == 0) {
-                  let item2 = item
-                  item2.id = doc.id;
-                  database
-                  .collection("doctors")
-                  .doc(item.doctor)
-                  .get()
-                  .then((doc) => {
-                    let docName = doc.data().name;
-                    console.log(docName)
-                    item2.doctorName = docName
-                    console.log(item)
-                    this.slot.push(item2);
-                    if (this.docsName.includes(docName) == false){
-                      this.docsName.push(docName)
-                    }
-                    });
-
-                    }
-                });
+                if (item.patient == null && new Date() <= item.date.toDate()) {
+                    if (temp3[item_year + " " + item_month + " " + item_day] == undefined) {
+                        temp3[item_year + " " + item_month + " " + item_day] = [item]
+                      } else {
+                        temp3[item_year + " " + item_month + " " + item_day].push(item)
+                      }
+                    let item2 = item
+                    item2.id = doc.id;
+                    database
+                    .collection("doctors")
+                    .doc(item.doctor)
+                    .get()
+                    .then((doc) => {
+                      let docName = doc.data().name;
+                      //console.log(docName)
+                      item2.doctorName = docName
+                      //console.log(item)
+                      temp.push(item2)
+                      
+                      if (item_year == filter_year && item_month == filter_month && item_day == filter_day) {
+                      temp2.push(item2);
+                      if (this.docsName.includes(docName) == false){
+                        this.docsName.push(docName)
+                      }}
+                    })
+                } 
+              });
+              this.all = temp
+              this.slot = temp2
+              for (var s in temp3) {
+              while (temp3[s].length > 3) {
+                if (temp3[s][0].patient) {
+                  let item = temp3[s][0]
+                  temp3[s].pop()
+                  temp3[s].push(item)
+                }
+                temp3[s].pop()
+              }
+              for (var ss in temp3[s]) {
+                temp4.push(temp3[s][ss])
+              }
+            }
+            this.show = temp4
             });
         },
 
-      formatDate: function(date) {
-          let ldate = date.toDate().toLocaleDateString().split("/")
-          let i0 = ldate[0]
-          ldate[0] = ldate[1]
-          ldate[1] = i0
-          return ldate.join("/")
-        },
-
       formatTime: function(time) {
-          let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
-          ltime.splice(2,1)
-          return ltime[0] + ":" + ltime[1] + " " + ltime[2]
+          let min = time.toDate().getMinutes();
+          let h = time.toDate().getHours();
+          if (h < 10) {
+            h = "0" + h;
+          }   
+          if (min == 0) {
+            min = "00";
+          }
+          return h + ":" + min;
         },
-
-      formatTime2: function(time) {
-        let ltime =  time.toDate().toLocaleTimeString().replace(" ", ":").split(":")
-        ltime.splice(2,1)
-        return ltime[0] + "" + ltime[1]
-      },
 
       getdoc: function(ide) {
           database
@@ -115,7 +143,7 @@ export default {
                           conditions: this.consult[0].conditions
                       })
                       .then(() => {
-                        this.$router.push("/viewappt")
+                        this.$router.push("/patienthome")
                       })
                       
                   }
@@ -209,7 +237,7 @@ export default {
         },
 
         routeHome: function() {
-            this.$router.push('/viewappt')
+            this.$router.push('/patienthome')
         },
   },
     created() {
@@ -219,7 +247,18 @@ export default {
     
   watch: {
     date: function () {
-      this.fetchitems();
+      this.slot = [];
+      this.docsName = []
+      let date_year = this.date.getFullYear();
+      let date_month = this.date.getMonth()
+      let date_day = this.date.getDate()
+      this.slot = this.all.filter(t => t.date.toDate().getDate() == date_day && 
+      t.date.toDate().getMonth() == date_month && t.date.toDate().getFullYear() == date_year)
+      for (var s of this.slot) {
+        if (this.docsName.includes(s.doctorName) == false) {
+          this.docsName.push(s.doctorName)
+        }
+      }
     },
   },
 

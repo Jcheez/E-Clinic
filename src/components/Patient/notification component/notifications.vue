@@ -1,8 +1,11 @@
 <template>
   <div class="navbar">
     <div class="dropdown">
-    <button class="dropbtn" v-on:click="myFunction()">Dropdown
-        <i class="fa fa-caret-down"></i>
+    <button v-if="this.newMessages.length == 0" class="dropbtn" v-on:click="myFunction()">
+          <bell-icon :size="40"/>
+    </button>
+    <button v-else class="dropbtn" style = "background-color: #FF6961;" v-on:click="myFunction()">
+          <bell-ring-icon :size="40"/>
     </button>
     <div class="dropdown-content" id="myDropdown">
         <p v-if="this.newMessages.length == 0 && this.oldMessages.length == 0">You do not have any notifications</p>
@@ -15,6 +18,8 @@
 
 <script>
 import database from "../../../firebase.js"
+import BellIcon from 'vue-material-design-icons/Bell.vue';
+import BellRingIcon from 'vue-material-design-icons/BellRing.vue';
 //import * as firebase from "firebase"
 
 export default {
@@ -25,7 +30,10 @@ export default {
       oldMessages: []
     };
   },
-
+  components: {
+    BellIcon,
+    BellRingIcon
+  },
   methods: {
     fetchitems: function() {
       database
@@ -36,8 +44,15 @@ export default {
         let item = doc.data()
         this.newMessages = item.newNotifications
         this.oldMessages = item.oldNotifications
-
         let returnArray = this.newMessages.concat(this.oldMessages)
+        if (this.newMessages.length < 5) {
+          while (this.oldMessages.length + this.newMessages.length > 5) {
+            this.oldMessages.pop()
+          }
+        } else {
+          this.oldMessages = []
+        }
+
 
         database
         .collection("patients")
@@ -78,37 +93,48 @@ export default {
 <style scoped>
 div.navbar {
     position: relative;
-    left:800px
+    right: 50px;
+    top:55px;
 }
 
 .dropdown {
-  float: left;
-  overflow: hidden;
+  float: right;
+  overflow: auto;
 }
 
-.dropdown .dropbtn {
+.dropbtn{
   cursor: pointer;
   font-size: 16px;  
   border: none;
   outline: none;
   color: black;
   padding: 14px 16px;
-  background-color: inherit;
+  border-radius: 50px;
   font-family: inherit;
   margin: 0;
 }
 
-.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-  background-color: red;
+.dropbtn-red{
+  cursor: pointer;
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  border-radius: 50px;
+  background-color: #FF6961;
+  font-family: inherit;
+  margin: 0;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  margin-left: -400px
 }
 
 .dropdown-content p {

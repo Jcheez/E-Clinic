@@ -10,8 +10,6 @@
 
       <router-link to="/viewdocuments">View Documents</router-link>
 
-      <router-link to="/viewappt">View Appointments</router-link>
-
       <router-link to="/managepayments">Manage Payments</router-link>
 
       <router-link to="/patientsettings">Settings</router-link>
@@ -126,7 +124,7 @@ export default {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
-      this.$router.push("/cliniclogin");
+      this.$router.push("/patientlogin");
     },
     getQrCode: function () {
       database
