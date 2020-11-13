@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div id= "container">
     <h4>View Appointment</h4>
     <div id="sideNavBar">
-      <h3>E-Clinic</h3>
+      <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <router-link to="/makebooking">Make A Booking</router-link>
       <router-link to="/pending">Pending Booking</router-link>
       <router-link to="/viewdocuments">View Documents</router-link>
@@ -13,21 +13,19 @@
     </div>
     <div v-if="noupcoming != null" id="noupcoming">{{ this.noupcoming }}</div>
     <div v-if="this.physicalList.length > 0" id="physical">
-      <span>{{
-        "Date: " + this.physicalList[0][1] + " " + this.physicalList[0][2]
-      }}</span>
-      <span>Consult Type: Physical</span>
-      <span>{{ "Clinic: " + this.physicalList[0][3] }}</span>
+      <span><b>Date:</b> {{ this.physicalList[0][1] + " " + this.physicalList[0][2] }}</span>
+      <span><b>Consult Type:</b> Physical</span>
+      <span><b>Clinic:</b> {{ this.physicalList[0][3] }}</span>
     </div>
     <div v-if="this.itemsList.length > 0" id="online">
-      <span>{{ "Clinic: " + this.itemsList[0].clinic }}</span>
-      <span>{{ "Doctor: " + this.itemsList[0].name }}</span>
-      <span>{{ "Conditions: " + this.consult[0].conditions }}</span>
-      <span>{{ "Date: " + this.date }}</span>
+      <span><b>Clinic:</b> {{ this.itemsList[0].clinic }}</span>
+      <span><b>Doctor:</b> {{ this.itemsList[0].name }}</span>
+      <!-- <span><b>Conditions:</b> {{ this.consult[0].conditions }}</span> -->
+      <span><b>Date:</b> {{ this.date }}</span>
       <!-- <span>{{ "Date: " + formatDate(this.date) + " " + formatTime(this.date) }}</span> -->
       <span
-        >{{ "Zoom Link: " }}
-        <p id="url" v-on:click="ratings()">Link</p>
+        ><b>Zoom Link: </b>
+        <p id="url" v-on:click="ratings()">Click to Join Appointment</p>
       </span>
       <rating v-if="this.urlclicked" v-bind:consult="this.consult"></rating>
     </div>
@@ -45,7 +43,7 @@
     >
       Reschedule Appointment
     </button>
-    <button id="home" v-on:click="routeHome()">Back to Home</button>
+    <!-- <button id="home" v-on:click="routeHome()">Back to Home</button> -->
   </div>
 </template>
 
@@ -239,26 +237,17 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  position: absolute;
-  width: 372px;
-  height: 57px;
-  left: 86px;
-  top: 220px;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 42px;
-  line-height: 57px;
-  color: #000000;
+#container {
+  position: relative;
 }
+
 #sideNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 50px 0 0 0;
+  margin: 45px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -285,13 +274,16 @@ h1 {
   height: 100%;
 }
 
-#sideNavBar h3 {
+#sideNavBar #clinic {
   font-family: Nunito;
   font-size: 24px;
   letter-spacing: 4px;
   color: white;
   font-weight: bolder;
-  padding: 10px 0px 0px 0px;
+}
+
+#sideNavBar #clinic:hover {
+  cursor: pointer;
 }
 
 h4 {
@@ -305,58 +297,103 @@ h4 {
 
 div#online {
   position: absolute;
-  width: 562px;
+  width: 500px;
   height: 140px;
   left: 300px;
-  top: 200px;
+  top: 150px;
+  padding: 20px;
+  box-shadow: 0 6px 15px -4px  rgba(0, 0, 0, 0.377);
 }
 div#physical {
-  position: absoulte;
+  /* position: absoulte;
   width: 562px;
   height: 140px;
   left: 100px;
-  top: 310px;
+  top: 310px; */
+  position: absolute;
+  width: 500px;
+  height: 140px;
+  left: 300px;
+  top: 150px;
+  padding: 20px;
+  box-shadow: 0 6px 15px -4px  rgba(0, 0, 0, 0.377);
+  
 }
 div#noupcoming {
-  position: absolute;
+  /* position: absolute;
   width: 562px;
   height: 140px;
   left: 300px;
-  top: 200px;
+  top: 200px; */
   text-align: left;
+  position: absolute;
+  width: 500px;
+  height: 140px;
+  left: 300px;
+  top: 150px;
+  padding: 20px;
+  box-shadow: 0 6px 15px -4px  rgba(0, 0, 0, 0.377);
 }
 span {
+  font-family: Nunito;
+  font-size: 18px;
   display: block;
+  padding-bottom: 10px;
   text-align: left;
 }
 p#url {
   display: inline;
-  color: blue;
-  text-decoration: underline;
+  color: rgb(0, 114, 180);
 }
-button {
+
+p#url:hover {
+  cursor: pointer;
+}
+
+#cancel {
   transition: 0.3s;
   position: absolute;
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
-  padding: 10px;
+  padding: 6px;
   border-radius: 8px;
   cursor: pointer;
-  font-family: Roboto;
-  font-weight: bold;
-  font-size: 14px;
+  font-family: Nunito;
+  font-size: 12px;
   color: white;
-  letter-spacing: 3px;
-  outline: none;
-  display: block;
-  width: 150px;
+  letter-spacing: 2px;
+  display: inline-block;
+  width: 180px;
   text-align: center;
-  margin-left: 20px;
-  height: 60px;
-  left: 700px;
-  top: 385px;
+  left: 370px;
+  top: 350px;
 }
-button:hover {
+#cancel:hover {
+  background-color: white;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+  color: rgb(0, 114, 180);
+  border: 1px solid rgb(0, 114, 180);
+}
+
+#reschedule {
+  transition: 0.3s;
+  position: absolute;
+  background-color: rgb(0, 114, 180);
+  border: 1px solid white;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Nunito;
+  font-size: 12px;
+  color: white;
+  letter-spacing: 2px;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  left: 570px;
+  top: 350px;
+}
+#reschedule:hover {
   background-color: white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);

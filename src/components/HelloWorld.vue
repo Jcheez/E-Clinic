@@ -14,8 +14,8 @@
       </ul>
     </div>
     <div v-else style = "margin-left: 650px; margin-top: 200px">
-      <h4>About E-clinic</h4>
-      <p> E-clinic enables you to consult your doctor,
+      <h4>About E-Clinic</h4>
+      <p> E-Clinic enables you to consult your doctor,
         <br> from the comfort of your own home! </p>
       <router-link to="/cliniclogin">
         <button class = "delete" v-on:click="toggle">Proceed</button>
