@@ -20,11 +20,11 @@
     </div>
     <!--hr /-->
     <div id="hard">
-      <p>
+      <span>
         You have <b>{{ Object.keys(outstanding).length }}</b> outstanding
         invoices
-      </p>
-      <p>Digital payments are available for:</p>
+      </span>
+      <span>Digital payment methods accepted:</span>
       <ul>
         <li>PayNow</li>
         <li>DBS PayLah</li>
@@ -40,13 +40,24 @@
       >
         <div id="inner">
           <div v-if="amountPaid[value] == undefined">
-            <span style="white-space: nowrap"
-              >Outstanding payment from {{ value }}</span
-            >
-            <span> Outstanding amount: ${{ name[0].toFixed(2) }} </span>
+            <span style="white-space: nowrap">
+              Outstanding payment from {{ value }}
+            </span>
+            <span>Outstanding amount: ${{ name[0].toFixed(2) }}</span>
+            <span>
+              Please make payment by
+              <p
+                style="color: red; display: inline-block"
+                v-html="getDueDate(value)"
+              >
+                <!--{{ this.getDueDate(value) }}{{ this.getDueDate(value)
+                }}-->
+              </p>
+            </span>
+
             <div v-for="(clinic, index) in qrCode" :key="index">
               <div v-if="clinic[0] == name[1]" id="paydetails">
-                <p style="font-size: 20px; position: relative; left: 65px">
+                <p style="position: relative; margin-left: 10px">
                   Interbank transfer: {{ clinic[2] }}
                 </p>
                 <img v-bind:src="clinic[1]" width="175" height="175" />
@@ -57,22 +68,32 @@
           <div v-else-if="name[0] == amountPaid[value][0]">
             <span
               style="position: relative; top: 65px; left: 5px; font-size: 35px"
-              >Payment Completed for {{ value }}!</span
             >
+              Payment Completed for {{ value }}!
+            </span>
           </div>
 
           <div v-else>
-            <span style="white-space: nowrap"
-              >Outstanding payment from {{ value }}</span
-            >
+            <span style="white-space: nowrap">
+              Outstanding payment from {{ value }}
+            </span>
             <span>
               Outstanding amount: ${{
                 (name[0] - amountPaid[value][0]).toFixed(2)
               }}
             </span>
+            <span
+              >Please make payment by
+              <p
+                style="color: red; display: inline-block"
+                v-html="getDueDate(value)"
+              >
+                <!--{{ this.getDueDate(value) }}-->
+              </p>
+            </span>
             <div v-for="(clinic, index) in qrCode" :key="index">
               <div v-if="clinic[0] == name[1]" id="paydetails">
-                <p style="font-size: 20px; position: relative; left: 65px">
+                <p style="position: relative; margin-left: 10px">
                   Interbank transfer: {{ clinic[2] }}
                 </p>
                 <img v-bind:src="clinic[1]" width="175" height="175" />
@@ -155,6 +176,37 @@ export default {
     routeHome: function () {
       this.$router.push("/patienthome");
     },
+    getDueDate: function (dateString) {
+      let DMY = dateString.split(" ");
+      console.log(DMY);
+      let formatDateString =
+        DMY[1] + " " + DMY[0] + ", " + DMY[2] + " 00:00:00";
+      console.log(formatDateString);
+      let dueDate = new Date(formatDateString);
+      dueDate.setDate(dueDate.getDate() + 14);
+      const allMonths = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      let newString =
+        dueDate.getDate().toString() +
+        " " +
+        allMonths[dueDate.getMonth()] +
+        " " +
+        dueDate.getFullYear().toString();
+      console.log(newString);
+      return newString;
+    },
   },
 
   created() {
@@ -195,7 +247,7 @@ h4 {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 50px 0 0 0;
+  margin: 45px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -219,36 +271,6 @@ h4 {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
 }
-/*hr {
-  position: absolute;
-  width: 1459px;
-  height: 40px;
-  left: 580px;
-  top: 75px;
-  background-color: rgb(0, 114, 180);
-}*/
-/*h1 {
-  position: absolute;
-  width: 372px;
-  height: 57px;
-  left: 86px;
-  top: 220px;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 42px;
-  line-height: 57px;
-  color: #000000;
-}
-
-hr {
-  position: absolute;
-  width: 1459px;
-  height: 40px;
-  left: 520px;
-  top: 250px;
-  background-color: #1677cf;
-}*/
 
 div#hard {
   position: absolute;
@@ -259,11 +281,15 @@ div#hard {
   text-align: left;
   font-family: Nunito;
 }
+span {
+  display: block;
+  margin: 10px 0px 10px 10px;
+}
 #payments {
   position: absolute;
-  left: 300px;
-  top: 350px;
-  font-size: 18px;
+  left: 280px;
+  top: 300px;
+  font-size: 16px;
   padding-inline-start: 0px;
 }
 div#inner {
@@ -275,34 +301,50 @@ div#inner {
 
 li#iter {
   position: relative;
-  width: 562px;
-  height: 320px;
+  width: 700px;
+  height: 250px;
   /*left: 73px;
   top: 400px;*/
   border: 1px solid rgb(0, 114, 180);
   border-radius: 8px;
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
-  /*padding-left: 10px;
-  padding-top: 20px;*/
+  padding-left: 10px;
+  /*padding-top: 20px;*/
   display: block;
   font-family: Nunito;
   font-size: 18px;
   margin: 20px;
+  text-align: left;
 }
 
-span {
+p {
   position: relative;
-  top: 14px;
-  left: -50px;
+  left: 0px;
   display: block;
   text-align: left;
-  font-size: 20px;
+  font-size: 18px;
+  width: 400px;
+  margin: 10px 0px 10px 10px;
 }
 
 div#paydetails {
-  position: relative;
-  left: -162px;
+  position: absolute;
+  text-align: left;
+  float: left;
+  display: inline-block;
+  font-size: 18px;
+  width: 300px;
+  left: 410px;
+  top: 0px;
+  border-left: 1px solid rgb(0, 114, 180);
+  height: 100%;
+}
+img {
+  display: inline-block;
+  position: absolute;
+  margin: 10px;
+  left: 10px;
 }
 
 button {

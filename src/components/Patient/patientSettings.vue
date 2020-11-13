@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1>Patient Settings</h1>
+    <h4>Patient Settings</h4>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
 
@@ -152,6 +152,15 @@ export default {
   align-items: center;
   justify-content: center;
 }
+h4 {
+  position: absolute;
+  left: 300px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+  top: 0px;
+}
+
 #sideNavBar h3 {
   font-family: Nunito;
   font-size: 24px;
@@ -159,7 +168,6 @@ export default {
   color: white;
   font-weight: bolder;
   padding: 10px 0px 0px 0px;
-  margin: 40px 0 0;
 }
 #sideNavBar a {
   color: rgb(238, 249, 255);
