@@ -1,8 +1,12 @@
 <template>
   <div class="navbar">
     <div class="dropdown">
-    <bell-icon v-if="this.newMessages.length == 0" class="dropbtn" v-on:click="myFunction()"/>
-    <bell-ring-icon v-else class="dropbtn" v-on:click="myFunction()"/>
+    <button v-if="this.newMessages.length == 0" class="dropbtn" v-on:click="myFunction()">
+          <bell-icon :size="40"/>
+    </button>
+    <button v-else class="dropbtn" style = "background-color: #FF6961;" v-on:click="myFunction()">
+          <bell-ring-icon :size="40"/>
+    </button>
     <div class="dropdown-content" id="myDropdown">
         <p v-if="this.newMessages.length == 0 && this.oldMessages.length == 0">You do not have any notifications</p>
         <p id=new v-for="(m, index) in this.newMessages" :key="index" style="background-color: rgb(185, 250, 250); margin-bottom:0px; margin-top:0px;">{{m}}</p>
@@ -41,9 +45,13 @@ export default {
         this.newMessages = item.newNotifications
         this.oldMessages = item.oldNotifications
         let returnArray = this.newMessages.concat(this.oldMessages)
-        //while (this.oldMessages.length > 5) {
-        //  this.oldMessages.pop()
-        //}
+        if (this.newMessages.length < 5) {
+          while (this.oldMessages.length + this.newMessages.length > 5) {
+            this.oldMessages.pop()
+          }
+        } else {
+          this.oldMessages = []
+        }
 
 
         database
@@ -85,23 +93,36 @@ export default {
 <style scoped>
 div.navbar {
     position: relative;
-    left:800px;
+    right: 50px;
     top:55px;
 }
 
 .dropdown {
-  float: left;
-  overflow: hidden;
+  float: right;
+  overflow: auto;
 }
 
-.dropdown .dropbtn{
+.dropbtn{
   cursor: pointer;
   font-size: 16px;  
   border: none;
   outline: none;
   color: black;
   padding: 14px 16px;
-  background-color: inherit;
+  border-radius: 50px;
+  font-family: inherit;
+  margin: 0;
+}
+
+.dropbtn-red{
+  cursor: pointer;
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  border-radius: 50px;
+  background-color: #FF6961;
   font-family: inherit;
   margin: 0;
 }
@@ -110,9 +131,10 @@ div.navbar {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  max-width: 250px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  margin-left: -400px
 }
 
 .dropdown-content p {
