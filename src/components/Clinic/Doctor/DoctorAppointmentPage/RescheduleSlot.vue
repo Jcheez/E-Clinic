@@ -219,16 +219,21 @@ export default {
     },
 
     formatDate: function(date) {
-      let ldate = date.toLocaleDateString().split("/")
-      let i0 = ldate[0]
-      ldate[0] = ldate[1]
-      ldate[1] = i0
-      return ldate.join("/")
+      let filter_year = date.getFullYear()
+      let filter_month = date.getMonth() + 1
+      let filter_day = date.getDate()
+      return filter_day + "/" + filter_month + "/" + filter_year
     },
     formatTime: function(time) {
-      let ltime =  time.replace(" ", ":").split(":")
-      ltime.splice(2,1)
-      return ltime[0] + ":" + ltime[1] + " " + ltime[2]
+          let min = time.toDate().getMinutes();
+          let h = time.toDate().getHours();
+          if (h < 10) {
+            h = "0" + h;
+          }   
+          if (min == 0) {
+            min = "00";
+          }
+          return h + ":" + min;
     },
   },
   // watch: {
