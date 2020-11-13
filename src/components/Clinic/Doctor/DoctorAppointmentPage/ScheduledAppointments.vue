@@ -12,8 +12,8 @@
           :id="data.id"
         >
           <div class="labels">
-            <span>Time:</span><br />
-            <span>Patient:</span>
+            <span >Time: {{showTime(data)}}</span><br />
+            <span>Patient: {{ getPatientName(data.patient) }}</span>
           </div>
           <div class="data">
             <span v-html="showTime(data)"></span><br />
@@ -29,7 +29,9 @@
 import database from "../../../../firebase";
 export default {
   data() {
-    return {};
+    return {
+      patients: []
+    };
   },
   props: {
     consultData: {
@@ -47,6 +49,28 @@ export default {
         min = "00";
       }
       return h + ":" + min;
+    },
+
+    getPatients: function() {
+      database
+      .collection("patients")
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((doc) => {
+          let item = doc.data();
+          item.id = doc.id
+          this.patients.push(item)
+        })
+      })
+    },
+
+    getPatientName: function(docId) {
+      for (let index = 0; index < this.patients.length; index++) {
+        let currentId = this.patients[index]["id"]
+        if (currentId.localeCompare(docId) == 0) {
+          return this.patients[index]["name"]
+        }
+      }
     }
   },
   computed: {
@@ -69,6 +93,10 @@ export default {
       });
     },
   },
+
+  created() {
+    this.getPatients();
+  }
 };
 </script>
 
