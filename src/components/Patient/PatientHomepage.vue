@@ -165,7 +165,7 @@ export default {
           this.noupcoming = null;
           var today = new Date();
           if (itemx.upcoming == null) {
-            this.noupcoming = "You have no upcoming appointments";
+            this.noupcoming = "You have no upcoming booking.";
           } else if (
             Date.parse(itemx.upcoming[1]) > today.getTime() ||
             (Date.parse(itemx.upcoming[1]) == today.getTime() &&
@@ -330,8 +330,8 @@ div#noupcoming {
   left: 300px;
   top: 200px; */
   text-align: center;
-  vertical-align: middle;
-  line-height: 140px; 
+  vertical-align: center;
+  line-height: 140px;
   position: absolute;
   width: 500px;
   height: 140px;

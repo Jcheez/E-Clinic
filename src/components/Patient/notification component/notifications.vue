@@ -1,9 +1,8 @@
 <template>
   <div class="navbar">
     <div class="dropdown">
-    <button class="dropbtn" v-on:click="myFunction()">Dropdown
-        <i class="fa fa-caret-down"></i>
-    </button>
+    <bell-icon v-if="this.newMessages.length == 0" class="dropbtn" v-on:click="myFunction()"/>
+    <bell-ring-icon v-else class="dropbtn" v-on:click="myFunction()"/>
     <div class="dropdown-content" id="myDropdown">
         <p v-if="this.newMessages.length == 0 && this.oldMessages.length == 0">You do not have any notifications</p>
         <p id=new v-for="(m, index) in this.newMessages" :key="index" style="background-color: rgb(185, 250, 250); margin-bottom:0px; margin-top:0px;">{{m}}</p>
@@ -15,6 +14,8 @@
 
 <script>
 import database from "../../../firebase.js"
+import BellIcon from 'vue-material-design-icons/Bell.vue';
+import BellRingIcon from 'vue-material-design-icons/BellRing.vue';
 //import * as firebase from "firebase"
 
 export default {
@@ -25,7 +26,10 @@ export default {
       oldMessages: []
     };
   },
-
+  components: {
+    BellIcon,
+    BellRingIcon
+  },
   methods: {
     fetchitems: function() {
       database
@@ -36,8 +40,11 @@ export default {
         let item = doc.data()
         this.newMessages = item.newNotifications
         this.oldMessages = item.oldNotifications
-
         let returnArray = this.newMessages.concat(this.oldMessages)
+        //while (this.oldMessages.length > 5) {
+        //  this.oldMessages.pop()
+        //}
+
 
         database
         .collection("patients")
@@ -78,7 +85,8 @@ export default {
 <style scoped>
 div.navbar {
     position: relative;
-    left:800px
+    left:800px;
+    top:55px;
 }
 
 .dropdown {
@@ -86,7 +94,7 @@ div.navbar {
   overflow: hidden;
 }
 
-.dropdown .dropbtn {
+.dropdown .dropbtn{
   cursor: pointer;
   font-size: 16px;  
   border: none;
@@ -98,15 +106,11 @@ div.navbar {
   margin: 0;
 }
 
-.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-  background-color: red;
-}
-
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  max-width: 250px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
