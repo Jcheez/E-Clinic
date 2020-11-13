@@ -18,7 +18,7 @@
         <template v-for="(patient, x) in itemsList">
           <li v-bind:key="x">
             <div id="inner">
-              <span style="white-space:nowrap">{{ "Patient Id: " + patient.patientId }}</span>
+              <span style="white-space:nowrap">{{ "Patient Id: " + getPatientName(patient.patientId) }}</span>
               <span v-if="patient.firstTime && patient.physical" style="white-space:nowrap"
                 >Reason: First Time Patient and Physical Examination Required</span
               >
@@ -72,6 +72,7 @@ export default {
       msg: "Pending Booking",
       itemsList: [],
       name: "",
+      patients: [],
     };
   },
   computed: {
@@ -86,13 +87,13 @@ export default {
     },
     fetchItems: function () {
       console.log(this.itemsList);
-      let x = this.getUser.displayName;
+      //let x = this.getUser.displayName;
       database.collection("pendingbooking").onSnapshot((res) => {
         const changes = res.docChanges();
 
         changes.forEach((change) => {
           //console.log(change.doc.data())
-          if (change.doc.data().clinic == x) {
+          if (change.doc.data().clinic == this.getUser.displayName) {
             if (change.type === "added") {
               this.itemsList.push(change.doc.data());
             } else if (change.type === "modified") {
@@ -133,9 +134,32 @@ export default {
           });
         });
     },
+
+    getPatients: function() {
+      database
+      .collection("patients")
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((doc) => {
+          let item = doc.data();
+          item.id = doc.id
+          this.patients.push(item)
+        })
+      })
+    },
+
+    getPatientName: function(docId) {
+      for (let index = 0; index < this.patients.length; index++) {
+        let currentId = this.patients[index]["id"]
+        if (currentId.localeCompare(docId) == 0) {
+          return this.patients[index]["name"]
+        }
+      }
+    }
   },
   created() {
     this.fetchItems();
+    this.getPatients();
   },
 };
 </script>
