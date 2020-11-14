@@ -137,6 +137,8 @@ export default {
         .doc(localStorage.getItem("uidClinic"))
         .update({
           interBank: this.interbank,
+        }).then(() => {
+          alert("Interbank account has been updated")
         });
     },
   },

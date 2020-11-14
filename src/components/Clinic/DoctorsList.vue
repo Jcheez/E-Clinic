@@ -247,8 +247,9 @@ p {
   display: inline-block;
   width: 100px;
   text-align: center;
-  left: 1000px;
+  left: 1100px;
   top: 120px;
+  z-index: 1;
 }
 button:hover {
   background-color: white;
