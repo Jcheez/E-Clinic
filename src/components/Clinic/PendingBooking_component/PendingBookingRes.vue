@@ -166,7 +166,7 @@ export default {
             database.collection("patients").doc(x).get().then((doc) => {
                 let item = doc.data()
                 let newMessages = item.newNotifications
-                newMessages.splice(0, 0, this.formatDate(new Date()) + ": You have been verified by " + this.clinicName + ", you can now proceed to book consult with them.")
+                newMessages.splice(0, 0, this.formatDate(new Date()) + ": You have been verified by " + this.clinicName + ", you can now proceed to book a teleconsult with them")
 
                 database.collection("patients").doc(x).update({
                     newNotifications: newMessages,
@@ -201,7 +201,7 @@ export default {
             database.collection("patients").doc(x).get().then((doc) => {
                 let item = doc.data()
                 let newMessages = item.newNotifications
-                newMessages.splice(0, 0, this.formatDate(new Date()) + ": Clinic has scheduled a physical appointment for you, check it in view appointment tab")
+                newMessages.splice(0, 0, this.formatDate(new Date()) + ": Clinic " + this.clinicName + " has scheduled a physical appointment for you. You should see it under your upcoming appointments.")
 
                 database.collection("patients").doc(x).update({
                     newNotifications: newMessages,
