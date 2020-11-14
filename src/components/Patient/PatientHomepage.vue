@@ -1,6 +1,7 @@
 <template>
   <div id= "container">
-    <h4>Hi, {{this.getUser.displayName}}</h4>
+    <h4>Hi,</h4>
+    <h4 id="name">{{this.getUser.displayName}}</h4>
     <h3>Upcoming Appointments</h3>
     <div id="sideNavBar">
       <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
@@ -298,7 +299,11 @@ h4 {
   position: absolute;
   left: 300px;
 }
-
+#name {
+  position: absolute;
+  color:  rgb(0, 114, 180);
+  left: 350px;
+}
 div#online {
   position: absolute;
   width: 500px;
