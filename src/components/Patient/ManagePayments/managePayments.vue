@@ -101,7 +101,7 @@
         </div>
       </li>
     </ul>
-    <button id="home" v-on:click="routeHome()">Back to Home</button>
+    <!--button id="home" v-on:click="routeHome()">Back to Home</button-->
   </div>
 </template>
 
@@ -169,10 +169,6 @@ export default {
         }
       }
       this.$forceUpdate();
-    },
-
-    routeHome: function () {
-      this.$router.push("/patienthome");
     },
     getDueDate: function (dateString) {
       let DMY = dateString.split(" ");
