@@ -21,12 +21,15 @@
         >
           <span class="rescheduleSlot">Reschedule</span>
         </button>
-        
+
         <div
           class="reschedule"
           v-if="data.patient != null && data.reschedule == true"
         >
-          <reschedule @changeTile = "changeTile" v-bind:slotData="data" ></reschedule>
+          <reschedule
+            @changeTile="changeTile"
+            v-bind:slotData="data"
+          ></reschedule>
         </div>
       </li>
     </ul>
@@ -58,10 +61,10 @@ export default {
           let li = document.getElementById(doc.id);
           li.parentNode.removeChild(li);
           database.collection("consultslots").doc(data.id).delete();
-          let index = this.consultData.indexOf(data)
-          console.log(index)
-          this.consultData.splice(index, 1)
-          console.log(this.consultData)
+          let index = this.consultData.indexOf(data);
+          console.log(index);
+          this.consultData.splice(index, 1);
+          console.log(this.consultData);
           this.$emit("fetchItems");
         });
     },
@@ -77,30 +80,28 @@ export default {
       }
       return h + ":" + min;
     },
-    changeTile: function(removeData, addData, bool) {
-      console.log("bool")
+    changeTile: function (removeData, addData, bool) {
+      console.log("bool");
       if (bool) {
-        this.consultData.push(addData)
+        this.consultData.push(addData);
       } else {
-        let index = this.consultData.indexOf(removeData)
-        console.log(index)
-        this.consultData.splice(index, 1)
-        console.log(this.consultData)
+        let index = this.consultData.indexOf(removeData);
+        console.log(index);
+        this.consultData.splice(index, 1);
+        console.log(this.consultData);
         //if (this.consultData.length == 0) {
         //  this.$emit("fetchItems");
         //}
       }
-      this.$emit("fetchItems")
-      let li = document.getElementById(removeData.id)
-      li.parentNode.removeChild(li)
-      
+      this.$emit("fetchItems");
+      let li = document.getElementById(removeData.id);
+      li.parentNode.removeChild(li);
     },
   },
 };
 </script>
 
 <style scoped>
-
 button {
   transition: box-shadow 0.3s;
   transition: 0.3s;
@@ -168,7 +169,7 @@ li {
   border-radius: 5px;
   background-color: white;
   margin: 20px;
-  left: 450px;
+  /*left: 450px;*/
   z-index: 2;
 }
 </style>

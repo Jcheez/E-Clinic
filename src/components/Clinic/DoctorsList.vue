@@ -177,7 +177,7 @@ li {
   font-family: Nunito;
   font-size: 18px;
   float: left;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 #docName {
@@ -191,7 +191,7 @@ li {
 
 #docNum {
   position: relative;
-  display:block;
+  display: block;
   font-weight: bold;
   padding: 8px 0 12px 0;
   font-size: 16px;
@@ -270,6 +270,6 @@ button:hover {
   position: absolute;
   top: 100px;
   display: block;
-  left: 20px;
+  left: 200px;
 }
 </style>

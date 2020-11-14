@@ -164,7 +164,7 @@ li {
   margin-top: 20px;
   /* border: 1px solid rgb(0, 114, 180); */
   width: 320px;
-  box-shadow: 0 4px 10px -4px  rgba(0, 0, 0, 0.377);
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.377);
 }
 
 li span {
