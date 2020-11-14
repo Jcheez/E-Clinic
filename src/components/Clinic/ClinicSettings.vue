@@ -16,7 +16,8 @@
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
       <label>Update Interbank Account:</label>
-      <label>Update QR Code: </label>
+      <br/>
+      <label style = "margin-top: -15px">Update QR Code: </label>
     </div>
     <div id="inputFields">
       <input
@@ -24,26 +25,36 @@
         placeholder="Enter New Email"
         id="changeEmail"
         v-model="newEmail"
-      /><input
+      />
+      <br>
+      <input
         type="password"
         placeholder="Enter New Password"
         id="changePW"
+        style = "margin-top: -15px;"
         v-model="newPassword"
-      /><input
+      />
+      <br>
+      <input
         type="password"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
+        style = "margin-top: -15px;"
         v-model="repeatPassword"
-      /><input
+      />
+      <br>
+      <input
         type="text"
         placeholder="Enter New Interbank Account"
         id="interbank"
         v-model="interbank"
-      /><uploadQr style="margin: 10px"></uploadQr>
+        style = "margin-top: -13px;"
+      /><uploadQr style="margin: 10px; margin-top: -4px"></uploadQr>
     </div>
     <!--div id="buttons"-->
-    <button id="submitEmail" v-on:click="changeEmail">Update Email</button
-    ><button id="submitPW" v-on:click="changePassword">Update Password</button>
+    <button id="submitEmail" v-on:click="changeEmail">Update Email</button>
+    <br>
+    <button id="submitPW" v-on:click="changePassword">Update Password</button>
     <button id="submitInterBank" v-on:click="changeInterBank">
       Update Interbank
     </button>
@@ -271,6 +282,7 @@ input {
   height: 60px;
   left: 850px;
   top: 310px;
+  margin-top: 15px;
 }
 
 #submitInterBank {
@@ -294,6 +306,7 @@ input {
   height: 60px;
   left: 850px;
   top: 385px;
+  margin-top: 15px;
 }
 button:hover {
   background-color: white;

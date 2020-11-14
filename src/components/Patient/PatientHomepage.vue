@@ -355,6 +355,7 @@ span {
 p#url {
   display: inline;
   color: rgb(0, 114, 180);
+  margin-left: 0px;
 }
 
 p#url:hover {

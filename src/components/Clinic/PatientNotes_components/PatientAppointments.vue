@@ -114,7 +114,7 @@ export default {
 #main {
   position: absolute;
   top: 120px;
-  margin-left: 0px;
+  margin-left: 200px;
 }
 
 h4 {
@@ -172,7 +172,6 @@ div #inner {
 
 ul {
   float: left;
-  margin-left: 200px;
   margin-top: 50px;
 }
 
