@@ -1,14 +1,15 @@
 import firebase from "firebase";
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCyTYhdAilYNdXSgTAIXNHnbC5J6gu1Cds",
-  authDomain: "e-clinic-e8c00.firebaseapp.com",
-  databaseURL: "https://e-clinic-e8c00.firebaseio.com",
-  projectId: "e-clinic-e8c00",
-  storageBucket: "e-clinic-e8c00.appspot.com",
-  messagingSenderId: "912281579882",
-  appId: "1:912281579882:web:915439768cf00edae4b513",
-  measurementId: "G-S36ST5KXWQ"
+  apiKey: "AIzaSyALybtUB2icDuddKzoQQQyJI95JDh9582I",
+  authDomain: "e-clinic-5cd66.firebaseapp.com",
+  databaseURL: "https://e-clinic-5cd66.firebaseio.com",
+  projectId: "e-clinic-5cd66",
+  storageBucket: "e-clinic-5cd66.appspot.com",
+  messagingSenderId: "111652629468",
+  appId: "1:111652629468:web:80868a9fcad170d8f9bd19",
+  measurementId: "G-GZNZ4659N8",
 };
 
 firebase.initializeApp(firebaseConfig);

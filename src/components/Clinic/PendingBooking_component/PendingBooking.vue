@@ -280,7 +280,7 @@ div#emptyDiv {
   background-color: rgb(0, 114, 180);
   letter-spacing: 2px;
   font-family: Nunito;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: white;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;

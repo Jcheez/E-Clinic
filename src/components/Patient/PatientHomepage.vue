@@ -1,6 +1,7 @@
 <template>
   <div id= "container">
-    <h4>Hi, {{this.getUser.displayName}}</h4>
+    <h4>Hi,</h4>
+    <h4 id="name">{{this.getUser.displayName}}</h4>
     <h3>Upcoming Appointments</h3>
     <div id="sideNavBar">
       <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
@@ -28,8 +29,8 @@
         ><b>Zoom Link: </b>
         <p id="url" v-on:click="ratings()">Click to Join Appointment</p>
       </span>
-      <rating v-if="this.urlclicked" v-bind:consult="this.consult"></rating>
     </div>
+    <rating v-if="this.urlclicked" v-bind:consult="this.consult"></rating>
     <button
       id="cancel"
       v-if="this.itemsList.length > 0"
@@ -243,7 +244,7 @@ export default {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 45px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -298,7 +299,11 @@ h4 {
   position: absolute;
   left: 300px;
 }
-
+#name {
+  position: absolute;
+  color:  rgb(0, 114, 180);
+  left: 350px;
+}
 div#online {
   position: absolute;
   width: 500px;
@@ -373,6 +378,7 @@ p#url:hover {
   text-align: center;
   left: 370px;
   top: 350px;
+  z-index: -1;
 }
 #cancel:hover {
   background-color: white;
@@ -398,11 +404,16 @@ p#url:hover {
   text-align: center;
   left: 570px;
   top: 350px;
+  z-index: -1;
 }
 #reschedule:hover {
   background-color: white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   color: rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);
+}
+
+rating {
+  z-index: 100;
 }
 </style>

@@ -29,10 +29,32 @@
         <option>11:30</option>
         <option>12:00</option>
         <option>12:30</option>
+        <option>13:00</option>
+        <option>13:30</option>
+        <option>14:00</option>
+        <option>14:30</option>
+        <option>15:00</option>
+        <option>15:30</option>
+        <option>16:00</option>
+        <option>16:30</option>
+        <option>17:00</option>
+        <option>17:30</option>
+        <option>18:00</option>
+        <option>18:30</option>
+        <option>19:00</option>
+        <option>19:30</option>
+        <option>20:00</option>
+        <option>20:30</option>
+        <option>21:00</option>
+        <option>21:30</option>
       </datalist>
 
       <label>Choose the new <b>Start Date</b></label>
-      <v-date-picker v-model="date" :masks="masks" :min-date="this.min.setDate(this.slotData.date.toDate().getDate() + 1)">
+      <v-date-picker
+        v-model="date"
+        :masks="masks"
+        :min-date="this.min.setDate(this.slotData.date.toDate().getDate() + 1)"
+      >
         <template v-slot="{ inputValue, inputEvents }">
           <input
             class="bg-white border px-2 py-1 rounded"
@@ -144,69 +166,101 @@ export default {
               doc.ref.delete();
             });
             database
-            .collection("consultslots")
-            .get()
-            .then((snapshot) => {
-              try {
-                snapshot.forEach((doc) => {
-                  if (item.date.isEqual(doc.data().date)) {
-                    item.id = doc.id;
-                    item.hover = false;
-                    item.reschedule = false;
-                    if (
-                      item.date.toDate().getDate() ==
-                        d.date.toDate().getDate() &&
-                      item.date.toDate().getMonth() ==
-                        d.date.toDate().getMonth() &&
-                      item.date.toDate().getFullYear() ==
-                        d.date.toDate().getFullYear()
-                    ) {
-                      this.$emit("changeTile", d, item, true);
-                    } else {
-                      this.$emit("changeTile", d, item, false);
+              .collection("consultslots")
+              .get()
+              .then((snapshot) => {
+                try {
+                  snapshot.forEach((doc) => {
+                    if (item.date.isEqual(doc.data().date)) {
+                      item.id = doc.id;
+                      item.hover = false;
+                      item.reschedule = false;
+                      if (
+                        item.date.toDate().getDate() ==
+                          d.date.toDate().getDate() &&
+                        item.date.toDate().getMonth() ==
+                          d.date.toDate().getMonth() &&
+                        item.date.toDate().getFullYear() ==
+                          d.date.toDate().getFullYear()
+                      ) {
+                        this.$emit("changeTile", d, item, true);
+                      } else {
+                        this.$emit("changeTile", d, item, false);
+                      }
+                      throw "break";
                     }
-                    throw "break";
-                  }
-                });
-              } catch (exception) {
-                console.log("shld break");
-              }
-            })
-          })
+                  });
+                } catch (exception) {
+                  console.log("shld break");
+                }
+              });
+          });
 
           /*
            * adding part to notify patient
            * update patient upcoming field
            * update patient appointment history
-          */
-         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-          var e = new Date(newTimestamp.seconds * 1000)
-          var f = e.getDate() + " " + monthNames[e.getMonth()] + " " + e.getFullYear()
-          var h = this.formatTime(e)
-          console.log(h)
-          database.collection("patients").doc(d.patient).get().then((doc) => {
-            let item = doc.data()
-            let newMessages = item.newNotifications
-            newMessages.splice(0, 0, this.formatDate(new Date()) + ": Your consultation at " + d.clinic + " has been rescheduled.")
-            console.log(newMessages)
-            let newmap = item.appointment_history
-            var index = newmap[d.clinic].indexOf(item.upcoming[1])
-            console.log(index)
-            if (index != -1) {
-              newmap[d.clinic].splice(index, 1, f)
-            }
-
-            database.collection("patients").doc(d.patient).update({
-              newNotifications: newMessages,
-              appointment_history: newmap,
-              upcoming: {
-                0: "online",
-                1: f,
-                2: h,
-                3: d.clinic
+           */
+          const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          var e = new Date(newTimestamp.seconds * 1000);
+          var f =
+            e.getDate() +
+            " " +
+            monthNames[e.getMonth()] +
+            " " +
+            e.getFullYear();
+          var h = this.formatTime(e);
+          console.log(h);
+          database
+            .collection("patients")
+            .doc(d.patient)
+            .get()
+            .then((doc) => {
+              let item = doc.data();
+              let newMessages = item.newNotifications;
+              newMessages.splice(
+                0,
+                0,
+                this.formatDate(new Date()) +
+                  ": Your consultation at " +
+                  d.clinic +
+                  " has been rescheduled."
+              );
+              console.log(newMessages);
+              let newmap = item.appointment_history;
+              var index = newmap[d.clinic].indexOf(item.upcoming[1]);
+              console.log(index);
+              if (index != -1) {
+                newmap[d.clinic].splice(index, 1, f);
               }
-            })
-          })
+
+              database
+                .collection("patients")
+                .doc(d.patient)
+                .update({
+                  newNotifications: newMessages,
+                  appointment_history: newmap,
+                  upcoming: {
+                    0: "online",
+                    1: f,
+                    2: h,
+                    3: d.clinic,
+                  },
+                });
+            });
 
           alert("Successfully rescheduled slot!");
         } else {
@@ -215,23 +269,23 @@ export default {
       });
     },
 
-    formatDate: function(date) {
-      let filter_year = date.getFullYear()
-      let filter_month = date.getMonth() + 1
-      let filter_day = date.getDate()
-      return filter_day + "/" + filter_month + "/" + filter_year
+    formatDate: function (date) {
+      let filter_year = date.getFullYear();
+      let filter_month = date.getMonth() + 1;
+      let filter_day = date.getDate();
+      return filter_day + "/" + filter_month + "/" + filter_year;
     },
-    formatTime: function(time) {
-          let min = time.getMinutes();
-          let h = time.getHours();
-          if (h < 10) {
-            h = "0" + h;
-          }   
-          if (min == 0) {
-            min = "00";
-          }
-          return h + ":" + min;
-        },
+    formatTime: function (time) {
+      let min = time.getMinutes();
+      let h = time.getHours();
+      if (h < 10) {
+        h = "0" + h;
+      }
+      if (min == 0) {
+        min = "00";
+      }
+      return h + ":" + min;
+    },
   },
   // watch: {
   //   rescheduleSlot: function () {

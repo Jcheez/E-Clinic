@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1>Patient Settings</h1>
+    <h4>Patient Settings</h4>
     <div id="sideNavBar">
       <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <router-link to="/makebooking">Make A Booking</router-link>
@@ -144,13 +144,30 @@ export default {
   align-items: center;
   justify-content: center;
 }
+h4 {
+  position: absolute;
+  left: 300px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 32px;
+  top: 0px;
+}
+
+#sideNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  padding: 10px 0px 0px 0px;
+}
 #sideNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 45px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
