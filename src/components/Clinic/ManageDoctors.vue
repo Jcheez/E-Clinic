@@ -29,8 +29,10 @@
           style="list-style-type: none; padding-inline-start: 30px"
         >
           <li v-for="d in doctors" v-bind:key="d.dNum" :id="d.dNum">
-            <b>Doctor Name: </b> {{ d.dName }} <br />
-            <b>Doctor License Number: </b> {{ d.dNum }}
+            <span>
+              <b>Doctor Name: </b> {{ d.dName }} <br />
+              <b>Doctor License Number: </b> {{ d.dNum }}
+            </span>
             <button id="del" v-on:click="delDoctor(d)"><b>X</b></button>
           </li>
         </ul>
@@ -125,6 +127,9 @@ export default {
   height: 300px;
   width: 350px;
   display: inline-block;
+  position: relative;
+  left: -40px;
+  top: 10px;
 }
 #deleteDoctor {
   font-family: Nunito;
@@ -133,6 +138,7 @@ export default {
   border-left: 1px solid rgb(0, 114, 180);
   height: 500px;
   position: absolute;
+  top: 10px;
 }
 input {
   margin: 15px 0px 5px 30px;
@@ -140,7 +146,7 @@ input {
   height: 20px;
 }
 #del {
-  color: red;
+  color: rgb(0, 114, 180);
   cursor: pointer;
   font-family: Nunito;
   font-size: 18px;
@@ -157,9 +163,13 @@ li {
   height: 50px;
   margin-top: 20px;
   /* border: 1px solid rgb(0, 114, 180); */
-  border-radius: 5px;
   width: 320px;
-  box-shadow: 0 6px 10px -3px  rgba(0, 0, 0, 0.377);
+  box-shadow: 0 4px 10px -4px  rgba(0, 0, 0, 0.377);
+}
+
+li span {
+  position: relative;
+  left: 10px;
 }
 #add {
   transition: box-shadow 0.3s;

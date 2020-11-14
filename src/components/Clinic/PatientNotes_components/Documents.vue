@@ -264,35 +264,36 @@ export default {
 #container {
   position: relative;
 }
+
 #main {
   position: absolute;
-  top: 100px;
+  top: 80px;
+  margin-left: 200px;
 }
 
 h4 {
+  position: absolute;
+  top: -30px;
+  left: 250px;
   font-family: Nunito;
   padding: 30px 0 0 0;
-  margin-bottom: -30px;
   font-size: 32px;
-  position: absolute;
-  left: 250px;
-  top: -40px;
 }
 
 #sideNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing: 2px;
-  margin: 60px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
 }
 
 #sideNavBar a:hover {
-  font-size: 17px;
+  font-size: 18px;
   color: white;
   cursor: pointer;
 }
@@ -315,8 +316,8 @@ h4 {
   font-size: 24px;
   letter-spacing: 4px;
   color: white;
-  font-weight: bolder;
-  padding: 10px 0px 20px 0px;
+  font-weight: bold;
+  padding: 10px 0px 0px 0px;
 }
 
 p#name, #date {
