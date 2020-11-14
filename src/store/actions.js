@@ -34,7 +34,6 @@ const actions = {
             promiseArray.push(firebase.firestore().collection('doctors').doc(doctor.license).set({
               name: doctor.name,
               clinic: payload.name,
-              password: '',
               zoom: ''
             }))
           }
