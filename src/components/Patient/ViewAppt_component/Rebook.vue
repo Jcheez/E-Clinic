@@ -1,30 +1,38 @@
 <template>
-  <div>
-    <p>{{ msg }}</p>
+  <div id="container">
+    <div id="topNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/patienthome" id="clinic">Back to Homepage</router-link>
+      <!-- <router-link to="/pending">Pending Booking</router-link>
+      <router-link to="/viewdocuments">View Documents</router-link>
+      <router-link to="/managepayments">Manage Payments</router-link> -->
+      <router-link to="/patientsettings">Settings</router-link>
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+    <h4>Reschedule Appointment</h4>
     <v-date-picker :attributes='attributes' v-model="date" is-inline :min-date="new Date()" id="datepicker"/>
     <ul id="slots">
       <li v-for="(s, index) in this.docsName" :key="index">
         <div id="inner">
-          <h3 style="font-size:30px; text-decoration: underline;">{{s}}</h3>
-            <div v-for="(v, index) in slot" :key="index">
-              <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); changeBooking(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
-            </div>
+          <h3 style="font-size:22px; text-decoration: underline;">{{s}} </h3>
+          <div v-for="(v, index) in slot" :key="index" id="tile">
+            <button v-if="s.localeCompare(v.doctorName) == 0" v-on:click="getdoc(v.id); changeBooking(v.id); updateApptHist();">{{formatTime(v.date)}}</button>
+          </div>
         </div>
       </li>
     </ul>
-    <p v-if="this.docsName.length == 0">There are no available appointment slots today</p>
-    <button id="home" v-on:click="routeHome()">Back</button>
+    <p id="emptyDiv" v-if="this.docsName.length == 0">There are no available appointment slots today.<br>Please select another day.</p>
   </div>
 </template>
 
 <script>
-import database from "../../../firebase.js"
+import database from "../../../firebase.js";
+import { mapActions, mapGetters } from "vuex";
 import * as firebase from "firebase";
 
 export default {
   data() {
     return {
-        msg: "Reschedule Appointment",
         date: new Date(),
         slot: [],
         datadoc: {},
@@ -42,9 +50,14 @@ export default {
         customData: t,
       }));
     },
+    ...mapGetters(["getUser"]),
   },
-
   methods: {
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+      this.$router.push("/patientlogin");
+    },
       fetchitems: function() {
           database
           .collection("consultslots")
@@ -235,10 +248,6 @@ export default {
           alert("Appointment Changed")
         })
         },
-
-        routeHome: function() {
-            this.$router.push('/patienthome')
-        },
   },
     created() {
       this.fetchitems();
@@ -271,30 +280,108 @@ export default {
 </script>
 
 <style scoped>
-#datepicker {
-    position: absolute;
-    left: 200px;
+#container {
+  position: relative;
 }
 
-button {
-  transition: box-shadow 0.3s;
+#topNavBar {
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left:0;
+  overflow-x: hidden;
+  width: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+}
+
+a {
+  color: rgb(238, 249, 255);
   transition: 0.3s;
-  color: rgb(0, 114, 180);
+  font-family: Nunito;
+  font-size: 16px;
   letter-spacing: 2px;
-  width: 125px;
-  height: 45px;
-  background-color: white;
-  border: 1px solid rgb(0, 114, 180);
-  border-radius: 5px;
-  z-index: -1;
+  margin-right: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}
+
+a:hover {
+  font-size: 17px;
+  color: white;
   cursor: pointer;
+}
+#topNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h4 {
+  font-family: Nunito;
+  position: absolute;
+  top: 60px; 
+  left: 100px;
+  font-size: 26px;
+}
+#datepicker {
+    position: absolute;
+    top: 150px;
+    left: 100px;
+}
+
+p {
+  position: absolute;
+  top: 200px;
+  left: 500px;
+}
+
+#slots {
+  position: absolute;
+  left: 380px;
+  top: 160px;
+  width: 700px;
 }
 
 li {
   list-style-type: none; /* Remove bullets */
+  /* width: 100px;
+  height: 20px; */
+  display: inline-block;
+  padding-bottom: 8px;
+  position: relative;
+  left: 0px;
 }
 
-button {
+#inner {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 750px;
+}
+
+#inner h3 {
+  position: relative;
+  left: -350px;
+  font-family: Nunito;
+  margin: 0 0 10px 0;
+  /* padding: 10px 0px 0px 20px; */
+}
+
+#inner #tile {
+  position: relative;
+  float: left;
+  flex-direction: row;
+}
+
+#inner #tile button {
   transition: box-shadow 0.3s;
   transition: 0.3s;
   color: rgb(0, 114, 180);
@@ -305,6 +392,18 @@ button {
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
   z-index: -1;
+  margin-right: 10px;
+}
+
+#inner #tile button:hover {
+  color: white;
+  background-color: rgb(0, 114, 180);
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   cursor: pointer;
+}
+
+#emptyDiv {
+  font-family: Nunito;
+  font-size: 18px;
 }
 </style>
