@@ -145,7 +145,7 @@
       <div id="buttons">
         <p id="error">{{ this.errorstring }}</p>
         <button @click="next">Next</button>
-        <button id="home" v-on:click="routeHome()">Back to Home</button>
+        <!--button id="home" v-on:click="routeHome()">Back to Home</button-->
       </div>
     </div>
   </div>
@@ -175,9 +175,9 @@ export default {
   },
 
   methods: {
-    routeHome: function () {
+    /*routeHome: function () {
       this.$router.push("/patienthome");
-    },
+    },*/
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();

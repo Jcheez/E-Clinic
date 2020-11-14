@@ -4,7 +4,8 @@
       <span>E-Clinic</span>
       <router-link to="/patienthome">Return Home</router-link>
     </div>
-    <h4>Sorry, {{ this.getUser.displayName }}</h4>
+    <h4 id="sorry">Sorry,</h4>
+    <h4 id="patientName">{{ this.getUser.displayName }}</h4>
     <div id="message">
       <p>{{ msg }}</p>
       <p>{{ msg2 }}</p>
@@ -49,12 +50,21 @@ export default {
 #container {
   font-family: Nunito;
 }
-h4 {
+#sorry {
   font-family: Nunito;
   margin-bottom: -30px;
   font-size: 32px;
   position: absolute;
   left: 550px;
+  top: 100px;
+}
+#patientName {
+  color: rgb(0, 114, 180);
+  font-family: Nunito;
+  margin-bottom: -30px;
+  font-size: 32px;
+  position: absolute;
+  left: 650px;
   top: 100px;
 }
 #message {
