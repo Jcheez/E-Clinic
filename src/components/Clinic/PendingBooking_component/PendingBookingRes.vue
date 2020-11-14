@@ -164,7 +164,6 @@ export default {
                       this.clinicName +
                       " has attempted to contact you"
                   );
-
                   database.collection("patients").doc(x).update({
                     newNotifications: newMessages,
                   });
@@ -205,7 +204,6 @@ export default {
                       this.clinicName +
                       " has deleted your pending booking"
                   );
-
                   database.collection("patients").doc(x).update({
                     newNotifications: newMessages,
                   });
@@ -256,7 +254,7 @@ export default {
             this.formatDate(new Date()) +
               ": You have been verified by " +
               this.clinicName +
-              ", you can now proceed to book consult with them."
+              ", you can now proceed to book a teleconsult with them"
           );
 
           database.collection("patients").doc(x).update({
@@ -305,7 +303,9 @@ export default {
             0,
             0,
             this.formatDate(new Date()) +
-              ": Clinic has scheduled a physical appointment for you, check it in view appointment tab"
+              ": Clinic " +
+              this.clinicName +
+              " has scheduled a physical appointment for you. You should see it under your upcoming appointments."
           );
 
           database.collection("patients").doc(x).update({
