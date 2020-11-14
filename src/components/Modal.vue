@@ -102,8 +102,6 @@ export default {
 button:hover {
   background-color: white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
-  color: rgb(0, 114, 180);
-  border: 1px solid rgb(0, 114, 180);
 }
 
 .input {

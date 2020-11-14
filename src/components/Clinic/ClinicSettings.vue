@@ -59,6 +59,8 @@
       Update Interbank
     </button>
     <!--/div-->
+    <button id="delete" v-on:click="showModal">Delete Account</button>
+    <Modal v-show="isModalVisible" @close="closeModal" />
   </div>
 </template>
 
@@ -66,6 +68,7 @@
 import { mapActions, mapGetters } from "vuex";
 import database from "../../firebase.js";
 import uploadQr from "./uploadQr.vue";
+import Modal from "../Modal.vue";
 
 export default {
   data() {
@@ -75,6 +78,7 @@ export default {
       repeatPassword: "",
       interbank: "",
       validationErrors: [],
+      isModalVisible: false,
     };
   },
   computed: {
@@ -85,6 +89,12 @@ export default {
     signOut() {
       this.signOutAction();
       this.$router.push("/cliniclogin");
+    },
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     },
 
     resetError() {
@@ -145,6 +155,7 @@ export default {
 
   components: {
     uploadQr: uploadQr,
+    Modal
   },
 };
 </script>
@@ -309,6 +320,27 @@ input {
   left: 850px;
   top: 385px;
   margin-top: 15px;
+}
+#delete {
+  transition: 0.3s;
+  position: absolute;
+  background-color: #FF6961;
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: block;
+  width: 130px;
+  text-align: center;
+  margin-left: 20px;
+  height: 60px;
+  left: 850px;
+  top: 600px;
 }
 button:hover {
   background-color: white;

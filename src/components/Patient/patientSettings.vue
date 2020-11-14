@@ -90,16 +90,12 @@ export default {
       this.signOutAction();
       this.$router.push("/patientlogin");
     },
-    deleteAcct() {
-
-    },
     showModal() {
       this.isModalVisible = true;
     },
     closeModal() {
       this.isModalVisible = false;
     },
-
     resetError() {
       this.validationErrors = [];
     },

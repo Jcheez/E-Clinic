@@ -241,7 +241,7 @@ input[type=text], input[type=password], input[type=date] {
   position: relative;
   top: -12px;
   display:block;
-  margin: 40px 0px 0px 250px;
+  margin: 40px 0px 0px 230px;
   transition: box-shadow 0.3s;
   transition: 0.3s;
   background-color: rgb(0, 114, 180);
