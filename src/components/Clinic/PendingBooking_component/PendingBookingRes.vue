@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 id = "heading">Refer to patient details and verify with clinic records.</h3>
+  <div id="container">
+    <h3 id = "heading">Refer To Patient Details And Verify With Clinic Records</h3>
     <div id="sideNavBar">
       <h3>E-Clinic</h3>
       <router-link to="/clinichome">Dashboard</router-link><br />
@@ -224,16 +224,16 @@ export default {
 
 #main {
   position: absolute;
-  top: 70px;
+  top: 50px;
   margin-left: 200px;
 }
 
 h3#heading {
   position: absolute;
-  left: 250px;
+  left: 230px;
   font-family: Nunito;
   padding: 30px 0 0 0;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 #sideNavBar a {
@@ -339,13 +339,13 @@ button {
   transition: box-shadow 0.3s;
   transition: 0.3s;
   background-color: rgb(0, 114, 180);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   font-family: Nunito;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: white;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
-  position: relative;
+  position: absolute;
   height: 36px;
 }
 
@@ -355,7 +355,7 @@ button {
   background-color: rgb(0, 114, 180);
   letter-spacing: 2px;
   font-family: Nunito;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: white;
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
@@ -372,17 +372,17 @@ button {
 
 button#verify {
   top: 300px;
-  left: -30px;
+  left: 580px;
 }
 
 button#reject {
   top: 300px;
-  left:-200px;
+  left: 300px;
 }
 
 button#fail {
   top: 300px;
-  left:-100px;
+  left: 500px;
 }
 
 button:hover {
