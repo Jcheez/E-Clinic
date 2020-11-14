@@ -2,10 +2,10 @@
   <div class="navbar">
     <div class="dropdown">
     <button v-if="this.newMessages.length == 0" class="dropbtn" v-on:click="myFunction()">
-          <bell-icon :size="40"/>
+        <bell-icon :size="40"/>
     </button>
     <button v-else class="dropbtn" style = "background-color: #FF6961;" v-on:click="myFunction()">
-          <bell-ring-icon :size="40"/>
+        <bell-ring-icon :size="40"/> 
     </button>
     <div class="dropdown-content" id="myDropdown">
         <p v-if="this.newMessages.length == 0 && this.oldMessages.length == 0">You do not have any notifications</p>
@@ -69,13 +69,13 @@ export default {
         },
 
       windowevent: function(e) {
-        if (!e.target.matches('.dropbtn')) {
-        var myDropdown = document.getElementById("myDropdown");
-            if (myDropdown.classList.contains('show')) {
-              myDropdown.classList.remove('show');
-            }
+        if (e.target.matches('.dropbtn')) {
+          var myDropdown = document.getElementById("myDropdown");
+          if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+          }
         }
-      }
+      },
     },
 
     created() {
@@ -111,7 +111,7 @@ div.navbar {
   padding: 14px 16px;
   border-radius: 50px;
   font-family: inherit;
-  margin: 0;
+  margin: 10px;
 }
 
 .dropbtn-red{
