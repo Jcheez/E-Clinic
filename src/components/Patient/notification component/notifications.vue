@@ -139,7 +139,7 @@ div.navbar {
   padding: 14px 16px;
   border-radius: 50px;
   font-family: inherit;
-  margin: 0;
+  margin: 10px;
 }
 
 .dropbtn-red {
@@ -172,6 +172,7 @@ div.navbar {
   text-decoration: none;
   display: block;
   text-align: left;
+
 }
 
 .show {

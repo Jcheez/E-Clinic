@@ -341,7 +341,7 @@ div#noupcoming {
   width: 500px;
   height: 140px;
   left: 300px;
-  top: 150px;
+  top: 170px;
   padding: 20px;
   box-shadow: 0 6px 15px -4px  rgba(0, 0, 0, 0.377);
 }
@@ -355,6 +355,7 @@ span {
 p#url {
   display: inline;
   color: rgb(0, 114, 180);
+  margin-left: 0px;
 }
 
 p#url:hover {

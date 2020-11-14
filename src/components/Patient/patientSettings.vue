@@ -18,25 +18,35 @@
       <label>Update Phone Number:</label>
     </div>
     <div id="inputFields">
+      <div>
       <input
         type="text"
         placeholder="Enter New Email"
         id="changeEmail"
         v-model="newEmail"
-      /><input
+      /></div>
+      <br>
+      <input
         type="text"
         placeholder="Enter New Password"
+        style = "margin-top: -18px;"
         id="changePW"
         v-model="newPassword"
-      /><input
+      />
+      <br>
+      <input
         type="text"
         placeholder="Please Re-enter New Password To Confirm"
+        style = "margin-top: -18px;"
         id="repeatPW"
         v-model="repeatPassword"
-      /><input
+      />
+      <br>
+      <input
         type="text"
         placeholder="Enter New Phone Number"
         id="phonenum"
+        style = "margin-top: -15px;"
         v-model="phonenum"
       />
     </div>
@@ -44,19 +54,23 @@
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button
     ><button id="submitPW" v-on:click="changePassword">Update Password</button>
     <button id="submitPhoneNum" v-on:click="changePhoneNum">
-      Update Phone Number
+      Update Phone No.
     </button>
     <!--/div-->
+    <button id="delete" v-on:click="showModal">Delete Account</button>
+    <Modal v-show="isModalVisible" @close="closeModal" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import database from "../../firebase.js";
+import Modal from "../Modal.vue";
 
 export default {
   data() {
     return {
+      isModalVisible: false,
       newEmail: "",
       newPassword: "",
       repeatPassword: "",
@@ -67,13 +81,21 @@ export default {
   computed: {
     ...mapGetters(["getUser"]),
   },
+  components: {
+    Modal
+  },
   methods: {
     ...mapActions(["signOutAction"]),
     signOut() {
       this.signOutAction();
       this.$router.push("/patientlogin");
     },
-
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
     resetError() {
       this.validationErrors = [];
     },
@@ -271,13 +293,12 @@ input {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
   font-size: 14px;
   color: white;
   letter-spacing: 3px;
   outline: none;
   display: block;
-  width: 150px;
+  width: 130px;
   text-align: center;
   margin-left: 20px;
   left: 950px;
@@ -294,13 +315,12 @@ input {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
   font-size: 14px;
   color: white;
   letter-spacing: 3px;
   outline: none;
   display: block;
-  width: 150px;
+  width: 130px;
   text-align: center;
   margin-left: 20px;
   height: 60px;
@@ -317,19 +337,41 @@ input {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
   font-size: 14px;
   color: white;
   letter-spacing: 3px;
   outline: none;
   display: block;
-  width: 150px;
+  width: 130px;
   text-align: center;
   margin-left: 20px;
   height: 60px;
   left: 950px;
   top: 385px;
 }
+
+#delete {
+  transition: 0.3s;
+  position: absolute;
+  background-color: #FF6961;
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: block;
+  width: 130px;
+  text-align: center;
+  margin-left: 20px;
+  height: 60px;
+  left: 950px;
+  top: 500px;
+}
+
 button:hover {
   background-color: white;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);

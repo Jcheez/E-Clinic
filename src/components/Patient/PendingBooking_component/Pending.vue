@@ -147,12 +147,12 @@ li {
   position: relative;
   left: -10px;
   width: 450px;
-  height: 76px;
+  height: 100px;
   border-radius: 4px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
-  padding: 10px 0 0 0;
+  padding: 18px 0 0 0;
   display: block;
 }
 div#inner {

@@ -23,7 +23,7 @@
         <div id="invoice">
             <h2>Invoice</h2>
                 <div v-if="this.outstandingMap[this.appDate] == undefined">
-                <label id="outpayment" for="paybox">Amount Paid:</label>
+                <label id="outpayment" for="paybox">Enter cost of Consultation:</label>
                 <input type="text" id="paybox" name="paybox" >
                 <input type="submit" id="submitpay" v-on:click="paybutton()">
             </div>

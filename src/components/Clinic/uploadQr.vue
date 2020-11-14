@@ -63,6 +63,7 @@ export default {
             .doc(localStorage.getItem("uidClinic"))
             .update({qrCode: this.pdf})
             .then(() => {
+            alert("Uploaded successfully!")
             console.log('user updated!')
             
             })
@@ -89,7 +90,7 @@ button {
   transition: 0.3s;
   position: relative;
   bottom: 55px;
-  left: 100px;
+  left: 115px;
   font-family: Nunito;
   background-color:  rgb(0, 114, 180);
   border: 1px solid rgb(0, 114, 180);

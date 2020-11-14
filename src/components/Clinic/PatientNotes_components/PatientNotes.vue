@@ -138,10 +138,11 @@ h4 {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 45px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
+  width: 90%;
 }
 
 #sideNavBar a:hover {
@@ -161,6 +162,9 @@ h4 {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  font-weight: bold;
+  letter-spacing: 2px;
+  height: 100%;
 }
 
 #sideNavBar h3 {

@@ -1,8 +1,8 @@
 <template>
   <div id="container">
     <div id="topNavBar">
-      <h3>E-Clinic</h3>
-      <router-link to="/patienthome" id="clinic">Back to Homepage</router-link>
+      <span>E-Clinic</span>
+      <router-link to="/patienthome" id="clinic">Return Home</router-link>
       <!-- <router-link to="/pending">Pending Booking</router-link>
       <router-link to="/viewdocuments">View Documents</router-link>
       <router-link to="/managepayments">Manage Payments</router-link> -->
@@ -293,6 +293,35 @@ export default {
   width: 100%;
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  padding-top: 20px;
+}
+
+#topNavBar span {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  width: 100%;
+  display: block;
+}
+
+#topNavBar a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 17px;
+  letter-spacing: 2px;
+  margin: 10px 100px 0 45px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}
+
+#topNavBar a:hover {
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
 }
 
 a {
@@ -312,27 +341,18 @@ a:hover {
   color: white;
   cursor: pointer;
 }
-#topNavBar h3 {
-  font-family: Nunito;
-  font-size: 24px;
-  letter-spacing: 4px;
-  color: white;
-  font-weight: bolder;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 
 h4 {
   font-family: Nunito;
   position: absolute;
-  top: 65px; 
-  left: 60px;
+  top: 100px;
+  left: 80px;
   font-size: 26px;
 }
 #datepicker {
-    position: absolute;
-    top: 160px;
-    left: 80px;
+  position: absolute;
+  top: 195px;
+  left: 80px;
 }
 
 p {

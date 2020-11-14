@@ -16,7 +16,8 @@
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
       <label>Update Interbank Account:</label>
-      <label>Update QR Code: </label>
+      <br/>
+      <label style = "margin-top: -15px">Update QR Code: </label>
     </div>
     <div id="inputFields">
       <input
@@ -24,30 +25,42 @@
         placeholder="Enter New Email"
         id="changeEmail"
         v-model="newEmail"
-      /><input
+      />
+      <br>
+      <input
         type="password"
         placeholder="Enter New Password"
         id="changePW"
+        style = "margin-top: -15px;"
         v-model="newPassword"
-      /><input
+      />
+      <br>
+      <input
         type="password"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
+        style = "margin-top: -15px;"
         v-model="repeatPassword"
-      /><input
+      />
+      <br>
+      <input
         type="text"
         placeholder="Enter New Interbank Account"
         id="interbank"
         v-model="interbank"
-      /><uploadQr style="margin: 10px"></uploadQr>
+        style = "margin-top: -13px;"
+      /><uploadQr style="margin: 10px; margin-top: -4px"></uploadQr>
     </div>
     <!--div id="buttons"-->
-    <button id="submitEmail" v-on:click="changeEmail">Update Email</button
-    ><button id="submitPW" v-on:click="changePassword">Update Password</button>
+    <button id="submitEmail" v-on:click="changeEmail">Update Email</button>
+    <br>
+    <button id="submitPW" v-on:click="changePassword">Update Password</button>
     <button id="submitInterBank" v-on:click="changeInterBank">
       Update Interbank
     </button>
     <!--/div-->
+    <button id="delete" v-on:click="showModal">Delete Account</button>
+    <Modal v-show="isModalVisible" @close="closeModal" />
   </div>
 </template>
 
@@ -55,6 +68,7 @@
 import { mapActions, mapGetters } from "vuex";
 import database from "../../firebase.js";
 import uploadQr from "./uploadQr.vue";
+import Modal from "../Modal.vue";
 
 export default {
   data() {
@@ -64,6 +78,7 @@ export default {
       repeatPassword: "",
       interbank: "",
       validationErrors: [],
+      isModalVisible: false,
     };
   },
   computed: {
@@ -74,6 +89,12 @@ export default {
     signOut() {
       this.signOutAction();
       this.$router.push("/cliniclogin");
+    },
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     },
 
     resetError() {
@@ -126,12 +147,15 @@ export default {
         .doc(localStorage.getItem("uidClinic"))
         .update({
           interBank: this.interbank,
+        }).then(() => {
+          alert("Interbank account has been updated")
         });
     },
   },
 
   components: {
     uploadQr: uploadQr,
+    Modal
   },
 };
 </script>
@@ -271,6 +295,7 @@ input {
   height: 60px;
   left: 850px;
   top: 310px;
+  margin-top: 15px;
 }
 
 #submitInterBank {
@@ -294,6 +319,28 @@ input {
   height: 60px;
   left: 850px;
   top: 385px;
+  margin-top: 15px;
+}
+#delete {
+  transition: 0.3s;
+  position: absolute;
+  background-color: #FF6961;
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Roboto;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 3px;
+  outline: none;
+  display: block;
+  width: 130px;
+  text-align: center;
+  margin-left: 20px;
+  height: 60px;
+  left: 850px;
+  top: 600px;
 }
 button:hover {
   background-color: white;
