@@ -3,6 +3,7 @@
     <div id="topNavBar">
       <span>E-Clinic</span>
       <router-link to="/patienthome">Return Home</router-link>
+      <router-link to="/pending">Pending Booking</router-link>
     </div>
     <h4 id="sorry">Sorry,</h4>
     <h4 id="patientName">{{ this.getUser.displayName }}</h4>
@@ -84,10 +85,10 @@ p {
   background-size: 550px auto;
   background-repeat: no-repeat;
   background-position: left;
-  background-position-y: 50px;
+  background-position-y: -40px;
   /*background-position-x: 50px;*/
-  height: 550px;
-  margin-top: 20px;
+  height: 500px;
+  margin-top: 100px;
 }
 #topNavBar span {
   font-family: Nunito;
@@ -104,7 +105,7 @@ p {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 10px;
+  margin: 10px 70px 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -128,8 +129,9 @@ p {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
 }
+
 #credits {
-  bottom: 20px;
+  top: 580px;
   left: 250px;
   position: absolute;
   font-size: 8px;

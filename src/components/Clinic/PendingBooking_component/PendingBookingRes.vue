@@ -489,7 +489,7 @@ button#reject {
 
 button#fail {
   top: 300px;
-  left: 500px;
+  left: 300px;
 }
 
 button:hover {

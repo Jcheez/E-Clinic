@@ -4,10 +4,9 @@
     <div id="topNavBar">
       <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <!--router-link to="/makebooking">Make A Booking</router-link-->
-
-      <router-link to="/pending">Pending Booking</router-link>
+      <!-- <router-link to="/pending">Pending Booking</router-link>
       <router-link to="/viewdocuments">View Documents</router-link>
-      <router-link to="/managepayments">Manage Payments</router-link>
+      <router-link to="/managepayments">Manage Payments</router-link> -->
       <router-link to="/patientsettings">Settings</router-link>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
@@ -19,29 +18,30 @@
       :min-date="new Date()"
       id="datepicker"
     />
-    <div id="inner">
-      <ul id="slots">
-        <li v-for="(s, index) in this.docsName" :key="index">
-          <div id="inner">
-            <h3 style="font-size: 30px; text-decoration: underline">{{ s }}</h3>
-            <div v-for="(v, index) in slot" :key="index">
-              <button
-                v-if="s.localeCompare(v.doctorName) == 0"
-                v-on:click="
-                  getdoc(v.id);
-                  updateApptHist();
-                "
-              >
-                {{ formatTime(v.date) }}
-              </button>
-            </div>
+    <!--div id="inner"-->
+    <ul id="slots">
+      <li v-for="(s, index) in this.docsName" :key="index">
+        <div id="inner">
+          <h3 style="font-size: 30px; text-decoration: underline">{{ s }}</h3>
+          <div v-for="(v, index) in slot" :key="index" id="tile">
+            <button
+              v-if="s.localeCompare(v.doctorName) == 0"
+              v-on:click="
+                getdoc(v.id);
+                updateApptHist();
+              "
+            >
+              {{ formatTime(v.date) }}
+            </button>
           </div>
-        </li>
-      </ul>
-      <p v-if="this.docsName.length == 0">
-        There are no available appointment slots today
-      </p>
-    </div>
+        </div>
+      </li>
+    </ul>
+    <p id="emptyDiv" v-if="this.docsName.length == 0">
+      There are no available appointment slots today.<br />Please select another
+      day.
+    </p>
+    <!--/div-->
   </div>
 </template>
 
@@ -353,14 +353,53 @@ export default {
 #topNavBar #clinic:hover {
   cursor: pointer;
 }
-
+h4 {
+  font-family: Nunito;
+  position: absolute;
+  top: 65px;
+  left: 80px;
+  font-size: 26px;
+}
 #datepicker {
   position: absolute;
-  left: 100px;
-  top: 180px;
+  top: 160px;
+  left: 80px;
 }
 
-/*button {
+#inner {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 750px;
+}
+
+#inner h3 {
+  position: relative;
+  left: 0px;
+  text-align: left;
+  font-family: Nunito;
+  margin: 0 0 10px 0;
+}
+#slots {
+  position: absolute;
+  left: 400px;
+  top: 140px;
+  width: 700px;
+}
+li {
+  list-style-type: none; /* Remove bullets */
+  display: inline-block;
+  padding-bottom: 8px;
+  position: relative;
+  left: 0px;
+}
+#inner #tile {
+  position: relative;
+  float: left;
+  flex-direction: row;
+}
+
+#inner #tile button {
   transition: box-shadow 0.3s;
   transition: 0.3s;
   color: rgb(0, 114, 180);
@@ -371,23 +410,20 @@ export default {
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
   z-index: -1;
+  margin: 0px 10px 8px 0;
+}
+
+#inner #tile button:hover {
+  color: white;
+  background-color: rgb(0, 114, 180);
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
   cursor: pointer;
-}*/
-#inner {
-  top: 200px;
-  left: 400px;
-  position: absolute;
 }
-ul {
+#emptyDiv {
+  font-family: Nunito;
+  font-size: 18px;
   position: absolute;
   top: 200px;
-  left: 400px;
-}
-li {
-  width: 100px;
-  height: 20px;
-  display: inline-block;
-  margin: 20px;
-  float: left;
+  left: 500px;
 }
 </style>
