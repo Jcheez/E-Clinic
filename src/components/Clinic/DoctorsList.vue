@@ -75,12 +75,12 @@ export default {
     },
     //Must modify clinic to be the one currently logged in not hardcode a clinic
     fetchItems: function () {
-      let x = this.getUser.displayName;
-      console.log(x);
+      //let x = this.getUser.displayName; //Note by JJ: Doing this line causes error on refresh. CHanged line 83 to localStorage to get the clinic's Name
+      //console.log(x);
       //let doctorList = [];
       database
         .collection("doctors")
-        .where("clinic", "==", x)
+        .where("clinic", "==", localStorage.getItem("clinicName"))
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
