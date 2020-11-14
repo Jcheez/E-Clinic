@@ -1,6 +1,6 @@
 <template>
   <div id="zoom">
-    <a v-bind:href="zoomlink" target="_blank">Start Teleconsult</a>
+    <a v-bind:href="format(zoomlink)" target="_blank">Start Teleconsult</a>
   </div>
 </template>
 
@@ -14,6 +14,16 @@ export default {
       type: String,
     },
   },
+
+  methods: {
+    format: function(link) {
+      if (link.includes("https://")) {
+        return link
+      } else {
+        return "https://" + link;
+      }
+    }
+  }
 };
 </script>
 
