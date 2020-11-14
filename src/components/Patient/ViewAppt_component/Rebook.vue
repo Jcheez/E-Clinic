@@ -291,8 +291,6 @@ export default {
   left:0;
   overflow-x: hidden;
   width: 100%;
-  /* border: 1px solid white; */
-  /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
 }
@@ -327,14 +325,14 @@ a:hover {
 h4 {
   font-family: Nunito;
   position: absolute;
-  top: 60px; 
-  left: 100px;
+  top: 65px; 
+  left: 60px;
   font-size: 26px;
 }
 #datepicker {
     position: absolute;
-    top: 150px;
-    left: 100px;
+    top: 160px;
+    left: 80px;
 }
 
 p {
@@ -345,15 +343,13 @@ p {
 
 #slots {
   position: absolute;
-  left: 380px;
-  top: 160px;
+  left: 400px;
+  top: 140px;
   width: 700px;
 }
 
 li {
   list-style-type: none; /* Remove bullets */
-  /* width: 100px;
-  height: 20px; */
   display: inline-block;
   padding-bottom: 8px;
   position: relative;
@@ -369,10 +365,10 @@ li {
 
 #inner h3 {
   position: relative;
-  left: -350px;
+  left: 0px;
+  text-align: left;
   font-family: Nunito;
   margin: 0 0 10px 0;
-  /* padding: 10px 0px 0px 20px; */
 }
 
 #inner #tile {
@@ -392,7 +388,7 @@ li {
   border: 1px solid rgb(0, 114, 180);
   border-radius: 5px;
   z-index: -1;
-  margin-right: 10px;
+  margin: 0px 10px 8px 0;
 }
 
 #inner #tile button:hover {
