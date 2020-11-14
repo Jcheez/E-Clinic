@@ -9,6 +9,7 @@
     <h4 id="patientName">{{ this.getUser.displayName }}</h4>
     <div id="message">
       <p>{{ msg }}</p>
+      <p>{{ msg3 }}</p>
       <p>{{ msg2 }}</p>
     </div>
 
@@ -25,8 +26,9 @@ export default {
   data() {
     return {
       msg:
-        "Your condition is not available for teleconsult / You have not been to this clinic",
-      msg2: "Clinic staff will contact you to make arrangements",
+        "Your condition is not available for teleconsult,",
+      msg3:"and/or you have not been to this clinic.",
+      msg2: "Clinic staff will contact you to make arrangements.",
     };
   },
   computed: {
@@ -47,7 +49,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #container {
   font-family: Nunito;
 }
@@ -56,8 +58,8 @@ export default {
   margin-bottom: -30px;
   font-size: 32px;
   position: absolute;
-  left: 550px;
-  top: 100px;
+  left: 680px;
+  top: 250px;
 }
 #patientName {
   color: rgb(0, 114, 180);
@@ -65,13 +67,13 @@ export default {
   margin-bottom: -30px;
   font-size: 32px;
   position: absolute;
-  left: 650px;
-  top: 100px;
+  left: 780px;
+  top: 250px;
 }
 #message {
   display: block;
-  top: 200px;
-  left: 500px;
+  top: 350px;
+  left: 630px;
   position: absolute;
   text-align: left;
   font-size: 20px;
@@ -88,7 +90,7 @@ p {
   background-position-y: -40px;
   /*background-position-x: 50px;*/
   height: 500px;
-  margin-top: 100px;
+  margin-top: 200px;
 }
 #topNavBar span {
   font-family: Nunito;
@@ -105,7 +107,7 @@ p {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 10px 70px 0 0;
+  margin: 10px 50px 0 75px;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -120,6 +122,7 @@ p {
 #topNavBar {
   height: 80px;
   position: fixed;
+  padding-top: 20px;
   top: 0;
   left: 0;
   overflow-x: hidden;
@@ -131,8 +134,8 @@ p {
 }
 
 #credits {
-  top: 580px;
-  left: 250px;
+  top: 680px;
+  left: 240px;
   position: absolute;
   font-size: 8px;
   color: rgb(0, 114, 180);

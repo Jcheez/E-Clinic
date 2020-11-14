@@ -172,6 +172,7 @@ div.navbar {
   text-decoration: none;
   display: block;
   text-align: left;
+
 }
 
 .show {

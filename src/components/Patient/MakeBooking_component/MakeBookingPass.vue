@@ -2,11 +2,12 @@
   <div id="container">
     <h4>Make A Booking</h4>
     <div id="topNavBar">
-      <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
+      <span>E-Clinic</span>
       <!--router-link to="/makebooking">Make A Booking</router-link-->
       <!-- <router-link to="/pending">Pending Booking</router-link>
       <router-link to="/viewdocuments">View Documents</router-link>
       <router-link to="/managepayments">Manage Payments</router-link> -->
+      <router-link to="/patienthome">Return Home</router-link>
       <router-link to="/patientsettings">Settings</router-link>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
@@ -311,13 +312,23 @@ export default {
   align-items: center;
   justify-content: center;
 }
+#topNavBar span {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bolder;
+  width: 100%;
+  display: block;
+}
+
 #topNavBar a {
   color: rgb(238, 249, 255);
   transition: 0.3s;
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 10px 50px 0 0;
+  margin: 10px 100px 0 45px;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
@@ -335,34 +346,24 @@ export default {
   top: 0;
   left: 0;
   overflow-x: hidden;
+  padding-top: 20px;
   width: 100%;
   /* border: 1px solid white; */
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
 }
-#topNavBar #clinic {
-  font-family: Nunito;
-  font-size: 24px;
-  letter-spacing: 4px;
-  color: white;
-  font-weight: bolder;
-  width: 100%;
-}
 
-#topNavBar #clinic:hover {
-  cursor: pointer;
-}
 h4 {
   font-family: Nunito;
   position: absolute;
-  top: 65px;
+  top: 100px;
   left: 80px;
   font-size: 26px;
 }
 #datepicker {
   position: absolute;
-  top: 160px;
+  top: 195px;
   left: 80px;
 }
 
