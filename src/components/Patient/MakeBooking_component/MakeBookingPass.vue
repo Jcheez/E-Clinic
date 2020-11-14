@@ -67,7 +67,7 @@ export default {
     attributes() {
       return this.show.map((t) => ({
         //key: `todo.${t.id}`,
-        dot: true,
+        dot: "green",
         dates: t.date.toDate(),
         customData: t,
       }));

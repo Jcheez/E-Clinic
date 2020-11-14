@@ -13,8 +13,8 @@
     <div v-if="!status" class="inner">
       <ul id="indivDoctor" style="list-style-type: none">
         <li v-for="d in doctors" v-bind:key="d.dNum">
-          {{ d.dName }} <br /><br />
-          {{ d.dNum }}
+          <span id="docName">{{ d.dName }} <br /><br /></span>
+          <span id="docNum">{{ d.dNum }}</span>
           <router-link
             id="apptment"
             :to="{ name: 'doctorAppt', params: { currDoctor: d } }"
@@ -75,12 +75,12 @@ export default {
     },
     //Must modify clinic to be the one currently logged in not hardcode a clinic
     fetchItems: function () {
-      let x = this.getUser.displayName;
-      console.log(x);
+      //let x = this.getUser.displayName; //Note by JJ: Doing this line causes error on refresh. CHanged line 83 to localStorage to get the clinic's Name
+      //console.log(x);
       //let doctorList = [];
       database
         .collection("doctors")
-        .where("clinic", "==", x)
+        .where("clinic", "==", localStorage.getItem("clinicName"))
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -177,7 +177,24 @@ li {
   font-family: Nunito;
   font-size: 18px;
   float: left;
-  box-shadow: 0 6px 12px -3px rgba(0, 0, 0, 0.377);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#docName {
+  position: relative;
+  display: block;
+  padding: 14px 0 0px 0;
+  background-color: rgb(44, 143, 201);
+  color: white;
+  font-size: 20px;
+}
+
+#docNum {
+  position: relative;
+  display: block;
+  font-weight: bold;
+  padding: 8px 0 12px 0;
+  font-size: 16px;
 }
 
 /* ul {
@@ -223,7 +240,6 @@ p {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
   font-size: 14px;
   color: white;
   letter-spacing: 3px;

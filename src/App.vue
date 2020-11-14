@@ -25,6 +25,8 @@ export default {
           if (confirm('Reload site? You will be redirected back to the booking page.')) {
             this.$router.push('/makebooking')
           }
+      } else if (performance.navigation.type == 1 && this.$route.path == '/doctorslist/appointment') {
+          this.$router.push('/doctorslist')
       } else if (performance.navigation.type == 0 && this.$route.path == '/makebooking/makebookingpass') {
         this.$router.push("/makebooking")
       } else if (performance.navigation.type == 0 && this.$route.path == '/viewappt/rebook') {

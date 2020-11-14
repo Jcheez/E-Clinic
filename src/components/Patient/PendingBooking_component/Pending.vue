@@ -19,7 +19,7 @@
             <span v-if="patient.physical"
               ><b>Reason:</b> Physical Examination Required</span
             >
-            <span><b>Status:</b> {{ patient.pendingstatus }}</span>
+            <span style="white-space: nowrap"><b>Status:</b> {{ patient.pendingstatus }}</span>
           </div>
         </li>
       </template>
@@ -88,7 +88,7 @@ export default {
   font-family: Nunito;
   font-size: 17px;
   letter-spacing: 2px;
-  margin: 45px 0 0 0;
+  margin: 50px 0 0 0;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;

@@ -1,7 +1,16 @@
 <template>
-  <div>
-    <h1>{{ msg }}</h1>
-    <hr />
+  <div id="container">
+    <h3 id = "heading">Refer To Patient Details And Verify With Clinic Records</h3>
+    <div id="sideNavBar">
+      <h3>E-Clinic</h3>
+      <router-link to="/clinichome">Dashboard</router-link><br />
+      <router-link to="/doctorslist">Doctors</router-link><br />
+      <router-link to="/patientsnotes">Patient Notes</router-link><br />
+      <router-link to="/pendingbooking">Pending</router-link><br />
+      <router-link to="/clinicsettings">Settings</router-link><br />
+      <a @click="signOut" class="button is-primary">Logout</a>
+    </div>
+    <div id = "main">
     <ul>
         <li id=pending>
             <span>{{"Patient Name: " + patientName}}</span>
@@ -12,26 +21,26 @@
             <span>{{"Status: " + patientDetails.pendingstatus}}</span>
         </li>
     </ul>
-    
+    </div>
+    <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable</button>
+    <button id=reject v-if="patientDetails.pendingstatus=='Clinic failed to reach patient on mobile'" v-on:click='reject'>Delete Pending Booking</button>
+    <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
+    <br>
     <div v-if="patientDetails.pendingstatus=='Clinic failed to reach patient on mobile'" id=physicalform>
-        <p>Input physical appointment details as disucssed with patient:</p>
+        <p>Input physical appointment details as discussed with patient:</p>
         <input type="date" v-model="date" placeholder="Appointment Date">
         <input type="time" v-model="time" placeholder="Appointment Time">
         <br>
         <br>
-        <input type="submit" value="Confirm" v-on:click="scheduled">
+        <input type="submit" value="Confirm" id = "confirm" v-on:click="scheduled">
     </div>
-
-    <button id=fail v-if="patientDetails.pendingstatus=='Awaiting clinic staff to contact'" v-on:click='failcall'>Patient Not Verifiable and/or Failed to get to Patient</button>
-    <button id=reject v-if="patientDetails.pendingstatus=='Clinic failed to reach patient on mobile'" v-on:click='reject'>Delete Pending Booking</button>
-    <button id=verify v-if="patientDetails.firstTime" v-on:click='verify'>Verify Patient</button>
-    <button id="home" v-on:click="routeBack()">Back</button>
   </div>
 </template>
 
 <script scoped>
 import database from "../../../firebase.js";
 import * as firebase from "firebase";
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -48,6 +57,11 @@ export default {
         patientDetails: Object,
     },
     methods: {
+        ...mapActions(["signOutAction"]),
+        signOut() {
+            this.signOutAction();
+            this.$router.push("/cliniclogin");
+        },
         routeBack: function() {
             this.$router.push('/pendingbooking')
         },
@@ -60,6 +74,7 @@ export default {
             database.collection("clinics").doc(this.clinicId).get().then((querySnapShot) => {
             let item = querySnapShot.data();
             this.clinicName = item.name;
+            console.log(this.clinicName)
             })
         },
 
@@ -102,7 +117,7 @@ export default {
         },
 
         reject: function () {
-            if (confirm("Proceed to delete patient's pendingbooking")){
+            if (confirm("Proceed to delete patient's pending booking")){
                 var x = this.patientDetails.patientId
                 database.collection("pendingbooking").where("patientId", "==", x)
                 .get()
@@ -203,69 +218,175 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  position: absolute;
-  width: 372px;
-  height: 57px;
-  left: 86px;
-  top: 220px;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 42px;
-  line-height: 57px;
-  color: #000000;
-}
-hr {
-  position: absolute;
-  width: 1459px;
-  height: 40px;
-  left: 520px;
-  top: 250px;
-  background-color: #1677cf;
-}
-li#pending {
+#container {
   position: relative;
-  width: 562px;
-  height: 140px;
-  left: 73px;
-  top: 310px;
+}
 
-  border: 1px solid #000000;
+#main {
+  position: absolute;
+  top: 50px;
+  margin-left: 200px;
+}
+
+h3#heading {
+  position: absolute;
+  left: 230px;
+  font-family: Nunito;
+  padding: 30px 0 0 0;
+  font-size: 22px;
+}
+
+#sideNavBar a {
+  color: rgb(238, 249, 255);
+  transition: 0.3s;
+  font-family: Nunito;
+  font-size: 17px;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin: 50px 0 0 0;
+  text-decoration: none;
+}
+
+#sideNavBar a:hover {
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+#sideNavBar {
+  width: 180px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  /* border: 1px solid white; */
+  /* border-radius: 5px; */
+  background-color: rgb(0, 114, 180);
+  color: rgb(238, 249, 255);
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+#sideNavBar h3 {
+  font-family: Nunito;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+  font-weight: bold;
+  padding: 10px 0px 0px 0px;
+}
+
+ul {
+  float: left;
+  margin-top: 50px;
+}
+
+li {
+  width: 550px;
+  height: 160px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
-
   list-style-type: none; /* Remove bullets */
-  padding-left: 30px;
-  padding-top: 22px;
+  padding: 10px 0 0 20px;
   display: block;
+  text-align: left;
 }
-button#fail {
-    position: relative;
-    top: 350px;
+
+span {
+  font-family: Nunito;
+  position: relative;
+  top: 14px;
+  display: block;
+  text-align: left;
+  font-size: 18px;
 }
-button#verify {
-    position: relative;
-    top: 350px;
-    background-color: aquamarine;
+
+li a {
+  color: white;
+  text-decoration: none;
+}
+
+input[type=time], input[type=date] {
+  position: relative;
+  top: 20px;
+  display:block;
+  text-align: left;
+  color: rgb(0, 114, 180);
+  font-family: Nunito;
+  font-size: 14px;
+  width: 280px;
+  padding: 10px;
+  margin: 15px 0px 5px 30px;
+  border:none;
+  background-color: rgba(122, 113, 113, 0.04);
 }
 
 div#physicalform {
-    position: relative;
-    width: 562px;
-    height: 140px;
-    left: 700px;
-    top: 154px;
-
-    border: 1px solid #000000;
-    box-sizing: border-box;
+  position: absolute;
+  width: 550px;
+  height: 162px;
+  left: 230px;
+  top: 350px;
+  font-size: 18px;
+  font-family: Nunito;
+  white-space: nowrap;
+  padding: 10px 0px 0px 20px;
+  text-align: center;
 }
 
-input{
-    width: 200px;
-    height: 20px;
+button {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  background-color: rgb(0, 114, 180);
+  letter-spacing: 1px;
+  font-family: Nunito;
+  /* font-weight: bold; */
+  color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  position: absolute;
+  height: 36px;
 }
-span {
-  display: block;
-  text-align: left;
+
+#confirm {
+  transition: box-shadow 0.3s;
+  transition: 0.3s;
+  background-color: rgb(0, 114, 180);
+  letter-spacing: 2px;
+  font-family: Nunito;
+  /* font-weight: bold; */
+  color: white;
+  border: 1px solid rgb(0, 114, 180);
+  border-radius: 5px;
+  position: relative;
+  left: -200px;
+  width: 80px;
+  height: 36px;
+}
+
+#confirm:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
+}
+
+button#verify {
+  top: 300px;
+  left: 580px;
+}
+
+button#reject {
+  top: 300px;
+  left: 300px;
+}
+
+button#fail {
+  top: 300px;
+  left: 500px;
+}
+
+button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);
 }
 </style>

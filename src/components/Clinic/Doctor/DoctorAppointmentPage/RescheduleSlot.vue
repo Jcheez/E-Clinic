@@ -32,7 +32,7 @@
       </datalist>
 
       <label>Choose the new <b>Start Date</b></label>
-      <v-date-picker v-model="date" :masks="masks" :min-date="new Date()">
+      <v-date-picker v-model="date" :masks="masks" :min-date="this.min.setDate(this.slotData.date.toDate().getDate() + 1)">
         <template v-slot="{ inputValue, inputEvents }">
           <input
             class="bg-white border px-2 py-1 rounded"
@@ -62,6 +62,7 @@ export default {
     return {
       newStartTime: "",
       date: new Date(),
+      min: this.slotData.date.toDate(),
       masks: {
         input: "DD/MM/YYYY",
       },
@@ -133,7 +134,16 @@ export default {
             //  this.$emit("fetchItems");
             //}
           );
-          database
+          var ifASlotExistsQuery = database
+            .collection("consultslots")
+            .where("date", "==", newDate)
+            .where("patient", "==", null);
+          ifASlotExistsQuery.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              console.log("deleted corresponding free slot");
+              doc.ref.delete();
+            });
+            database
             .collection("consultslots")
             .get()
             .then((snapshot) => {
@@ -161,19 +171,8 @@ export default {
               } catch (exception) {
                 console.log("shld break");
               }
-            });
-
-          var ifASlotExistsQuery = database
-            .collection("consultslots")
-            .where("date", "==", newDate)
-            .where("patient", "==", null);
-          ifASlotExistsQuery.get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              console.log("deleted corresponding free slot");
-              doc.ref.delete();
-            });
-            this.$emit("fetch")
-          });
+            })
+          })
 
           /*
            * adding part to notify patient

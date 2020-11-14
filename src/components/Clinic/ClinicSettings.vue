@@ -236,13 +236,13 @@ input {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 14px;
   color: white;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   outline: none;
   display: block;
-  width: 150px;
+  width: 130px;
   text-align: center;
   margin-left: 20px;
   left: 850px;
@@ -259,13 +259,13 @@ input {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 14px;
   color: white;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   outline: none;
   display: block;
-  width: 150px;
+  width: 130px;
   text-align: center;
   margin-left: 20px;
   height: 60px;
@@ -282,13 +282,13 @@ input {
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 14px;
   color: white;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   outline: none;
   display: block;
-  width: 150px;
+  width: 130px;
   text-align: center;
   margin-left: 20px;
   height: 60px;
