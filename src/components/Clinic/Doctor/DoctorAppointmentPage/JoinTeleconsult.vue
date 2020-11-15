@@ -1,6 +1,6 @@
 <template>
   <div id="zoom">
-    <a v-bind:href="format(zoomlink)" target="_blank">zoomlink</a>
+    <a v-bind:href="format(zoomlink)" target="_blank">Start Teleconsult</a>
   </div>
 </template>
 
