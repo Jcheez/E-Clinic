@@ -16,8 +16,8 @@
       <label>Change Password:</label><br />
       <label>Repeat New Password:</label><br />
       <label>Update Interbank Account:</label>
-      <br/>
-      <label style = "margin-top: -15px">Update QR Code: </label>
+      <br />
+      <label style="margin-top: -15px">Update QR Code: </label>
     </div>
     <div id="inputFields">
       <input
@@ -26,34 +26,34 @@
         id="changeEmail"
         v-model="newEmail"
       />
-      <br>
+      <br />
       <input
         type="password"
         placeholder="Enter New Password"
         id="changePW"
-        style = "margin-top: -15px;"
+        style="margin-top: -15px"
         v-model="newPassword"
       />
-      <br>
+      <br />
       <input
         type="password"
         placeholder="Please Re-enter New Password To Confirm"
         id="repeatPW"
-        style = "margin-top: -15px;"
+        style="margin-top: -15px"
         v-model="repeatPassword"
       />
-      <br>
+      <br />
       <input
         type="text"
         placeholder="Enter New Interbank Account"
         id="interbank"
         v-model="interbank"
-        style = "margin-top: -13px;"
+        style="margin-top: -13px"
       /><uploadQr style="margin: 10px; margin-top: -4px"></uploadQr>
     </div>
     <!--div id="buttons"-->
     <button id="submitEmail" v-on:click="changeEmail">Update Email</button>
-    <br>
+    <br />
     <button id="submitPW" v-on:click="changePassword">Update Password</button>
     <button id="submitInterBank" v-on:click="changeInterBank">
       Update Interbank
@@ -147,15 +147,16 @@ export default {
         .doc(localStorage.getItem("uidClinic"))
         .update({
           interBank: this.interbank,
-        }).then(() => {
-          alert("Interbank account has been updated")
+        })
+        .then(() => {
+          alert("Interbank account has been updated");
         });
     },
   },
 
   components: {
     uploadQr: uploadQr,
-    Modal
+    Modal,
   },
 };
 </script>
@@ -166,6 +167,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: Nunito;
+  position: relative;
 }
 h4 {
   position: absolute;
@@ -205,6 +208,7 @@ a:hover {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   height: 100%;
+  z-index: 4;
 }
 label {
   color: black;
@@ -324,7 +328,7 @@ input {
 #delete {
   transition: 0.3s;
   position: absolute;
-  background-color: #FF6961;
+  background-color: #ff6961;
   border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
@@ -341,6 +345,7 @@ input {
   height: 60px;
   left: 850px;
   top: 600px;
+  margin-bottom: 30px;
 }
 button:hover {
   background-color: white;

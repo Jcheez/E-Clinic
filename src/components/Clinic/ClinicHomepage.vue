@@ -124,7 +124,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-
+.hello {
+  position: relative;
+  font-family: Nunito;
+}
 ul {
   list-style-type: none;
   padding: 0;
@@ -275,6 +278,7 @@ a:hover {
   font-weight: bold;
   letter-spacing: 2px;
   height: 100%;
+  z-index: 4;
 }
 
 #sideNavBar h3 {
