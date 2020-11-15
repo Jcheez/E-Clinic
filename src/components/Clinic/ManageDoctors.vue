@@ -12,7 +12,6 @@
             placeholder="Doctor Name"
             required
           /><br />
-
           <input
             type="text"
             v-model="doctorAdd.dNum"
@@ -43,6 +42,7 @@
     </div>
   </div>
 </template>
+<!--just trying redeploy-->
 <script>
 import { mapGetters } from "vuex";
 import database from "../../firebase";
