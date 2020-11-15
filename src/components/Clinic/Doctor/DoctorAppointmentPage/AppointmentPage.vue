@@ -326,6 +326,7 @@ export default {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   padding-bottom: 10px;
+  z-index: 100;
 }
 
 a {

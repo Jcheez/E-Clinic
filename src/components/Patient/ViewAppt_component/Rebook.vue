@@ -3,9 +3,6 @@
     <div id="topNavBar">
       <span>E-Clinic</span>
       <router-link to="/patienthome" id="clinic">Return Home</router-link>
-      <!-- <router-link to="/pending">Pending Booking</router-link>
-      <router-link to="/viewdocuments">View Documents</router-link>
-      <router-link to="/managepayments">Manage Payments</router-link> -->
       <router-link to="/patientsettings">Settings</router-link>
       <a @click="signOut" class="button is-primary">Logout</a>
     </div>
@@ -288,12 +285,15 @@ export default {
   height: 80px;
   position: fixed;
   top: 0;
-  left:0;
-  overflow-x: hidden;
+  left: 0;
+  right: 0;
+  /* overflow-x: hidden; */
   width: 100%;
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   padding-top: 20px;
+  margin-left: 0px;
+  z-index: 100;
 }
 
 #topNavBar span {
@@ -352,7 +352,7 @@ h4 {
 #datepicker {
   position: absolute;
   top: 195px;
-  left: 80px;
+  left: 100px;
 }
 
 p {
