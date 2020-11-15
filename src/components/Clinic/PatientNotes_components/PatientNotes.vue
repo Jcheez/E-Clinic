@@ -77,7 +77,6 @@ export default {
     },
     nameSearch: function () {
       let copied = this.data;
-      console.log(copied);
       copied = copied.filter((x) => x.name.includes(this.nameQuery));
       this.itemsList = copied;
       if (this.nameQuery.localeCompare("") == 0) {

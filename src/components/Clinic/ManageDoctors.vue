@@ -12,7 +12,6 @@
             placeholder="Doctor Name"
             required
           /><br />
-
           <input
             type="text"
             v-model="doctorAdd.dNum"
@@ -73,11 +72,24 @@ export default {
           dNum: this.doctorAdd.dNum,
           dName: this.doctorAdd.dName,
         });
+        let x = this.getUser.displayName;
+        var num = this.doctorAdd.dNum;
+        database.collection("clinics").where("name","==",x).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            let docRef = doc.id;
+            let docArray = doc.data().doctors;
+            docArray.push(num);
+            database.collection("clinics").doc(docRef).update({
+              "doctors": docArray
+            })
+          })
+        });
         database.collection("doctors").doc(this.doctorAdd.dNum).set({
           name: this.doctorAdd.dName,
           clinic: this.getUser.displayName,
           zoom: "",
-        });
+        })
+        this.$emit("fetchItems");
         alert("Successfully added new doctor!");
         this.doctorAdd.dName = "";
         this.doctorAdd.dNum = "";
@@ -90,12 +102,23 @@ export default {
     delDoctor: function (doctorObj) {
       let li = document.getElementById(doctorObj.dNum);
       li.parentNode.removeChild(li);
-      database.collection("doctors").doc(doctorObj.dNum).delete();
+      database.collection("doctors").doc(doctorObj.dNum).delete().then(()=>this.$emit('fetchitems'));
+      let x = this.getUser.displayName;
+      var num = this.doctorAdd.dNum;
+      database.collection("clinics").where("name","==",x).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let docRef = doc.id;
+          let docArray = doc.data().doctors;
+          let docIndex = docArray.indexOf(num);
+          docArray.splice(docIndex,1);
+          database.collection("clinics").doc(docRef).update({
+            "doctors": docArray
+          })
+        })
+      });
       //need to emit back to parent list to not display box
       let index = this.doctors.indexOf(doctorObj);
-      console.log(index);
       this.doctors.splice(index, 1);
-      console.log(this.doctors);
       //this.$emit("fetchItems");
     },
 

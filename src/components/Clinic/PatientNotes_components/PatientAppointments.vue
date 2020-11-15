@@ -86,18 +86,15 @@ export default {
   },
   created() {
     if (this.patientName2 == null || this.data == null) {
-        console.log("j")
         this.patientName2 = localStorage.getItem('pn4name');
         this.data2 = JSON.parse(localStorage.getItem('pn4date'))[localStorage.getItem("clinicName")];
     } else if (this.patientName2.localeCompare(localStorage.getItem('pn4name')) != 0 || JSON.stringify(this.data).localeCompare(localStorage.getItem('pn4date')) != 0) {
-        console.log("k")
         localStorage.setItem('pn4name', this.patientName2);
         localStorage.setItem('pn4date', JSON.stringify(this.data));
 
         this.patientName2 = localStorage.getItem('pn4name');
         this.data2 = JSON.parse(localStorage.getItem('pn4date'))[localStorage.getItem("clinicName")];
     } else {
-         console.log("l")
         this.patientName2 = localStorage.getItem('pn4name');
         this.data2 = JSON.parse(localStorage.getItem('pn4date'))[localStorage.getItem("clinicName")];
     }

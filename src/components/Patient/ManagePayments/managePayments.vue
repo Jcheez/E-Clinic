@@ -165,22 +165,22 @@ export default {
       for (let x in { ...this.outstanding }) {
         let details = this.outstanding[x];
         if (this.amountPaid[x] == undefined) {
-          console.log("empty");
+          //console.log("empty");
         } else if (this.amountPaid[x][0] == details[0]) {
-          console.log(2);
+          //console.log(2);
           delete this.outstanding[x];
         } else {
-          console.log(this.outstanding);
+          //console.log(this.outstanding);
         }
       }
       this.$forceUpdate();
     },
     getDueDate: function (dateString) {
       let DMY = dateString.split(" ");
-      console.log(DMY);
+      //console.log(DMY);
       let formatDateString =
         DMY[1] + " " + DMY[0] + ", " + DMY[2] + " 00:00:00";
-      console.log(formatDateString);
+      //console.log(formatDateString);
       let dueDate = new Date(formatDateString);
       dueDate.setDate(dueDate.getDate() + 14);
       const allMonths = [
@@ -203,7 +203,7 @@ export default {
         allMonths[dueDate.getMonth()] +
         " " +
         dueDate.getFullYear().toString();
-      console.log(newString);
+      //console.log(newString);
       return newString;
     },
   },
@@ -214,9 +214,9 @@ export default {
   },
 
   beforeUpdate() {
-    console.log(this.outstanding);
+    //console.log(this.outstanding);
     this.formatter();
-    console.log("Done");
+    //console.log("Done");
   },
 
   props: {},

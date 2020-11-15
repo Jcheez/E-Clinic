@@ -23,7 +23,7 @@
         <div id="invoice">
             <h2>Invoice</h2>
                 <div v-if="this.outstandingMap[this.appDate] == undefined">
-                <label id="outpayment" for="paybox">Enter cost of Consultation:</label>
+                <label id="outpayment" for="paybox">Enter Cost of Consultation:</label>
                 <input type="text" id="paybox" name="paybox" >
                 <input type="submit" id="submitpay" v-on:click="paybutton()">
             </div>
@@ -145,7 +145,7 @@ export default {
             this.outstandingMap = doc.data().outstandingAmount;
             this.amountPaidMap = doc.data().amountPaid;
             this.newMessages = doc.data().newNotifications;
-            console.log(this.doc)
+
           });
         });
         },
@@ -154,7 +154,7 @@ export default {
 
             let today = this.formatDate(new Date())
             this.newMessages.splice(0, 0, today + ": " + field + " has been removed")
-            console.log(this.newMessages)
+
 
 
             delete this.doc[this.clinic][this.appDate][field]
@@ -166,7 +166,7 @@ export default {
                 newNotifications: this.newMessages
                 })
             .then(() => {
-            console.log('user updated!')
+
             alert("Medical Certificate" + " deleted")
             location.reload()
             
@@ -178,7 +178,6 @@ export default {
             if (confirm("You can only submit this once, are you sure?")) {
 
                 this.outstandingMap[this.appDate] = [parseFloat(document.getElementById("paybox").value), this.clinic]
-                console.log(document.getElementById("paybox").value)
                 database
                 .collection('patients')
                 .doc(this.docid[0])
@@ -186,7 +185,6 @@ export default {
                     outstandingAmount: this.outstandingMap
                 })
                 .then(() => {
-                console.log('Payment Sent!')
                 })
                 this.$forceUpdate()
                 
@@ -195,7 +193,6 @@ export default {
         },
 
         receivebutton: function() {
-            console.log(document.getElementById("receivebox").value)
             if (this.outstandingMap[this.appDate] == undefined) {
                 alert("Invalid entry, patient has not been asked to pay any amount")
                 return
@@ -216,7 +213,6 @@ export default {
                     amountPaid: this.amountPaidMap
                 })
                 .then(() => {
-                console.log('Payment received updated!')
                 })
                 this.$forceUpdate()
         },

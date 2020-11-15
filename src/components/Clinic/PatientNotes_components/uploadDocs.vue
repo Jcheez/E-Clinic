@@ -69,7 +69,6 @@ export default {
           querySnapShot.forEach((doc) => {
             this.doc = doc.data().notes;
             this.newMessages = doc.data().newNotifications;
-            console.log("Fetched");
           });
         });
     },
@@ -93,12 +92,7 @@ export default {
           this.uploadValue = 100;
           storageRef.snapshot.ref.getDownloadURL().then((url) => {
             this.pdf = url;
-            console.log(this.pdf);
-
-            console.log(this.doc);
-
             if (this.doc[this.clinic] == undefined) {
-              console.log(1);
               this.doc[this.clinic] = {};
               this.doc[this.clinic][this.date] = {};
               this.doc[this.clinic][this.date][this.type] = url;

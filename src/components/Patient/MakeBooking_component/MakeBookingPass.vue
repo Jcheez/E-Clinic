@@ -229,7 +229,7 @@ export default {
       if (this.apptHist[this.clinic] == undefined) {
         this.apptHist[this.clinic] = [apptDate];
       } else {
-        this.apptHist[this.clinic].push(apptDate);
+        this.apptHist[this.clinic].splice(0,0,apptDate);
       }
       //console.log(this.apptHist)
 
