@@ -58,7 +58,12 @@
                 <p style="position: relative; margin-left: 10px">
                   Interbank transfer: {{ clinic[2] }}
                 </p>
-                <img v-bind:src="clinic[1]" width="175" height="175" />
+                <img
+                  v-bind:src="clinic[1]"
+                  width="175"
+                  height="175"
+                  alt="Clinic does not presently accept digital payments via QR code. Please use interbank transfer."
+                />
               </div>
             </div>
           </div>
