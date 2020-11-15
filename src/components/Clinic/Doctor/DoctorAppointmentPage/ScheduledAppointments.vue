@@ -11,10 +11,18 @@
           v-bind:key="data.patient"
           :id="data.id"
         >
-          <div class="labels">
+          <!-- <div class="labels">
             <span >Time: {{showTime(data)}}</span><br />
             <span>Patient: {{ getPatientName(data.patient) }}</span>
-          </div>
+          </div> -->
+           <div class="labels">
+              <span>Time:</span><br>
+              <span>Patient:</span>
+            </div>
+            <div class="data">
+              <span v-html="showTime(data)"></span><br>
+              <span>{{getPatientName(data.patient)}}</span>
+            </div>
         </li>
       </ul>
     </div>
@@ -128,7 +136,7 @@ div .containerBtm {
   height: 140px;
   width: 300px;
   position: absolute;
-  left: 10px;
+  left: 0px;
   bottom: 5px;
 }
 
@@ -165,7 +173,7 @@ li {
   list-style: none;
 }
 
-div .labels {
+/* div .labels {
   float: left;
   width: 45%;
   padding: 12px 0px 0px 0px;
@@ -176,5 +184,17 @@ div .data {
   float: left;
   font-family: Roboto;
   padding: 12px 0px 0px 0px;
+} */
+
+div .labels {
+    float: left;
+    width: 30%;
+    padding: 10px 0px 10px 0px;
+    font-family: Roboto;
+}
+div .data {
+    float: left;
+    font-family: Roboto;
+    padding: 10px 0px 0px 0px;
 }
 </style>
