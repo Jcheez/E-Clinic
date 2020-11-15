@@ -60,10 +60,8 @@ export default {
       } else {
         this.text = "Manage Doctors";
       }
-      //this.fetchItems();
     },
   },
-
   methods: {
     ...mapActions(["signOutAction"]),
     signOut() {
@@ -77,22 +75,23 @@ export default {
     fetchItems: function () {
       //let x = this.getUser.displayName; //Note by JJ: Doing this line causes error on refresh. CHanged line 83 to localStorage to get the clinic's Name
       //console.log(x);
-      //let doctorList = [];
+      let temp = [];
       database
         .collection("doctors")
         .where("clinic", "==", localStorage.getItem("clinicName"))
+        .orderBy("name")
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             var doctorIndiv = { dNum: doc.id, dName: doc.data().name };
-            this.doctors.push(doctorIndiv);
+            temp.push(doctorIndiv);
             //this.doctorNames.push(doc.data().name);
             //this.doctorList[doc.id] = doc.data().name;
             console.log(doc.id);
             console.log(doc.data().name);
           });
         });
-      //console.log(this.doctorList);
+        this.doctors = temp;
     },
   },
   created() {
