@@ -107,6 +107,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 h4 {
   position: absolute;
@@ -144,6 +145,7 @@ a:hover {
   /* border-radius: 5px; */
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
+  z-index: 4;
 }
 
 h3 {
@@ -247,7 +249,8 @@ p {
   display: inline-block;
   width: 100px;
   text-align: center;
-  left: 1100px;
+  /*left: 1100px;*/
+  right: 100px;
   top: 120px;
   z-index: 1;
 }

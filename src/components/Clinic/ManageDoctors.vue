@@ -1,15 +1,18 @@
 <template>
-  <div>
+  <div id="container">
     <div id="addDoctor">
       <h3>Add Doctor</h3>
       <form>
-        <div>
+        <label id="docName"><b>Doctor Name</b></label>
+        <label id="docNum"><b>Doctor License Number</b></label>
+        <div id="inputFields">
           <input
             type="text"
             v-model="doctorAdd.dName"
             placeholder="Doctor Name"
             required
           /><br />
+
           <input
             type="text"
             v-model="doctorAdd.dNum"
@@ -122,13 +125,28 @@ export default {
 };
 </script>
 <style scoped>
+#container {
+  position: relative;
+}
+#docName {
+  display: block;
+  position: absolute;
+  top: 80px;
+}
+#docNum {
+  display: block;
+  position: absolute;
+  top: 125px;
+  width: 130px;
+  text-align: left;
+}
 #addDoctor {
   font-family: Nunito;
   height: 300px;
   width: 350px;
   display: inline-block;
-  position: relative;
-  left: -40px;
+  position: absolute;
+  left: 40px;
   top: 10px;
 }
 #deleteDoctor {
@@ -139,6 +157,12 @@ export default {
   height: 500px;
   position: absolute;
   top: 10px;
+  left: 490px;
+}
+
+#inputFields {
+  position: absolute;
+  left: 120px;
 }
 input {
   margin: 15px 0px 5px 30px;
@@ -185,6 +209,8 @@ li span {
   font-weight: bold;
   outline: none;
   margin: 20px;
+  position: absolute;
+  top: 200px;
 }
 #add:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.35);

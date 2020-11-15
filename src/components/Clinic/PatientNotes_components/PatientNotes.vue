@@ -165,6 +165,7 @@ h4 {
   font-weight: bold;
   letter-spacing: 2px;
   height: 100%;
+  z-index: 4;
 }
 
 #sideNavBar h3 {
