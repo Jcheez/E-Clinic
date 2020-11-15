@@ -57,7 +57,7 @@ export default {
           let item = {};
           item = querySnapShot.data();
           this.name = item.name;
-          console.log(this.name);
+          //console.log(this.name);
         });
 
       database
@@ -67,7 +67,7 @@ export default {
           let item = {};
           querySnapShot.forEach((doc) => {
             item = doc.data();
-            console.log(item);
+            //console.log(item);
             if (item.patientId.localeCompare(this.patientId) == 0) {
               this.itemsList.push(item);
             }
