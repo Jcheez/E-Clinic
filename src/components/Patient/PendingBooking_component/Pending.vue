@@ -68,7 +68,7 @@ export default {
           querySnapShot.forEach((doc) => {
             item = doc.data();
             //console.log(item);
-            if (item.patientId.localeCompare(this.patientId) == 0) {
+            if (this.patientId.localeCompare(item.patientId) == 0) {
               this.itemsList.push(item);
             }
           });
