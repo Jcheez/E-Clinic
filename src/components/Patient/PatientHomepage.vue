@@ -82,13 +82,21 @@ export default {
       this.$router.push("/patientlogin");
     },
 
+    format: function(link) {
+      if (link.includes("https://")) {
+        return link
+      } else {
+        return "https://" + link;
+      }
+    },
+
     routeHome: function () {
       this.$router.push("/patienthome");
     },
 
     ratings: function () {
       this.urlclicked = true;
-      window.open(this.itemsList[0].zoom, "_blank");
+      window.open(this.format(this.itemsList[0].zoom), "_blank");
       console.log("reached here");
     },
 
@@ -138,6 +146,7 @@ export default {
             }).then(() => {
             this.itemsList = []
             this.fetchItems()
+            location.reload()
           })
         })
       }
