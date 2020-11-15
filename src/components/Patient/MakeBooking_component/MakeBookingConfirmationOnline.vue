@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -33,11 +33,6 @@ export default {
     ...mapGetters(["getUser"]),
   },
   methods: {
-    ...mapActions(["signOutAction"]),
-    signOut() {
-      this.signOutAction();
-      this.$router.push("/patientlogin");
-    },
     formatDate: function (date) {
       let filter_year = date.toDate().getFullYear();
       let filter_month = date.toDate().getMonth() + 1;
