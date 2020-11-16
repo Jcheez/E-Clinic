@@ -19,34 +19,35 @@
     </div>
     <div id="inputFields">
       <div>
-      <input
-        type="text"
-        placeholder="Enter New Email"
-        id="changeEmail"
-        v-model="newEmail"
-      /></div>
-      <br>
+        <input
+          type="text"
+          placeholder="Enter New Email"
+          id="changeEmail"
+          v-model="newEmail"
+        />
+      </div>
+      <br />
       <input
         type="text"
         placeholder="Enter New Password"
-        style = "margin-top: -18px;"
+        style="margin-top: -18px"
         id="changePW"
         v-model="newPassword"
       />
-      <br>
+      <br />
       <input
         type="text"
         placeholder="Please Re-enter New Password To Confirm"
-        style = "margin-top: -18px;"
+        style="margin-top: -18px"
         id="repeatPW"
         v-model="repeatPassword"
       />
-      <br>
+      <br />
       <input
         type="text"
         placeholder="Enter New Phone Number"
         id="phonenum"
-        style = "margin-top: -15px;"
+        style="margin-top: -15px"
         v-model="phonenum"
       />
     </div>
@@ -82,7 +83,7 @@ export default {
     ...mapGetters(["getUser"]),
   },
   components: {
-    Modal
+    Modal,
   },
   methods: {
     ...mapActions(["signOutAction"]),
@@ -213,6 +214,7 @@ h4 {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   height: 100%;
+  z-index: 5;
 }
 
 #sideNavBar #clinic {
@@ -229,9 +231,12 @@ h4 {
 label {
   color: black;
   font-weight: bolder;
-  padding: 10px 0px 20px 0px;
-  float: left;
-  margin-bottom: 30px;
+  padding: 10px 0px 0px 0px;
+  margin-bottom: 25px;
+  position: relative;
+  display: block;
+  width: 250px;
+  text-align: left;
 }
 h3 {
   font-family: Nunito;
@@ -271,37 +276,39 @@ input {
   /*margin-top: 100px;
   bottom: 300px;*/
   position: absolute;
-  left: 600px;
+  left: 500px;
   top: 160px;
 }
 #instructions {
   width: 300px;
   margin: 10px;
-  left: 400px;
+  left: 300px;
   top: 150px;
   display: inline-block;
   height: 300px;
   float: left;
   position: absolute;
+  font-family: Nunito;
 }
 #submitEmail {
   transition: 0.3s;
-  position: absolute;
+  position: absolute; /*need change to relative?? */
   background-color: rgb(0, 114, 180);
   border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   font-family: Roboto;
+  /* font-weight: bold; */
   font-size: 14px;
   color: white;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   outline: none;
   display: block;
   width: 130px;
   text-align: center;
   margin-left: 20px;
-  left: 950px;
+  left: 850px;
   margin-bottom: 70px;
   height: 50px;
   top: 160px;
@@ -324,7 +331,7 @@ input {
   text-align: center;
   margin-left: 20px;
   height: 60px;
-  left: 950px;
+  left: 850px;
   top: 310px;
 }
 
@@ -346,7 +353,7 @@ input {
   text-align: center;
   margin-left: 20px;
   height: 60px;
-  left: 950px;
+  left: 850px;
   top: 385px;
 }
 
@@ -368,7 +375,7 @@ input {
   text-align: center;
   margin-left: 20px;
   height: 60px;
-  left: 950px;
+  left: 850px;
   top: 500px;
 }
 
