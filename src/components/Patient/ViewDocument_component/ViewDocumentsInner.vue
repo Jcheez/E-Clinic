@@ -136,6 +136,7 @@ export default {
   background-color: rgb(0, 114, 180);
   color: rgb(238, 249, 255);
   height: 100%;
+  z-index: 100;
 }
 
 #sideNavBar #clinic {
@@ -171,22 +172,22 @@ li {
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.377);
   box-sizing: border-box;
   list-style-type: none; /* Remove bullets */
-  padding: 10px 0 0 0;
+  padding: 0;
   display: block;
-  left: 320px;
-  position: absolute;
+  position: relative;
+  left: 280px;
 }
 
 div #inner {
-  width: 70%;
+  width: 80%;
   display: inline-block;
   font-family: Nunito;
   position: relative;
-  top: 14px;
+  top: 30px;
   left: 30px;
   display: block;
   text-align: left;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -195,8 +196,9 @@ p#url {
   color: rgb(0, 114, 180);
   text-decoration: underline;
   position: relative;
-  right: -120px;
-  font-size: 20px;
+  float: right;
+  top: -18px;
+  font-size: 18px;
   font-weight: normal;
   cursor: pointer;
 }
