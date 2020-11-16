@@ -12,7 +12,6 @@
             placeholder="Doctor Name"
             required
           /><br />
-
           <input
             type="text"
             v-model="doctorAdd.dNum"
