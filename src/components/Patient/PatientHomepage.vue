@@ -2,7 +2,7 @@
   <div id= "container">
     <h4>Hi,</h4>
     <h4 id="name">{{this.getUser.displayName}}</h4>
-    <h3>Upcoming Appointments</h3>
+    <h3>Upcoming Appointment</h3>
     <div id="sideNavBar">
       <router-link to="/patienthome" id="clinic">E-Clinic</router-link>
       <router-link to="/makebooking">Make A Booking</router-link>

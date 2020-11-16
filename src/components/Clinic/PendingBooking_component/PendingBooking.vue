@@ -18,7 +18,7 @@
         <template v-for="(patient, x) in itemsList">
           <li v-bind:key="x">
             <div id="inner">
-              <span style="white-space:nowrap">{{ "Patient Id: " + getPatientName(patient.patientId) }}</span>
+              <span style="white-space:nowrap">{{ "Patient: " + getPatientName(patient.patientId) }}</span>
               <span v-if="patient.firstTime && patient.physical" style="white-space:nowrap"
                 >Reason: First Time Patient and Physical Examination Required</span
               >
