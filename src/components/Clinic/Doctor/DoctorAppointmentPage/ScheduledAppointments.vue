@@ -117,6 +117,7 @@ div .container {
   position: absolute;
   margin-bottom: 8px;
   text-align: left;
+  z-index: 1;
 }
 
 div .container:after {
@@ -133,7 +134,7 @@ div .container:hover {
 div .containerBtm {
   overflow: hidden;
   overflow-y: scroll;
-  height: 140px;
+  height: 120px;
   width: 300px;
   position: absolute;
   left: 0px;
@@ -165,6 +166,8 @@ h4 {
   margin-left: 15px;
   text-align: left;
   padding-bottom: 5px;
+  z-index: 100; 
+  display: block;
 }
 
 li {
@@ -187,14 +190,17 @@ div .data {
 } */
 
 div .labels {
-    float: left;
+    position: relative;
     width: 30%;
-    padding: 10px 0px 10px 0px;
+    top: -10px;
+    left: -15px;
     font-family: Roboto;
 }
 div .data {
-    float: left;
+    position: relative;
     font-family: Roboto;
-    padding: 10px 0px 0px 0px;
+    top: -48px;
+    left: 50px;
+    overflow-x: hidden;
 }
 </style>
